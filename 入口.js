@@ -5,7 +5,7 @@
 // ============================================================
 
 // 设置前端基础URL - 请将下面的地址替换为你实际托管的地址
-globalThis.__TSC_FRONTEND_BASE_URL__ = 'https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@main';
+globalThis.__TSC_FRONTEND_BASE_URL__ = 'https://cdn.jsdelivr.net/gh/Mestor-star/tsc-frontend@main';
 
 // 导入主脚本（如果HTML中已有完整逻辑，此步骤可省略，但保留作为备选）
 // 如果你的 index.html 是完整的独立页面，这一行并非必须
