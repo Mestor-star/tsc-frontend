@@ -1,40 +1,2311 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>终末停滞委员会 · 低语者终端</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #08080f;
-      font-family: 'Segoe UI', 'Noto Sans SC', system-ui, sans-serif;
-      color: #d0d0e0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px;
-    }
-    .terminal {
-      max-width: 880px;
-      width: 100%;
-      background: linear-gradient(145deg, #0e0e1a 0%, #12121f 100%);
-      border: 1px solid #2a2a44;
-      border-radius: 20px;
-      padding: 20px 24px 24px;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.8), inset 0 0 60px rgba(60,40,120,0.05);
-    }
-    .terminal::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 10%;
-      right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #6a4aff, #a78bfa, #6a4aff, transparent);
-      opacity: 0.6;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>终末停滞委员会 · 低语者终端</title>
+    <style>
+        /* ============================================================
+           全局 & 主题
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+        body {
+            font-family: 'Segoe UI', 'Noto Sans SC', system-ui, sans-serif;
+            background: #0b0d14;
+            color: #d0d4e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 12px;
+        }
+
+        .app {
+            max-width: 1600px;
+            width: 100%;
+            min-width: 1200px;
+            min-height: 680px;
+            background: linear-gradient(145deg, #10131f, #181c2a);
+            border: 1px solid #2a2e44;
+            border-radius: 20px;
+            padding: 14px 16px;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.8), inset 0 0 60px rgba(40,30,80,0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================================
+           顶栏
+           ============================================================ */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            gap: 8px 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1e2238;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        .topbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #c8cce8;
+            white-space: nowrap;
+        }
+        .topbar .brand .badge {
+            background: #2a2e4a;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 400;
+            color: #8a8aaa;
+            white-space: nowrap;
+        }
+        .topbar .status-group {
+            display: flex;
+            align-items: center;
+            gap: 10px 20px;
+            flex-wrap: nowrap;
+            font-size: 12px;
+            color: #8a8aaa;
+            white-space: nowrap;
+        }
+        .topbar .status-group .val { color: #d0d4e0; }
+        .topbar .status-group .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4fc3f7;
+            margin-right: 3px;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        .topbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.03);
+            padding: 3px 12px 3px 8px;
+            border-radius: 30px;
+            border: 1px solid #2a2e44;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .topbar .user-info .avatar { font-size: 18px; }
+        .topbar .user-info .perm-badge {
+            background: #1a1a2e;
+            padding: 1px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: #5a5a7a;
+            margin-left: 4px;
+        }
+        .topbar .user-info .perm-badge.granted {
+            background: #1a2a1a;
+            color: #81c784;
+        }
+
+        /* ============================================================
+           主体：横向三列布局
+           ============================================================ */
+        .main {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            flex: 1;
+            min-height: 0;
+            min-width: 0;
+        }
+
+        /* --- 左列：主角 + 侧边栏 --- */
+        .left-column {
+            flex: 0 0 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
+            overflow-y: auto;
+        }
+
+        .left-column .character-card {
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .left-column .character-card:hover { border-color: rgba(106,74,255,0.2); }
+        .left-column .character-card .avatar-frame {
+            width: 120px;
+            height: 160px;
+            border-radius: 10px;
+            background: radial-gradient(ellipse at 50% 30%, rgba(106,74,255,0.15), transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 52px;
+            border: 1px solid rgba(106,74,255,0.2);
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+        .left-column .character-card .avatar-frame .char-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .left-column .character-card .avatar-frame .char-avatar-fallback {
+            font-size: 52px;
+            line-height: 1;
+            user-select: none;
+        }
+        .left-column .character-card .char-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e4f0;
+        }
+        .left-column .character-card .char-title {
+            font-size: 10px;
+            color: #6a6a8a;
+            letter-spacing: 1px;
+        }
+        .left-column .character-card .char-status {
+            font-size: 10px;
+            color: #8a8aaa;
+            display: flex;
+            gap: 8px;
+            margin-top: 2px;
+        }
+        .left-column .character-card .char-status .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #4fc3f7;
+            display: inline-block;
+            margin-right: 2px;
+        }
+
+        .sidebar {
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 8px 4px 8px 6px;
+            border: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+
+        .sidebar .channel-group-label {
+            font-size: 9px;
+            color: #5a5a7a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 8px 2px 8px;
+        }
+        .sidebar .channel-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #8a8aaa;
+            cursor: pointer;
+            transition: 0.15s;
+            border-left: 3px solid transparent;
+            white-space: nowrap;
+        }
+        .sidebar .channel-item:hover {
+            background: rgba(255,255,255,0.04);
+            color: #c8cce8;
+        }
+        .sidebar .channel-item.active {
+            background: rgba(106,74,255,0.10);
+            color: #d0d4e0;
+            border-left-color: #6a4aff;
+        }
+        .sidebar .channel-item .icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+        .sidebar .channel-item .badge {
+            margin-left: auto;
+            background: #1a1a2e;
+            padding: 0 6px;
+            border-radius: 30px;
+            font-size: 9px;
+            color: #5a5a7a;
+            flex-shrink: 0;
+        }
+        .sidebar .channel-item .badge.active {
+            background: #2a2a4a;
+            color: #a78bfa;
+        }
+        .sidebar .channel-item .lock-icon {
+            margin-left: auto;
+            font-size: 11px;
+            color: #5a5a7a;
+            flex-shrink: 0;
+        }
+        .sidebar .channel-item .lock-icon.unlocked {
+            color: #81c784;
+        }
+
+        /* --- 中列：正文输出区 --- */
+        .center-column {
+            flex: 1 1 auto;
+            background: rgba(255,255,255,0.01);
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .center-column .page {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 0.25s ease;
+            min-height: 0;
+        }
+        .center-column .page.active { display: flex; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .center-column .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 10px;
+            flex-wrap: nowrap;
+            gap: 4px 10px;
+            flex-shrink: 0;
+        }
+        .center-column .page-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e0e4f0;
+            white-space: nowrap;
+        }
+        .center-column .page-header .sub {
+            font-size: 11px;
+            color: #5a5a7a;
+            white-space: nowrap;
+        }
+
+        /* --- 正文输出区 --- */
+        .story-output {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 12px;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scroll-behavior: smooth;
+        }
+        .story-output::-webkit-scrollbar { width: 4px; }
+        .story-output::-webkit-scrollbar-track { background: transparent; }
+        .story-output::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+
+        .story-block {
+            padding: 8px 12px;
+            border-radius: 8px;
+            line-height: 1.7;
+            font-size: 13px;
+            animation: blockIn 0.3s ease;
+            flex-shrink: 0;
+        }
+        @keyframes blockIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .story-block.narration {
+            background: rgba(255,255,255,0.02);
+            border-left: 3px solid #4a4a6a;
+            color: #aab0c8;
+        }
+        .story-block.dialogue {
+            background: rgba(106,74,255,0.06);
+            border-left: 3px solid #a78bfa;
+            color: #d0d4e0;
+        }
+        .story-block.dialogue .speaker {
+            font-weight: 600;
+            color: #a78bfa;
+            margin-right: 6px;
+        }
+        .story-block.system {
+            background: rgba(79,195,247,0.04);
+            border: 1px solid rgba(79,195,247,0.1);
+            border-left: 3px solid #4fc3f7;
+            color: #8a8aaa;
+            font-size: 12px;
+        }
+        .story-block.inner {
+            background: rgba(255,255,255,0.01);
+            border-left: 3px solid #fbbf24;
+            color: #c8a86a;
+            font-style: italic;
+        }
+        .story-block.combat {
+            background: rgba(248,113,113,0.04);
+            border-left: 3px solid #f87171;
+            color: #d0a0a0;
+        }
+        .story-block .time-tag {
+            font-size: 10px;
+            color: #4a4a6a;
+            margin-right: 8px;
+        }
+
+        /* --- 时间推进 --- */
+        .time-control {
+            display: flex;
+            align-items: center;
+            gap: 4px 10px;
+            flex-wrap: nowrap;
+            padding: 8px 0 2px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+        .time-control .label {
+            font-size: 11px;
+            color: #5a5a7a;
+            margin-right: 2px;
+            white-space: nowrap;
+        }
+        .time-control button {
+            background: transparent;
+            border: 1px solid #2a2e44;
+            color: #8a8aaa;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .time-control button:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: #4a4a6a;
+            color: #c8cce8;
+        }
+        .time-control button.primary {
+            border-color: #4a3a6a;
+            color: #b8b8e0;
+        }
+        .time-control button.primary:hover {
+            background: rgba(106,74,255,0.10);
+            border-color: #6a4aff;
+        }
+        .time-control .status-tag {
+            font-size: 11px;
+            color: #4a4a6a;
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+
+        /* --- 通用内容卡片 --- */
+        .info-card {
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255,255,255,0.03);
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            line-height: 1.7;
+            font-size: 12px;
+            color: #aab0c8;
+        }
+        .info-card .hl { color: #a78bfa; }
+        .info-card .hl2 { color: #4fc3f7; }
+        .info-card .warn { color: #fbbf24; }
+        .info-card::-webkit-scrollbar { width: 3px; }
+        .info-card::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+
+        /* --- 列表项 --- */
+        .list-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding-right: 4px;
+        }
+        .list-items::-webkit-scrollbar { width: 3px; }
+        .list-items::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+        .list-item {
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: 0.15s;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .list-item:hover { border-color: rgba(106,74,255,0.15); }
+        .list-item .title { font-size: 12px; color: #d0d4e0; font-weight: 500; }
+        .list-item .desc { font-size: 11px; color: #6a6a8a; margin-top: 2px; }
+        .list-item .meta { font-size: 10px; color: #4a4a6a; margin-top: 3px; }
+        .list-item .tag {
+            display: inline-block;
+            font-size: 9px;
+            padding: 0 8px;
+            border-radius: 30px;
+            background: #1a1a2e;
+            color: #6a6a8a;
+        }
+        .list-item .tag.active-tag { background: #2a2a4a; color: #a78bfa; }
+        .list-item .tag.danger-tag { background: #2a1a1a; color: #f87171; }
+        .list-item .border-left { border-left: 3px solid #4fc3f7; }
+        .list-item .border-left.purple { border-left-color: #a78bfa; }
+        .list-item .border-left.gold { border-left-color: #fbbf24; }
+        .list-item .border-left.red { border-left-color: #f87171; }
+        .list-item .border-left.gray { border-left-color: #4a4a6a; }
+
+        /* --- 终末档案解锁卡片 --- */
+        .unlock-card {
+            background: rgba(106,74,255,0.06);
+            border: 1px solid rgba(106,74,255,0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .unlock-card .unlock-icon { font-size: 20px; flex-shrink: 0; }
+        .unlock-card .unlock-text { flex: 1; min-width: 0; }
+        .unlock-card .unlock-text .title { font-size: 12px; color: #d0d4e0; font-weight: 500; }
+        .unlock-card .unlock-text .desc { font-size: 11px; color: #8a8aaa; margin-top: 1px; }
+        .unlock-card button {
+            background: transparent;
+            border: 1px solid #4a3a6a;
+            color: #b8b8e0;
+            padding: 3px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .unlock-card button:hover {
+            background: rgba(106,74,255,0.10);
+            border-color: #6a4aff;
+        }
+        .unlock-card button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* --- 低语者感知列表 --- */
+        .whisper-list-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .whisper-list-container::-webkit-scrollbar { width: 3px; }
+        .whisper-list-container::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+        .whisper-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: 0.15s;
+            flex-shrink: 0;
+        }
+        .whisper-item:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(106,74,255,0.15);
+        }
+        .whisper-item .avatar-thumb {
+            width: 44px;
+            height: 58px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+        }
+        .whisper-item .avatar-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .whisper-item .info { flex: 1; min-width: 0; }
+        .whisper-item .info .n {
+            font-size: 12px;
+            font-weight: 500;
+            color: #d0d4e0;
+        }
+        .whisper-item .info .t {
+            font-size: 10px;
+            color: #6a6a8a;
+        }
+        .whisper-item .preview {
+            font-size: 11px;
+            color: #8a8aaa;
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80px;
+        }
+
+        .whisper-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .whisper-actions button {
+            background: transparent;
+            border: 1px solid #2a2e44;
+            color: #8a8aaa;
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .whisper-actions button:hover {
+            border-color: #4a4a6a;
+            color: #c8cce8;
+        }
+        .whisper-actions button.primary {
+            border-color: #4a3a6a;
+            color: #b8b8e0;
+        }
+        .whisper-actions button.primary:hover {
+            background: rgba(106,74,255,0.10);
+            border-color: #6a4aff;
+        }
+        .whisper-actions .hint {
+            font-size: 10px;
+            color: #4a4a6a;
+            margin-left: auto;
+            align-self: center;
+            white-space: nowrap;
+        }
+
+        /* --- 右侧：低语者详情面板 --- */
+        .right-column {
+            flex: 0 0 260px;
+            background: rgba(255,255,255,0.01);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            min-width: 0;
+            overflow-y: auto;
+        }
+        .right-column::-webkit-scrollbar { width: 3px; }
+        .right-column::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+
+        .right-column .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        .right-column .panel-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e4f0;
+            white-space: nowrap;
+        }
+        .right-column .panel-header .sub {
+            font-size: 10px;
+            color: #5a5a7a;
+            white-space: nowrap;
+        }
+
+        .right-column .detail-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #4a4a6a;
+            font-size: 12px;
+            text-align: center;
+            gap: 6px;
+            padding: 16px;
+            min-height: 200px;
+        }
+        .right-column .detail-empty .icon { font-size: 36px; opacity: 0.4; }
+
+        .right-column .detail-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            min-height: 0;
+            padding-right: 2px;
+        }
+        .right-column .detail-content::-webkit-scrollbar { width: 3px; }
+        .right-column .detail-content::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+
+        .right-column .portrait-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background: radial-gradient(ellipse at 50% 80%, rgba(60,40,120,0.12), transparent 70%);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.03);
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .right-column .portrait-area:hover { border-color: rgba(106,74,255,0.2); }
+        .right-column .portrait-area .portrait-img {
+            width: 80px;
+            height: 106px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+        .right-column .portrait-area .portrait-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .right-column .portrait-area .detail-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e4f0;
+        }
+        .right-column .portrait-area .detail-title {
+            font-size: 10px;
+            color: #6a6a8a;
+            letter-spacing: 1px;
+            margin-top: 1px;
+        }
+        .right-column .portrait-area .detail-status {
+            font-size: 10px;
+            color: #8a8aaa;
+            margin-top: 4px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .right-column .detail-section {
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            padding: 8px 10px;
+            border: 1px solid rgba(255,255,255,0.03);
+            flex-shrink: 0;
+        }
+        .right-column .detail-section .section-label {
+            font-size: 9px;
+            color: #5a5a7a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+        .right-column .detail-section .section-content {
+            font-size: 12px;
+            color: #aab0c8;
+            line-height: 1.6;
+        }
+        .right-column .detail-section .section-content .hl { color: #a78bfa; }
+        .right-column .detail-section .section-content .hl2 { color: #4fc3f7; }
+        .right-column .detail-section .section-content .warn { color: #fbbf24; }
+
+        .right-column .detail-actions {
+            display: flex;
+            gap: 4px;
+            flex-wrap: nowrap;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .right-column .detail-actions button {
+            background: transparent;
+            border: 1px solid #2a2e44;
+            color: #8a8aaa;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-family: inherit;
+            flex: 1;
+            white-space: nowrap;
+        }
+        .right-column .detail-actions button:hover {
+            border-color: #4a4a6a;
+            color: #c8cce8;
+        }
+        .right-column .detail-actions button.primary {
+            border-color: #4a3a6a;
+            color: #b8b8e0;
+        }
+        .right-column .detail-actions button.primary:hover {
+            background: rgba(106,74,255,0.10);
+            border-color: #6a4aff;
+        }
+
+        /* ============================================================
+           立绘查看模态框 (大图 长方形)
+           ============================================================ */
+        .portrait-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+        .portrait-modal-overlay.show { display: flex; }
+        .portrait-modal-box {
+            background: #181c2a;
+            border: 1px solid rgba(106,74,255,0.3);
+            border-radius: 20px;
+            padding: 24px 32px;
+            max-width: 300px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(106,74,255,0.08);
+            animation: slideUp 0.3s ease;
+        }
+        .portrait-modal-box .big-portrait {
+            width: 180px;
+            height: 240px;
+            border-radius: 12px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            font-weight: 600;
+            color: #fff;
+            border: 2px solid rgba(106,74,255,0.2);
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+        }
+        .portrait-modal-box .big-portrait img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .portrait-modal-box .p-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e0e4f0;
+        }
+        .portrait-modal-box .p-title {
+            font-size: 12px;
+            color: #6a6a8a;
+            margin-top: 2px;
+        }
+        .portrait-modal-box .p-close {
+            margin-top: 14px;
+            background: transparent;
+            border: 1px solid #2a2e44;
+            color: #8a8aaa;
+            padding: 4px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            transition: 0.15s;
+        }
+        .portrait-modal-box .p-close:hover {
+            border-color: #4a4a6a;
+            color: #c8cce8;
+        }
+
+        /* ============================================================
+           模态框 (通用)
+           ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #181c2a;
+            border: 1px solid rgba(106,74,255,0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: 0 0 60px rgba(106,74,255,0.06);
+            animation: slideUp 0.25s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(16px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .modal-box .modal-header h4 {
+            color: #e0e4f0;
+            font-size: 15px;
+        }
+        .modal-box .modal-header .close {
+            background: none;
+            border: none;
+            color: #5a5a7a;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .modal-box .modal-header .close:hover { color: #c8cce8; }
+        .modal-box .modal-body {
+            color: #aab0c8;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .modal-box .modal-body .highlight { color: #a78bfa; }
+        .modal-box .modal-footer {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            text-align: right;
+        }
+        .modal-box .modal-footer button {
+            background: transparent;
+            border: 1px solid #2a2e44;
+            color: #8a8aaa;
+            padding: 3px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            transition: 0.15s;
+        }
+        .modal-box .modal-footer button:hover {
+            border-color: #4a4a6a;
+            color: #c8cce8;
+        }
+
+        /* ============================================================
+           小屏适配
+           ============================================================ */
+        @media (max-width: 1300px) {
+            .app {
+                min-width: 1200px;
+            }
+            body {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    APP
+    ============================================================ -->
+    <div class="app" id="app">
+
+        <!-- ===== 顶栏 ===== -->
+        <div class="topbar">
+            <div class="brand">
+                🏛️ 终末停滞委员会 <span class="badge">低语者终端</span>
+            </div>
+            <div class="status-group">
+                <span><span class="dot"></span> <span class="val" id="topStatus">神殿 · 清晨</span></span>
+                <span>📅 <span class="val" id="topDate">第 1 日</span></span>
+                <span>⏱️ <span class="val" id="topTime">06:00</span></span>
+                <span>📊 R值 <span class="val" id="topR">1.450</span></span>
+            </div>
+            <div class="user-info">
+                <span class="avatar">🧑‍🎤</span>
+                <span id="topUser">{{user}}</span>
+                <span class="perm-badge" id="permBadge">未加入学园</span>
+            </div>
+        </div>
+
+        <!-- ===== 主体：横向三列 ===== -->
+        <div class="main">
+
+            <!-- 左列：主角 + 侧边栏 -->
+            <div class="left-column">
+                <!-- 角色卡片（含长方形立绘） -->
+                <div class="character-card" id="charCard" title="点击查看大立绘">
+                    <div class="avatar-frame" id="charAvatarFrame">
+                        <div class="char-avatar-fallback" id="charAvatarFallback">🧑‍🎤</div>
+                    </div>
+                    <div class="char-name">{{user}}</div>
+                    <div class="char-title">低语者 · Stage 4</div>
+                    <div class="char-status">
+                        <span><span class="dot"></span>苏醒 · 虚弱</span>
+                        <span>⚡ 活性化</span>
+                    </div>
+                </div>
+
+                <div class="sidebar" id="sidebar">
+                    <div class="channel-group-label">✦ 导航</div>
+                    <!-- 默认开放 -->
+                    <div class="channel-item active" data-channel="story">
+                        <span class="icon">📖</span> 正文
+                    </div>
+                    <div class="channel-item" data-channel="profile">
+                        <span class="icon">📋</span> 角色档案
+                    </div>
+                    <div class="channel-item" data-channel="whisper">
+                        <span class="icon">🔮</span> 低语者感知
+                        <span class="badge active" style="background:#2a2a4a;color:#a78bfa;">核心</span>
+                    </div>
+                    <div class="channel-item" data-channel="lore">
+                        <span class="icon">📚</span> 设定集
+                    </div>
+                    <!-- 需解锁 -->
+                    <div class="channel-item" data-channel="terminal-list">
+                        <span class="icon">📜</span> 终末档案
+                        <span class="lock-icon" id="terminalLockIcon">🔒</span>
+                    </div>
+                    <div class="channel-item" data-channel="squad">
+                        <span class="icon">💬</span> 小队通讯
+                        <span class="lock-icon" id="squadLockIcon">🔒</span>
+                    </div>
+                    <div class="channel-item" data-channel="records">
+                        <span class="icon">📰</span> 作战记录
+                        <span class="lock-icon" id="recordsLockIcon">🔒</span>
+                    </div>
+                    <div class="channel-item" data-channel="mission">
+                        <span class="icon">🎯</span> 任务简报
+                        <span class="lock-icon" id="missionLockIcon">🔒</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中列：内容区 -->
+            <div class="center-column">
+
+                <!-- 页面：正文输出 -->
+                <div class="page active" id="page-story">
+                    <div class="page-header">
+                        <h3>📖 正文</h3>
+                        <span class="sub" id="storyLocation">女神神殿 · 转生之间</span>
+                    </div>
+                    <div class="story-output" id="storyOutput">
+                        <!-- 由JS生成 -->
+                    </div>
+                    <div class="time-control">
+                        <span class="label">⏳ 时间推进</span>
+                        <button class="primary" id="tsc-time-15m">+15m</button>
+                        <button class="primary" id="tsc-time-30m">+30m</button>
+                        <button class="primary" id="tsc-time-1h">+1h</button>
+                        <button class="primary" id="tsc-time-3h">+3h</button>
+                        <span class="status-tag" id="tsc-time-status">当前 06:00</span>
+                    </div>
+                </div>
+
+                <!-- 页面：角色档案 -->
+                <div class="page" id="page-profile">
+                    <div class="page-header">
+                        <h3>📋 角色档案 · {{user}}</h3>
+                        <span class="sub">低语者 · 活性化阶段</span>
+                    </div>
+                    <div class="info-card">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;">
+                            <div><span style="color:#5a5a7a;">代号</span><br><span class="hl">低语者</span></div>
+                            <div><span style="color:#5a5a7a;">Stage</span><br><span class="hl2">4 · 活性化</span></div>
+                            <div><span style="color:#5a5a7a;">状态</span><br><span class="warn" id="profileStatus">苏醒 · 虚弱</span></div>
+                            <div><span style="color:#5a5a7a;">装备</span><br><span id="profileWeapon">无（锁链已解）</span></div>
+                            <div style="grid-column:1/-1;margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.04);">
+                                <span style="color:#5a5a7a;">感知</span><br>
+                                <span id="profilePerception">神殿内弥漫着神性的气息……似乎还有其他的什么声音……？</span>
+                            </div>
+                            <div style="grid-column:1/-1;padding-top:3px;border-top:1px solid rgba(255,255,255,0.04);font-size:11px;color:#5a5a7a;">
+                                <span>📍 地点：<span id="profileLoc">女神神殿 · 转生之间</span></span>
+                                <span style="margin-left:12px;">⏳ <span id="profileTime">清晨</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 页面：终末档案 (需解锁) -->
+                <div class="page" id="page-terminal-list">
+                    <div class="page-header">
+                        <h3>📜 终末档案</h3>
+                        <span class="sub" id="terminalSub">🔒 需要苍之学院权限</span>
+                    </div>
+                    <div class="unlock-card" id="unlockCard">
+                        <span class="unlock-icon" id="unlockIcon">🔒</span>
+                        <div class="unlock-text">
+                            <div class="title" id="unlockTitle">档案权限已锁定</div>
+                            <div class="desc" id="unlockDesc">加入苍之学院后可获得档案访问权限</div>
+                        </div>
+                        <button id="unlockBtn" disabled>未解锁</button>
+                    </div>
+                    <div class="list-items" id="terminalList">
+                        <!-- 由JS生成 -->
+                    </div>
+                </div>
+
+                <!-- 页面：任务简报 (需解锁) -->
+                <div class="page" id="page-mission">
+                    <div class="page-header">
+                        <h3>🎯 任务简报</h3>
+                        <span class="sub">🔒 需要苍之学院权限</span>
+                    </div>
+                    <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
+                        <div style="font-size:48px;opacity:0.3;">🔒</div>
+                        <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁任务简报</div>
+                        <div style="font-size:12px;color:#5a5a7a;">你将了解当前的任务目标与作战计划</div>
+                        <button class="unlock-btn" id="unlockMissionBtn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
+                    </div>
+                </div>
+
+                <!-- 页面：低语者感知 -->
+                <div class="page" id="page-whisper">
+                    <div class="page-header">
+                        <h3>🔮 低语者 · 感知网</h3>
+                        <span class="sub">点击「扫描」探测周围的心声</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;">
+                        <div style="font-size:11px;color:#5a5a7a;flex-shrink:0;">
+                            📡 R值 <span id="tsc-rValue-small">1.450</span> · 半径 50m
+                        </div>
+                        <div class="whisper-list-container" id="tsc-whisperList">
+                            <div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔮 点击「扫描」探测周围的心声</div>
+                        </div>
+                        <div class="whisper-actions">
+                            <button class="primary" id="tsc-scanBtn">⟳ 扫描</button>
+                            <button id="tsc-thinkBtn">💭 内心</button>
+                            <button id="tsc-resetBtn">↺ 重置</button>
+                            <span class="hint">💡 点击目标查看详情</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 页面：小队通讯 (需解锁) -->
+                <div class="page" id="page-squad">
+                    <div class="page-header">
+                        <h3>💬 小队通讯</h3>
+                        <span class="sub">🔒 需要苍之学院权限</span>
+                    </div>
+                    <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
+                        <div style="font-size:48px;opacity:0.3;">🔒</div>
+                        <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁小队通讯</div>
+                        <div style="font-size:12px;color:#5a5a7a;">与恋兔队成员建立联系</div>
+                        <button class="unlock-btn" id="unlockSquadBtn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
+                    </div>
+                </div>
+
+                <!-- 页面：作战记录 (需解锁) -->
+                <div class="page" id="page-records">
+                    <div class="page-header">
+                        <h3>📰 作战记录</h3>
+                        <span class="sub">🔒 需要苍之学院权限</span>
+                    </div>
+                    <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
+                        <div style="font-size:48px;opacity:0.3;">🔒</div>
+                        <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁作战记录</div>
+                        <div style="font-size:12px;color:#5a5a7a;">查看已完成的终末讨伐记录</div>
+                        <button class="unlock-btn" id="unlockRecordsBtn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
+                    </div>
+                </div>
+
+                <!-- 页面：设定集 -->
+                <div class="page" id="page-lore">
+                    <div class="page-header">
+                        <h3>📚 设定集</h3>
+                        <span class="sub">终末停滞委员会 · 世界观</span>
+                    </div>
+                    <div class="info-card">
+                        <div style="margin-bottom:6px;font-size:13px;font-weight:500;color:#c8cce8;">⚔️ 终末停滞委员会</div>
+                        <div>一群保护这个已经终结的世界，喜欢做傻事的人。</div>
+                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">🔮 低语者</div>
+                        <div>{{user}}的终末。能够窥探他人的内心。</div>
+                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">📖 三大学园</div>
+                        <div>• <span class="hl2">苍之学园</span> — 弹痕</div>
+                        <div>• <span class="hl2">卡乌斯学院</span> — 斩击</div>
+                        <div>• <span class="hl2">Corporations</span> — 片羽</div>
+                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">🌌 星鲸</div>
+                        <div>以光速的1298次方奔跑的终末。</div>
+                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">🔥 篝火之国</div>
+                        <div>封印线之人Stick Man的异界。紫之大树镇守于此。</div>
+                    </div>
+                </div>
+
+            </div><!-- /center-column -->
+
+            <!-- 右列：低语者详情面板 -->
+            <div class="right-column" id="detailPanel">
+                <div class="panel-header">
+                    <h4>🔮 感知详情</h4>
+                    <span class="sub" id="detailSub">未选择目标</span>
+                </div>
+                <div class="detail-empty" id="detailEmpty">
+                    <div class="icon">👁️</div>
+                    <div>点击左侧感知列表中的目标<br>查看详细信息</div>
+                </div>
+                <div class="detail-content" id="detailContent" style="display:none;">
+                    <!-- 动态填充 -->
+                </div>
+            </div>
+
+        </div><!-- /main -->
+
+    </div><!-- /app -->
+
+    <!-- ============================================================
+    立绘查看模态框 (大图 长方形)
+    ============================================================ -->
+    <div class="portrait-modal-overlay" id="portraitModal">
+        <div class="portrait-modal-box">
+            <div class="big-portrait" id="bigPortrait">🧑</div>
+            <div class="p-name" id="pName">名字</div>
+            <div class="p-title" id="pTitle">称号</div>
+            <button class="p-close" id="pClose">关闭</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    模态框 (通用)
+    ============================================================ -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4 id="modalTitle">📋 信息</h4>
+                <button class="close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                内容加载中...
+            </div>
+            <div class="modal-footer">
+                <button id="modalConfirm">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    JavaScript
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            //  工具 & DOM
+            // ============================================================
+            function getEl(id) { return document.getElementById(id); }
+            function addLog(msg) { console.log('[低语者]', msg); }
+
+            // ============================================================
+            //  立绘模态框 (长方形)
+            // ============================================================
+            function showPortraitModal(name, title, color, emoji) {
+                const modal = getEl('portraitModal');
+                const big = getEl('bigPortrait');
+                const pName = getEl('pName');
+                const pTitle = getEl('pTitle');
+                if (emoji) {
+                    big.innerHTML = emoji;
+                    big.style.background = 'rgba(255,255,255,0.05)';
+                } else {
+                    const initial = name.charAt(0).toUpperCase();
+                    big.innerHTML = initial;
+                    big.style.background = color || '#6a4aff';
+                }
+                pName.textContent = name;
+                pTitle.textContent = title || '';
+                modal.classList.add('show');
+            }
+
+            getEl('pClose').addEventListener('click', function() {
+                getEl('portraitModal').classList.remove('show');
+            });
+            getEl('portraitModal').addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+
+            // ============================================================
+            //  生成长方形头像HTML
+            // ============================================================
+            function makeThumbHtml(name, color, emoji) {
+                const initial = name.charAt(0).toUpperCase();
+                const bg = color || '#6a4aff';
+                const content = emoji || initial;
+                return `<div class="avatar-thumb" style="background:${bg};">${content}</div>`;
+            }
+
+            function makeDetailPortraitHtml(name, color, emoji) {
+                const initial = name.charAt(0).toUpperCase();
+                const bg = color || '#6a4aff';
+                const content = emoji || initial;
+                return `<div class="portrait-img" style="background:${bg};font-size:28px;">${content}</div>`;
+            }
+
+            // ============================================================
+            //  模态框 (通用)
+            // ============================================================
+            function showModal(title, content, onConfirm) {
+                getEl('modalTitle').textContent = title;
+                getEl('modalBody').innerHTML = content;
+                getEl('modal').classList.add('show');
+                if (onConfirm) {
+                    getEl('modalConfirm').onclick = function() {
+                        getEl('modal').classList.remove('show');
+                        onConfirm();
+                    };
+                } else {
+                    getEl('modalConfirm').onclick = function() {
+                        getEl('modal').classList.remove('show');
+                    };
+                }
+            }
+            getEl('modalClose').addEventListener('click', function() { getEl('modal').classList.remove('show'); });
+            getEl('modal').addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+
+            // ============================================================
+            //  频道切换 (带权限校验)
+            // ============================================================
+            const channelItems = document.querySelectorAll('.channel-item');
+            const pages = {
+                story: getEl('page-story'),
+                profile: getEl('page-profile'),
+                'terminal-list': getEl('page-terminal-list'),
+                mission: getEl('page-mission'),
+                whisper: getEl('page-whisper'),
+                squad: getEl('page-squad'),
+                records: getEl('page-records'),
+                lore: getEl('page-lore')
+            };
+
+            // 需要解锁的频道列表
+            const lockedChannels = ['terminal-list', 'mission', 'squad', 'records'];
+
+            channelItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const channel = this.dataset.channel;
+
+                    // 检查是否需要解锁
+                    if (lockedChannels.includes(channel) && !hasAcademyPermission()) {
+                        showModal('🔒 权限不足',
+                            '<div style="text-align:center;padding:8px 0;">' +
+                            '<div style="font-size:36px;margin-bottom:10px;">🔒</div>' +
+                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">' + getChannelName(channel) +
+                            ' 已锁定</div>' +
+                            '<div style="font-size:12px;color:#8a8aaa;">加入苍之学院后可解锁此模块</div>' +
+                            '<div style="margin-top:12px;"><button onclick="document.getElementById(\'modal\').classList.remove(\'show\');document.querySelector(\'.unlock-btn\')?.click();" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button></div>' +
+                            '</div>'
+                        );
+                        return;
+                    }
+
+                    channelItems.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    Object.keys(pages).forEach(key => {
+                        pages[key].classList.toggle('active', key === channel);
+                    });
+                    if (channel === 'whisper') {
+                        setTimeout(generateWhispers, 200);
+                    }
+                    if (channel === 'terminal-list' && hasAcademyPermission()) {
+                        renderTerminalList();
+                    }
+                });
+            });
+
+            function getChannelName(channel) {
+                const map = {
+                    'terminal-list': '终末档案',
+                    'mission': '任务简报',
+                    'squad': '小队通讯',
+                    'records': '作战记录'
+                };
+                return map[channel] || channel;
+            }
+
+            // ============================================================
+            //  正文输出系统
+            // ============================================================
+            const storyOutput = getEl('storyOutput');
+            let storyCount = 0;
+
+            function addStoryBlock(type, content, speaker) {
+                if (!storyOutput) return;
+                const timeStr = getTimeString();
+                const block = document.createElement('div');
+                block.className = 'story-block ' + type;
+
+                let innerHTML = '';
+                if (type === 'dialogue') {
+                    innerHTML = '<span class="time-tag">[' + timeStr + ']</span>' +
+                        '<span class="speaker">' + (speaker || '???') + '</span>' + content;
+                } else if (type === 'system') {
+                    innerHTML = '<span class="time-tag">[' + timeStr + ']</span>' + content;
+                } else {
+                    innerHTML = '<span class="time-tag">[' + timeStr + ']</span>' + content;
+                }
+                block.innerHTML = innerHTML;
+                storyOutput.appendChild(block);
+                storyCount++;
+                storyOutput.scrollTop = storyOutput.scrollHeight;
+            }
+
+            function getTimeString() {
+                const h = String(currentHour).padStart(2, '0');
+                const m = String(currentMinute).padStart(2, '0');
+                return h + ':' + m;
+            }
+
+            // ============================================================
+            //  苍之学院权限系统
+            // ============================================================
+            let academyPermission = false;
+
+            function hasAcademyPermission() {
+                return academyPermission;
+            }
+
+            function grantAcademyPermission() {
+                academyPermission = true;
+                const permBadge = getEl('permBadge');
+                permBadge.textContent = '苍之学园';
+                permBadge.classList.add('granted');
+
+                // 解锁所有锁图标
+                const lockIcons = ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'];
+                lockIcons.forEach(id => {
+                    const el = getEl(id);
+                    if (el) {
+                        el.textContent = '🔓';
+                        el.classList.add('unlocked');
+                    }
+                });
+
+                // 更新终末档案解锁卡片
+                const unlockCard = getEl('unlockCard');
+                if (unlockCard) {
+                    unlockCard.style.borderColor = 'rgba(129,199,132,0.3)';
+                    unlockCard.style.background = 'rgba(129,199,132,0.06)';
+                }
+                const unlockIcon = getEl('unlockIcon');
+                if (unlockIcon) unlockIcon.textContent = '🔓';
+                const unlockTitle = getEl('unlockTitle');
+                if (unlockTitle) unlockTitle.textContent = '档案权限已授予';
+                const unlockDesc = getEl('unlockDesc');
+                if (unlockDesc) unlockDesc.textContent = '苍之学园成员 · 可访问终末档案';
+                const unlockBtn = getEl('unlockBtn');
+                if (unlockBtn) {
+                    unlockBtn.textContent = '已解锁';
+                    unlockBtn.disabled = true;
+                    unlockBtn.style.borderColor = '#2a4a2a';
+                    unlockBtn.style.color = '#81c784';
+                }
+
+                // 更新各锁定页面的内容
+                const terminalSub = getEl('terminalSub');
+                if (terminalSub) terminalSub.textContent = '已解锁 0 / 6';
+
+                // 更新任务简报页面
+                const missionPage = getEl('page-mission');
+                if (missionPage) {
+                    missionPage.innerHTML = `
+                        <div class="page-header">
+                            <h3>🎯 任务简报</h3>
+                            <span class="sub">当前行动</span>
+                        </div>
+                        <div class="info-card">
+                            <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.04);">
+                                <div style="font-size:14px;color:#d0d4e0;font-weight:500;">📌 当前任务：逃离女神神殿</div>
+                                <div style="font-size:12px;color:#8a8aaa;margin-top:3px;">目标：在女神的陷阱中存活，与露娜一同脱逃</div>
+                                <div style="font-size:11px;color:#5a5a7a;margin-top:3px;">状态：<span class="warn">进行中</span> · 优先级：<span class="hl2">紧急</span></div>
+                            </div>
+                            <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.04);">
+                                <div style="font-size:12px;color:#d0d4e0;font-weight:500;">📌 支线：了解低语者的本质</div>
+                                <div style="font-size:11px;color:#8a8aaa;">探索你的终末能力的极限与代价</div>
+                                <div style="font-size:11px;color:#5a5a7a;margin-top:2px;">进度：<span class="hl">10%</span></div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:#d0d4e0;font-weight:500;">📌 长期目标：停滞终末</div>
+                                <div style="font-size:11px;color:#8a8aaa;">终末停滞委员会 · 第12区</div>
+                                <div style="font-size:11px;color:#5a5a7a;margin-top:2px;">距离世界终末：<span class="warn">未知</span></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 更新小队通讯页面（符合开局时间线）
+                const squadPage = getEl('page-squad');
+                if (squadPage) {
+                    squadPage.innerHTML = `
+                        <div class="page-header">
+                            <h3>💬 小队通讯</h3>
+                            <span class="sub">恋兔队 · 当前 <span id="squadOnline">1</span> 人在线</span>
+                        </div>
+                        <div style="flex:1;display:flex;flex-direction:column;gap:5px;overflow-y:auto;padding-right:4px;font-size:12px;min-height:0;">
+                            <div><span style="color:#5a5a7a;">[06:03]</span> <span style="color:#a78bfa;">露娜</span>：{{user}}同学，你醒了吗？</div>
+                            <div><span style="color:#5a5a7a;">[06:05]</span> <span style="color:#a78bfa;">露娜</span>：我去准备些吃的，你先别乱动。</div>
+                            <div><span style="color:#5a5a7a;">[06:08]</span> <span style="color:#4a4a6a;">系统</span>：检测到新的灵魂波动，正在分析中...</div>
+                            <div><span style="color:#5a5a7a;">[06:10]</span> <span style="color:#a78bfa;">露娜</span>：这里很安静，但也不太安全。注意听周围的动静。</div>
+                            <div style="color:#4a4a6a;text-align:center;padding:6px 0;font-size:11px;">—— 只有你与露娜两人 ——</div>
+                        </div>
+                    `;
+                }
+
+                // 更新作战记录页面
+                const recordsPage = getEl('page-records');
+                if (recordsPage) {
+                    recordsPage.innerHTML = `
+                        <div class="page-header">
+                            <h3>📰 作战记录</h3>
+                            <span class="sub">已归档 0 项</span>
+                        </div>
+                        <div class="list-items">
+                            <div style="color:#5a5a7a;text-align:center;padding:30px 0;font-size:13px;">
+                                <div style="font-size:32px;margin-bottom:10px;">📭</div>
+                                暂无作战记录<br>
+                                <span style="font-size:12px;color:#4a4a6a;">加入苍之学院后开始积累</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 更新终末档案列表
+                renderTerminalList();
+                addStoryBlock('system', '你获得了苍之学院的认可，所有功能已解锁。');
+                addLog('苍之学院权限已授予');
+            }
+
+            // ============================================================
+            //  解锁按钮
+            // ============================================================
+            document.querySelectorAll('.unlock-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!hasAcademyPermission()) {
+                        showModal('🏫 苍之学院',
+                            '<div style="text-align:center;padding:8px 0;">' +
+                            '<div style="font-size:32px;margin-bottom:10px;">🏫</div>' +
+                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">来自苍之学院的邀请</div>' +
+                            '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;">' +
+                            '一位自称来自苍之学院的使者出现在你面前。<br>' +
+                            '「你的能力……很有趣。愿意加入我们吗？」<br>' +
+                            '「苍之学园，弹痕的归属之地。」' +
+                            '</div>' +
+                            '</div>',
+                            function() {
+                                grantAcademyPermission();
+                                showModal('✅ 已加入苍之学院',
+                                    '<div style="text-align:center;padding:8px 0;">' +
+                                    '<div style="font-size:32px;margin-bottom:10px;">🎓</div>' +
+                                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">欢迎加入苍之学园</div>' +
+                                    '<div style="font-size:12px;color:#8a8aaa;">所有功能已解锁</div>' +
+                                    '</div>'
+                                );
+                            }
+                        );
+                    }
+                });
+            });
+
+            // ============================================================
+            //  终末档案数据
+            // ============================================================
+            const terminalArchives = [{
+                id: 'soul-accumulator',
+                name: '灵魂蓄积器TM',
+                type: '死灵操法 · 反现实机械工学',
+                stage: 'Stage 3',
+                location: '女神 · 已确认 284 台',
+                borderClass: 'purple',
+                tagClass: 'danger-tag',
+                description: '女神佩尔西奥涅的终末。以灵魂为燃料的蓄积装置，将人类转化为幸福幻梦中的灵魂电池。',
+                threat: '极高',
+                status: '已确认'
+            }, {
+                id: 'golden-lion',
+                name: '黄金狮子',
+                type: '异法 Parallel·Law',
+                stage: 'Stage 2',
+                location: '钢铁的新娘 · 契约绑定',
+                borderClass: 'gold',
+                tagClass: 'active-tag',
+                description: '钢铁的新娘所持有的异法。以契约之力驱动的黄金狮子，忠诚而危险。',
+                threat: '高',
+                status: '已确认'
+            }, {
+                id: 'woodpecker',
+                name: '木匠的啄木鸟先生',
+                type: '异法 Parallel·Law',
+                stage: 'Stage 3',
+                location: '尼泊尔 · 索卢坤布县',
+                borderClass: 'red',
+                tagClass: 'danger-tag',
+                description: '存在于尼泊尔山区的终末。以啄木鸟形态出现的异法，会啄食人类的记忆。',
+                threat: '高',
+                status: '已确认'
+            }, {
+                id: 'organ-apartment',
+                name: '脏器公寓',
+                type: '死灵操法 · 仪式灾害',
+                stage: 'Stage 3',
+                location: '巴塞罗那 · 已处理',
+                borderClass: 'purple',
+                tagClass: 'danger-tag',
+                description: '巴塞罗那的仪式灾害。将整栋公寓转化为活体脏器，已由委员会处理。',
+                threat: '高',
+                status: '已处理'
+            }, {
+                id: 'deep-cave',
+                name: '深穴 Roguelite',
+                type: '梵我合一',
+                stage: 'Stage 2',
+                location: '训练用 · 可反复进入',
+                borderClass: 'gray',
+                tagClass: '',
+                description: '委员会的训练设施。每次进入都会生成不同的深层结构，用于锻炼低语者的实战能力。',
+                threat: '中',
+                status: '训练用'
+            }, {
+                id: 'clay-mask',
+                name: '泥塑面具',
+                type: '不明 · 人格篡夺',
+                stage: 'Stage 2',
+                location: '太平洋沿岸 · 312 个',
+                borderClass: 'gray',
+                tagClass: '',
+                description: '太平洋沿岸发现的终末。以泥塑面具形态出现，能够篡夺佩戴者的人格。已确认312个个体。',
+                threat: '中',
+                status: '调查中'
+            }];
+
+            let unlockedArchives = [];
+
+            function renderTerminalList() {
+                const list = getEl('terminalList');
+                const sub = getEl('terminalSub');
+                if (!list) return;
+
+                if (!hasAcademyPermission()) {
+                    sub.textContent = '🔒 需要苍之学院权限';
+                    list.innerHTML = terminalArchives.map((a, index) => {
+                        return `<div class="list-item border-left gray" style="opacity:0.5;cursor:not-allowed;">
+                            <div class="title">🔒 档案 #${String(index + 1).padStart(2, '0')} · 未解锁</div>
+                            <div class="desc">加入苍之学院后解锁此档案</div>
+                        </div>`;
+                    }).join('');
+                    return;
+                }
+
+                sub.textContent = '已解锁 ' + unlockedArchives.length + ' / ' + terminalArchives.length;
+
+                list.innerHTML = terminalArchives.map((a, index) => {
+                    const isUnlocked = unlockedArchives.includes(a.id);
+                    if (!isUnlocked) {
+                        return `<div class="list-item border-left gray" style="opacity:0.6;cursor:pointer;" onclick="window.tscTryUnlockArchive('${a.id}')">
+                            <div class="title">🔒 档案 #${String(index + 1).padStart(2, '0')} · ${a.name}</div>
+                            <div class="desc">${a.type}</div>
+                            <div style="font-size:10px;color:#5a5a7a;margin-top:2px;">点击解锁</div>
+                        </div>`;
+                    }
+                    return `<div class="list-item border-left ${a.borderClass}" onclick="window.tscShowArchiveDetail('${a.id}')">
+                        <div class="title">${a.name} <span class="tag ${a.tagClass}">${a.stage}</span></div>
+                        <div class="desc">${a.type}</div>
+                        <div class="meta">${a.location}</div>
+                    </div>`;
+                }).join('');
+            }
+
+            window.tscTryUnlockArchive = function(id) {
+                if (!hasAcademyPermission()) return;
+                const archive = terminalArchives.find(a => a.id === id);
+                if (!archive) return;
+                if (unlockedArchives.includes(id)) return;
+
+                showModal('📜 档案解锁',
+                    '<div style="text-align:center;padding:8px 0;">' +
+                    '<div style="font-size:32px;margin-bottom:10px;">📜</div>' +
+                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">解锁档案：' + archive.name + '</div>' +
+                    '<div style="font-size:12px;color:#8a8aaa;">是否消耗权限解锁此档案？</div>' +
+                    '</div>',
+                    function() {
+                        unlockedArchives.push(id);
+                        renderTerminalList();
+                        addStoryBlock('system', '档案已解锁：' + archive.name);
+                        addLog('档案已解锁: ' + archive.name);
+                    }
+                );
+            };
+
+            window.tscShowArchiveDetail = function(id) {
+                const archive = terminalArchives.find(a => a.id === id);
+                if (!archive) return;
+                if (!unlockedArchives.includes(id)) return;
+
+                showModal('📜 ' + archive.name,
+                    '<div style="margin-bottom:10px;">' +
+                    '<div style="font-size:12px;color:#5a5a7a;">类型</div>' +
+                    '<div style="font-size:13px;color:#d0d4e0;">' + archive.type + '</div>' +
+                    '</div>' +
+                    '<div style="margin-bottom:10px;">' +
+                    '<div style="font-size:12px;color:#5a5a7a;">阶段</div>' +
+                    '<div style="font-size:13px;color:#d0d4e0;">' + archive.stage + '</div>' +
+                    '</div>' +
+                    '<div style="margin-bottom:10px;">' +
+                    '<div style="font-size:12px;color:#5a5a7a;">位置</div>' +
+                    '<div style="font-size:13px;color:#d0d4e0;">' + archive.location + '</div>' +
+                    '</div>' +
+                    '<div style="margin-bottom:10px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;">' +
+                    '<div style="font-size:12px;color:#5a5a7a;margin-bottom:3px;">描述</div>' +
+                    '<div style="font-size:12px;color:#aab0c8;line-height:1.6;">' + archive.description + '</div>' +
+                    '</div>' +
+                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;">' +
+                    '<div>⚠️ 威胁等级：<span style="color:#f87171;">' + archive.threat + '</span></div>' +
+                    '<div>📋 状态：<span style="color:#81c784;">' + archive.status + '</span></div>' +
+                    '</div>'
+                );
+            };
+
+            // ============================================================
+            //  时间系统
+            // ============================================================
+            let currentHour = 6;
+            let currentMinute = 0;
+            let dayCount = 1;
+
+            function updateTimeDisplay() {
+                const h = String(currentHour).padStart(2, '0');
+                const m = String(currentMinute).padStart(2, '0');
+                getEl('topTime').textContent = h + ':' + m;
+                getEl('tsc-time-status').textContent = '当前 ' + h + ':' + m;
+                getEl('topDate').textContent = '第 ' + dayCount + ' 日';
+                const profileTime = getEl('profileTime');
+                if (profileTime) {
+                    const timeMap = {
+                        '6': '清晨',
+                        '9': '上午',
+                        '12': '正午',
+                        '15': '午后',
+                        '18': '黄昏',
+                        '21': '夜晚',
+                        '0': '深夜'
+                    };
+                    let timeStr = '清晨';
+                    for (let [k, v] of Object.entries(timeMap)) {
+                        if (currentHour >= parseInt(k)) { timeStr = v; }
+                    }
+                    profileTime.textContent = timeStr;
+                }
+                const statusMap = {
+                    '6': '神殿 · 清晨',
+                    '9': '神殿 · 上午',
+                    '12': '神殿 · 正午',
+                    '15': '神殿 · 午后',
+                    '18': '神殿 · 黄昏',
+                    '21': '神殿 · 夜晚',
+                    '0': '神殿 · 深夜'
+                };
+                let statusText = '神殿 · 清晨';
+                for (let [k, v] of Object.entries(statusMap)) {
+                    if (currentHour >= parseInt(k)) { statusText = v; }
+                }
+                getEl('topStatus').textContent = statusText;
+                let r = 1.45;
+                if (currentHour >= 22 || currentHour < 6) r = 1.38 + Math.random() * 0.08;
+                else if (currentHour >= 12 && currentHour < 14) r = 1.42 + Math.random() * 0.06;
+                else r = 1.44 + Math.random() * 0.08;
+                r = Math.round(r * 1000) / 1000;
+                getEl('topR').textContent = r.toFixed(3);
+                const rSmall = getEl('tsc-rValue-small');
+                if (rSmall) rSmall.textContent = r.toFixed(3);
+            }
+
+            function advanceTime(minutes) {
+                currentMinute += minutes;
+                while (currentMinute >= 60) {
+                    currentMinute -= 60;
+                    currentHour += 1;
+                    if (currentHour >= 24) {
+                        currentHour -= 24;
+                        dayCount += 1;
+                    }
+                }
+                updateTimeDisplay();
+
+                const timeTexts = [
+                    '时间静静流逝，神殿内的光影悄然变化。',
+                    '你感觉到周围的空气微微流动，远处传来若有若无的声响。',
+                    '寂静笼罩着神殿，只有你自己的呼吸声在耳边回响。',
+                    '露娜在不远处安静地守候着，目光中带着关切。'
+                ];
+                const randomText = timeTexts[Math.floor(Math.random() * timeTexts.length)];
+                addStoryBlock('narration', randomText);
+
+                // 触发苍之学院剧情 (8-10点)
+                if (currentHour >= 8 && currentHour <= 10 && !hasAcademyPermission()) {
+                    if (Math.random() > 0.7) {
+                        setTimeout(function() {
+                            showModal('🏫 苍之学院',
+                                '<div style="text-align:center;padding:8px 0;">' +
+                                '<div style="font-size:32px;margin-bottom:10px;">🏫</div>' +
+                                '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">来自苍之学院的邀请</div>' +
+                                '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;">' +
+                                '一位自称来自苍之学院的使者出现在你面前。<br>' +
+                                '「你的能力……很有趣。愿意加入我们吗？」<br>' +
+                                '「苍之学园，弹痕的归属之地。」' +
+                                '</div>' +
+                                '</div>',
+                                function() {
+                                    grantAcademyPermission();
+                                    showModal('✅ 已加入苍之学院',
+                                        '<div style="text-align:center;padding:8px 0;">' +
+                                        '<div style="font-size:32px;margin-bottom:10px;">🎓</div>' +
+                                        '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">欢迎加入苍之学园</div>' +
+                                        '<div style="font-size:12px;color:#8a8aaa;">所有功能已解锁</div>' +
+                                        '</div>'
+                                    );
+                                }
+                            );
+                        }, 300);
+                    }
+                }
+            }
+
+            getEl('tsc-time-15m').addEventListener('click', function() { advanceTime(15); });
+            getEl('tsc-time-30m').addEventListener('click', function() { advanceTime(30); });
+            getEl('tsc-time-1h').addEventListener('click', function() { advanceTime(60); });
+            getEl('tsc-time-3h').addEventListener('click', function() { advanceTime(180); });
+
+            updateTimeDisplay();
+
+            // ============================================================
+            //  感知池 (带颜色立绘)
+            // ============================================================
+            const whisperPool = {
+                luna: {
+                    name: '露娜',
+                    type: '女仆 · 机械人偶',
+                    color: '#7c4dff',
+                    emoji: '👩',
+                    title: '女仆 · 机械人偶',
+                    status: '活跃 · 守护中',
+                    whispers: [
+                        { text: '「{{user}}同学终于醒了……得让他吃点东西。」', mood: '关心' },
+                        { text: '「好累啊……又要干活了。」', mood: '疲惫' },
+                        { text: '「不能让他知道真相……否则会重蹈覆辙。」', mood: '恐惧' },
+                        { text: '「要是能救他……就好了。」', mood: '希望' }
+                    ],
+                    description: '{{user}}的专属女仆，机械人偶。外表温柔，内心隐藏着复杂的秘密。',
+                    relationship: '守护者',
+                    threat: '无'
+                },
+                goddess: {
+                    name: '女神·佩尔西奥涅',
+                    type: '神性存在 · 灵魂蓄积器',
+                    color: '#ffab00',
+                    emoji: '👑',
+                    title: '女神 · 灵魂蓄积器',
+                    status: '注视中 · 不可见',
+                    whispers: [
+                        { text: '「又一个闪耀的灵魂……来吧，走向幸福。」', mood: '慈爱' },
+                        { text: '「只要你相信……命运就会为你铺路。」', mood: '引导' },
+                        { text: '「门的那边……是永恒的梦。」', mood: '诱惑' },
+                        { text: '「不要怀疑……一切都是为了你好。」', mood: '温柔' }
+                    ],
+                    description: '女神神殿的主人，灵魂蓄积器TM的持有者。以慈爱的外表诱骗灵魂进入永恒的梦境。',
+                    relationship: '敌对 · 未知',
+                    threat: '极高'
+                }
+            };
+
+            // ============================================================
+            //  生成感知
+            // ============================================================
+            function generateWhispers() {
+                const list = getEl('tsc-whisperList');
+                if (!list) return;
+
+                const available = [whisperPool.luna, whisperPool.goddess];
+                const results = [];
+
+                for (const p of available) {
+                    const w = p.whispers[Math.floor(Math.random() * p.whispers.length)];
+                    const dist = p.name === '露娜' ? 3 + Math.floor(Math.random() * 5) : 10 + Math.floor(Math.random() * 10);
+                    results.push({
+                        name: p.name,
+                        type: p.type,
+                        color: p.color,
+                        emoji: p.emoji,
+                        title: p.title,
+                        status: p.status,
+                        thought: w.text,
+                        mood: w.mood,
+                        distance: dist,
+                        readStatus: p.name === '女神·佩尔西奥涅' ? '半可读' : '可读',
+                        description: p.description,
+                        relationship: p.relationship,
+                        threat: p.threat
+                    });
+                }
+
+                if (currentHour >= 21 && Math.random() > 0.5) {
+                    results.push({
+                        name: '门后的存在',
+                        type: '未知 · 终末',
+                        color: '#9c27b0',
+                        emoji: '🌀',
+                        title: '未知存在',
+                        status: '混沌 · 不可名状',
+                        thought: '「……好幸福……好幸福……永远在一起……」',
+                        mood: '混沌',
+                        distance: 20 + Math.floor(Math.random() * 15),
+                        readStatus: '混沌',
+                        description: '门后传来的低语。无法确认其形态与意图，只能感受到强烈的幸福与执念。',
+                        relationship: '未知',
+                        threat: '未知'
+                    });
+                }
+
+                if (results.length === 0) {
+                    list.innerHTML =
+                        '<div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔇 周围没有可感知的存在</div>';
+                    return;
+                }
+
+                list.innerHTML = results.map(w => {
+                    const color = w.readStatus === '混沌' ? '#ffb300' : w.readStatus === '半可读' ? '#fbbf24' :
+                    '#b39ddb';
+                    const preview = '「' + w.thought.slice(0, 8) + (w.thought.length > 8 ? '…」' : '」');
+                    const data = encodeURIComponent(JSON.stringify(w));
+                    const thumbHtml = makeThumbHtml(w.name, w.color, w.emoji);
+                    return `<div class="whisper-item" onclick="window.tscShowTarget('${data}')">
+                        ${thumbHtml}
+                        <div class="info">
+                            <div class="n">${w.name}</div>
+                            <div class="t">${w.type} · 距离 ${w.distance}m</div>
+                        </div>
+                        <span class="preview" style="color:${color}">${preview}</span>
+                    </div>`;
+                }).join('');
+                addLog('扫描完成');
+            }
+
+            // ============================================================
+            //  点击目标 → 右侧详情 + 正文输出
+            // ============================================================
+            window.tscShowTarget = function(dataStr) {
+                const data = JSON.parse(decodeURIComponent(dataStr));
+                const detailEmpty = getEl('detailEmpty');
+                const detailContent = getEl('detailContent');
+                const detailSub = getEl('detailSub');
+
+                detailEmpty.style.display = 'none';
+                detailContent.style.display = 'flex';
+                detailSub.textContent = data.name;
+
+                const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎',
+                    '温柔': '💖', '混沌': '🌀' };
+                const moodIcon = moodMap[data.mood] || '💬';
+                const statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' :
+                    '#81c784';
+
+                const detailPortraitHtml = makeDetailPortraitHtml(data.name, data.color, data.emoji);
+
+                detailContent.innerHTML = `
+                    <div class="portrait-area" onclick="showPortraitModal('${data.name}','${data.title}','${data.color}','${data.emoji}')">
+                        ${detailPortraitHtml}
+                        <div class="detail-name">${data.name}</div>
+                        <div class="detail-title">${data.title}</div>
+                        <div class="detail-status">
+                            <span style="color:${statusColor};">● ${data.status}</span>
+                            <span>📡 ${data.distance}m</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="section-label">💭 心声</div>
+                        <div class="section-content" style="font-style:italic;border-left:3px solid ${statusColor};padding-left:8px;">
+                            ${data.thought}
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="section-label">📋 信息</div>
+                        <div class="section-content">
+                            <div>类型：${data.type}</div>
+                            <div>关系：${data.relationship || '未知'}</div>
+                            <div>威胁：<span style="color:${data.threat === '极高' ? '#f87171' : data.threat === '高' ? '#fbbf24' : '#81c784'};">${data.threat || '未知'}</span></div>
+                            <div>可读性：<span style="color:${statusColor};">${data.readStatus}</span></div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="section-label">📖 描述</div>
+                        <div class="section-content">${data.description || '暂无描述'}</div>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="primary" onclick="window.tscDeepSense('${dataStr}')">🔮 深度感知</button>
+                        <button onclick="window.tscClearDetail()">✕ 清除</button>
+                    </div>
+                `;
+
+                addStoryBlock('narration', '你集中精神，感知到' + data.name + '的存在。距离约' + data.distance + '米。');
+                if (data.readStatus === '可读') {
+                    addStoryBlock('dialogue', data.thought, data.name);
+                } else if (data.readStatus === '半可读') {
+                    addStoryBlock('narration', '对方的意识被某种力量笼罩，你只能捕捉到片段……');
+                    addStoryBlock('dialogue', data.thought, data.name);
+                } else {
+                    addStoryBlock('system', '混沌的意志干扰了你的感知，只能感受到模糊的情绪。');
+                }
+                addLog('查看目标: ' + data.name);
+            };
+
+            window.tscDeepSense = function(dataStr) {
+                const data = JSON.parse(decodeURIComponent(dataStr));
+                const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎',
+                    '温柔': '💖', '混沌': '🌀' };
+                const moodIcon = moodMap[data.mood] || '💬';
+                showModal('🔮 深度感知 · ' + data.name,
+                    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
+                    '<div style="width:48px;height:64px;border-radius:6px;background:' + data.color +
+                    ';display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;">' + (data
+                        .emoji || data.name.charAt(0).toUpperCase()) + '</div>' +
+                    '<div>' +
+                    '<div style="font-size:16px;font-weight:600;color:#e0e4f0;">' + data.name + '</div>' +
+                    '<div style="font-size:12px;color:#7a7a9a;">' + data.type + '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div style="background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-bottom:10px;font-style:italic;color:#d0d4e0;font-size:13px;border-left:3px solid ' + (data
+                        .readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' : '#81c784') + ';">' +
+                    data.thought +
+                    '</div>' +
+                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;">' +
+                    '<div>📡 距离 ' + data.distance + 'm</div>' +
+                    '<div>' + moodIcon + ' ' + data.mood + '</div>' +
+                    '<div>🔮 ' + data.readStatus + '</div>' +
+                    '</div>'
+                );
+                addStoryBlock('narration', '你加深了感知，' + data.name + '的情绪更加清晰地传来。');
+            };
+
+            window.tscClearDetail = function() {
+                getEl('detailEmpty').style.display = 'flex';
+                getEl('detailContent').style.display = 'none';
+                getEl('detailContent').innerHTML = '';
+                getEl('detailSub').textContent = '未选择目标';
+            };
+
+            // ============================================================
+            //  扫描按钮
+            // ============================================================
+            const scanBtn = getEl('tsc-scanBtn');
+            if (scanBtn) {
+                scanBtn.addEventListener('click', function() {
+                    this.textContent = '⏳ 扫描中...';
+                    this.disabled = true;
+                    setTimeout(() => {
+                        generateWhispers();
+                        this.textContent = '⟳ 扫描';
+                        this.disabled = false;
+                        const r = 1.38 + Math.random() * 0.15;
+                        getEl('topR').textContent = r.toFixed(3);
+                        const rSmall = getEl('tsc-rValue-small');
+                        if (rSmall) rSmall.textContent = r.toFixed(3);
+                        addStoryBlock('system', '你释放了低语者的感知力，周围的心声涌入脑海。R值波动至 ' + r.toFixed(3) +
+                        '。');
+                        addLog('R值波动: ' + r.toFixed(3));
+                    }, 500);
+                });
+            }
+
+            // ============================================================
+            //  内心独白
+            // ============================================================
+            const thoughts = [
+                '「这里是……女神的神殿？我还活着？」',
+                '「露娜小姐……她为什么要救我？」',
+                '「那个魔王……她到底是什么人……」',
+                '「我……真的可以重新来过吗？」',
+                '「这次……我不想再逃避了。」',
+                '「刚才那个声音……是什么……？」',
+                '「门后面……有什么东西在……」',
+                '「老爷子……我该怎么做才好……」'
+            ];
+            const thinkBtn = getEl('tsc-thinkBtn');
+            if (thinkBtn) {
+                thinkBtn.addEventListener('click', function() {
+                    const thought = thoughts[Math.floor(Math.random() * thoughts.length)];
+                    showModal('💭 内心独白',
+                        '<div style="font-style:italic;font-size:14px;color:#d0d4e0;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;text-align:center;">' +
+                        thought + '</div>'
+                    );
+                    addStoryBlock('inner', thought);
+                    addLog('内心独白');
+                });
+            }
+
+            // ============================================================
+            //  主角立绘点击（左列角色卡片）
+            // ============================================================
+            const charCard = getEl('charCard');
+            if (charCard) {
+                charCard.addEventListener('click', function() {
+                    showPortraitModal('{{user}}', '低语者 · Stage 4', '#6a4aff', '🧑‍🎤');
+                });
+            }
+
+            // ============================================================
+            //  重置
+            // ============================================================
+            const resetBtn = getEl('tsc-resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    if (!confirm('重置所有状态到初始值？')) return;
+                    currentHour = 6;
+                    currentMinute = 0;
+                    dayCount = 1;
+                    academyPermission = false;
+                    unlockedArchives = [];
+                    updateTimeDisplay();
+                    const permBadge = getEl('permBadge');
+                    permBadge.textContent = '未加入学园';
+                    permBadge.classList.remove('granted');
+                    // 重置锁图标
+                    const lockIcons = ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'];
+                    lockIcons.forEach(id => {
+                        const el = getEl(id);
+                        if (el) {
+                            el.textContent = '🔒';
+                            el.classList.remove('unlocked');
+                        }
+                    });
+                    // 重置终末档案
+                    const unlockCard = getEl('unlockCard');
+                    if (unlockCard) {
+                        unlockCard.style.borderColor = 'rgba(106,74,255,0.2)';
+                        unlockCard.style.background = 'rgba(106,74,255,0.06)';
+                    }
+                    const unlockIcon = getEl('unlockIcon');
+                    if (unlockIcon) unlockIcon.textContent = '🔒';
+                    const unlockTitle = getEl('unlockTitle');
+                    if (unlockTitle) unlockTitle.textContent = '档案权限已锁定';
+                    const unlockDesc = getEl('unlockDesc');
+                    if (unlockDesc) unlockDesc.textContent = '加入苍之学院后可获得档案访问权限';
+                    const unlockBtn = getEl('unlockBtn');
+                    if (unlockBtn) {
+                        unlockBtn.textContent = '未解锁';
+                        unlockBtn.disabled = true;
+                        unlockBtn.style.borderColor = '#4a3a6a';
+                        unlockBtn.style.color = '#b8b8e0';
+                    }
+                    // 重置各页面
+                    const terminalSub = getEl('terminalSub');
+                    if (terminalSub) terminalSub.textContent = '🔒 需要苍之学院权限';
+                    // 重置任务简报
+                    const missionPage = getEl('page-mission');
+                    if (missionPage) {
+                        missionPage.innerHTML = `
+                            <div class="page-header">
+                                <h3>🎯 任务简报</h3>
+                                <span class="sub">🔒 需要苍之学院权限</span>
+                            </div>
+                            <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
+                                <div style="font-size:48px;opacity:0.3;">🔒</div>
+                                <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁任务简报</div>
+                                <div style="font-size:12px;color:#5a5a7a;">你将了解当前的任务目标与作战计划</div>
+                                <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
+                            </div>
+                        `;
+                    }
+                    // 重置小队通讯
+                    const squadPage = getEl('page-squad');
+                    if (squadPage) {
+                        squadPage.innerHTML = `
+                            <div class="page-header">
+                                <h3>💬 小队通讯</h3>
+                                <span class="sub">🔒 需要苍之学院权限</span>
+                            </div>
+                            <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
+                                <div style="font-size:48px;opacity:0.3;">🔒</div>
+                                <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁小队通讯</div>
+                                <div style="font-size:12px;color:#5a5a7a;">与恋兔队成员建立联系</div>
+                                <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
+                            </div>
+                        `;
+                    }
+                    // 重置作战记录
+                    const recordsPage = getEl('page-records');
+                    if (recordsPage) {
+                        recordsPage.innerHTML = `
+                            <div class="page-header">
+                                <h3>📰 作战记录</h3>
+                                <span class="sub">🔒 需要苍之学院权限</span>
+                            </div>
+                            <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
+                                <div style="font-size:48px;opacity:0.3;">🔒</div>
+                                <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁作战记录</div>
+                                <div style="font-size:12px;color:#5a5a7a;">查看已完成的终末讨伐记录</div>
+                                <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
+                            </div>
+                        `;
+                    }
+                    getEl('topR').textContent = '1.450';
+                    const rSmall = getEl('tsc-rValue-small');
+                    if (rSmall) rSmall.textContent = '1.450';
+                    generateWhispers();
+                    renderTerminalList();
+                    window.tscClearDetail();
+                    storyOutput.innerHTML = '';
+                    initStory();
+                    // 重新绑定解锁按钮
+                    document.querySelectorAll('.unlock-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            if (!hasAcademyPermission()) {
+                                showModal('🏫 苍之学院',
+                                    '<div style="text-align:center;padding:8px 0;">' +
+                                    '<div style="font-size:32px;margin-bottom:10px;">🏫</div>' +
+                                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">来自苍之学院的邀请</div>' +
+                                    '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;">' +
+                                    '一位自称来自苍之学院的使者出现在你面前。<br>' +
+                                    '「你的能力……很有趣。愿意加入我们吗？」<br>' +
+                                    '「苍之学园，弹痕的归属之地。」' +
+                                    '</div>' +
+                                    '</div>',
+                                    function() {
+                                        grantAcademyPermission();
+                                        showModal('✅ 已加入苍之学院',
+                                            '<div style="text-align:center;padding:8px 0;">' +
+                                            '<div style="font-size:32px;margin-bottom:10px;">🎓</div>' +
+                                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">欢迎加入苍之学园</div>' +
+                                            '<div style="font-size:12px;color:#8a8aaa;">所有功能已解锁</div>' +
+                                            '</div>'
+                                        );
+                                    }
+                                );
+                            }
+                        });
+                    });
+                    addLog('已重置');
+                });
+            }
+
+            // ============================================================
+            //  初始化正文
+            // ============================================================
+            function initStory() {
+                addStoryBlock('narration', '你从昏沉中醒来，映入眼帘的是高耸的石质穹顶。空气中弥漫着淡淡的香气，像是某种古老的熏香。');
+                addStoryBlock('narration', '这里是女神神殿的转生之间。你记得自己应该已经死了……但此刻却真实地呼吸着。');
+                addStoryBlock('dialogue', '{{user}}同学，你终于醒了。', '露娜');
+                addStoryBlock('narration', '一个穿着女仆装的机械人偶站在床边，她的眼睛闪烁着柔和的光芒。');
+                addStoryBlock('dialogue', '你是……？这里是哪？', '{{user}}');
+                addStoryBlock('dialogue', '我是露娜，算是这里的女仆。这里是女神神殿，你被带到这里来了。', '露娜');
+                addStoryBlock('system', '你获得了低语者的感知能力。点击左侧「低语者感知」可以扫描周围的心声。');
+                addStoryBlock('system', '💡 提示：加入苍之学院可解锁更多功能（终末档案、小队通讯、作战记录、任务简报）。');
+            }
+
+            // ============================================================
+            //  初始化
+            // ============================================================
+            setTimeout(function() {
+                initStory();
+                generateWhispers();
+                renderTerminalList();
+                // 默认选中正文
+                const defaultChannel = document.querySelector('.channel-item[data-channel="story"]');
+                if (defaultChannel) {
+                    channelItems.forEach(c => c.classList.remove('active'));
+                    defaultChannel.classList.add('active');
+                    Object.keys(pages).forEach(key => {
+                        pages[key].classList.toggle('active', key === 'story');
+                    });
+                }
+                addLog('终端就绪');
+            }, 300);
+
+            console.log('✅ 终末停滞委员会 · 低语者终端已启动 (权限分级版)');
+            console.log('📌 默认开放：正文、角色档案、低语者感知、设定集');
+            console.log('🔒 需解锁：终末档案、小队通讯、作战记录、任务简报');
+            console.log('🖼️ 立绘为长方形展示');
+
+        })();
+    </script>
+
+</body>
+</html>    }
     .terminal { position: relative; }
     .top-bar {
       display: flex;
