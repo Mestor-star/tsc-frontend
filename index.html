@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -37,6 +36,25 @@
             box-shadow: 0 12px 48px rgba(0,0,0,0.8), inset 0 0 60px rgba(40,30,80,0.04);
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* ---- 全屏模式 ---- */
+        .app.fullscreen-mode {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            min-height: 100vh !important;
+            border-radius: 0 !important;
+            border: none !important;
+            padding: 12px 16px !important;
+            box-shadow: none !important;
+            z-index: 999999 !important;
+            background: #0b0d14;
         }
 
         /* ============================================================
@@ -118,6 +136,23 @@
         .topbar .user-info .perm-badge.granted {
             background: #1a2a1a;
             color: #81c784;
+        }
+
+        /* 全屏切换按钮 */
+        .fullscreen-toggle {
+            background: none;
+            border: none;
+            color: #8a8aaa;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: 0.2s;
+            line-height: 1;
+        }
+        .fullscreen-toggle:hover {
+            background: rgba(255,255,255,0.05);
+            color: #d0d4e0;
         }
 
         /* ============================================================
@@ -398,24 +433,30 @@
             margin-right: 8px;
         }
 
-        /* --- 时间推进（固定底部） --- */
-        .time-control {
+        /* --- 底部栏：时间控制 + 输入输出 --- */
+        .bottom-bar {
             display: flex;
             align-items: center;
-            gap: 4px 10px;
-            flex-wrap: nowrap;
-            padding: 8px 0 2px 0;
+            gap: 8px;
+            padding-top: 8px;
             border-top: 1px solid rgba(255,255,255,0.04);
             margin-top: 8px;
             flex-shrink: 0;
+            flex-wrap: nowrap;
         }
-        .time-control .label {
+        .bottom-bar .time-control {
+            display: flex;
+            align-items: center;
+            gap: 4px 6px;
+            flex-shrink: 0;
+        }
+        .bottom-bar .time-control .label {
             font-size: 11px;
             color: #5a5a7a;
             margin-right: 2px;
             white-space: nowrap;
         }
-        .time-control button {
+        .bottom-bar .time-control button {
             background: transparent;
             border: 1px solid #2a2e44;
             color: #8a8aaa;
@@ -427,27 +468,77 @@
             font-family: inherit;
             white-space: nowrap;
         }
-        .time-control button:hover {
+        .bottom-bar .time-control button:hover {
             background: rgba(255,255,255,0.04);
             border-color: #4a4a6a;
             color: #c8cce8;
         }
-        .time-control button.primary {
+        .bottom-bar .time-control button.primary {
             border-color: #4a3a6a;
             color: #b8b8e0;
         }
-        .time-control button.primary:hover {
+        .bottom-bar .time-control button.primary:hover {
             background: rgba(106,74,255,0.10);
             border-color: #6a4aff;
         }
-        .time-control .status-tag {
+        .bottom-bar .time-control .status-tag {
             font-size: 11px;
             color: #4a4a6a;
-            margin-left: 6px;
+            margin-left: 4px;
             white-space: nowrap;
         }
 
-        /* --- 通用内容卡片（用于其他页面，内部滚动） --- */
+        .bottom-bar .chat-input-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 6px;
+            min-width: 0;
+        }
+        .bottom-bar .chat-input-wrapper textarea {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #2a2e44;
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: #d0d4e0;
+            resize: none;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            line-height: 1.5;
+            min-height: 36px;
+            max-height: 80px;
+            transition: border 0.2s;
+        }
+        .bottom-bar .chat-input-wrapper textarea:focus {
+            border-color: #6a4aff;
+        }
+        .bottom-bar .chat-input-wrapper textarea::placeholder {
+            color: #5a5a7a;
+        }
+        .bottom-bar .chat-input-wrapper .send-btn {
+            background: #6a4aff;
+            border: none;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .bottom-bar .chat-input-wrapper .send-btn:hover {
+            background: #7c5cff;
+        }
+        .bottom-bar .chat-input-wrapper .send-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ============================================================
+           其他页面卡片样式
+           ============================================================ */
         .info-card {
             background: rgba(255,255,255,0.02);
             border-radius: 10px;
@@ -466,7 +557,6 @@
         .info-card::-webkit-scrollbar { width: 3px; }
         .info-card::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
 
-        /* --- 列表项 --- */
         .list-items {
             display: flex;
             flex-direction: column;
@@ -507,7 +597,6 @@
         .list-item .border-left.red { border-left-color: #f87171; }
         .list-item .border-left.gray { border-left-color: #4a4a6a; }
 
-        /* --- 终末档案解锁卡片 --- */
         .unlock-card {
             background: rgba(106,74,255,0.06);
             border: 1px solid rgba(106,74,255,0.2);
@@ -545,7 +634,6 @@
             cursor: not-allowed;
         }
 
-        /* --- 低语者感知列表（内部滚动） --- */
         .whisper-list-container {
             flex: 1;
             display: flex;
@@ -996,8 +1084,11 @@
 
         <!-- ===== 顶栏 ===== -->
         <div class="topbar">
-            <div class="brand">
-                🏛️ 终末停滞委员会 <span class="badge">低语者终端</span>
+            <div style="display:flex;align-items:center;gap:6px;">
+                <button class="fullscreen-toggle" id="fullscreenToggle" title="切换全屏">⛶</button>
+                <div class="brand">
+                    🏛️ 终末停滞委员会 <span class="badge">低语者终端</span>
+                </div>
             </div>
             <div class="status-group">
                 <span><span class="dot"></span> <span class="val" id="topStatus">神殿 · 清晨</span></span>
@@ -1075,13 +1166,20 @@
                     <div class="story-output" id="storyOutput">
                         <!-- 由JS生成 -->
                     </div>
-                    <div class="time-control">
-                        <span class="label">⏳ 时间推进</span>
-                        <button class="primary" id="tsc-time-15m">+15m</button>
-                        <button class="primary" id="tsc-time-30m">+30m</button>
-                        <button class="primary" id="tsc-time-1h">+1h</button>
-                        <button class="primary" id="tsc-time-3h">+3h</button>
-                        <span class="status-tag" id="tsc-time-status">当前 06:00</span>
+                    <!-- 底部：时间控制 + 输入输出 -->
+                    <div class="bottom-bar">
+                        <div class="time-control">
+                            <span class="label">⏳</span>
+                            <button class="primary" id="tsc-time-15m">+15m</button>
+                            <button class="primary" id="tsc-time-30m">+30m</button>
+                            <button class="primary" id="tsc-time-1h">+1h</button>
+                            <button class="primary" id="tsc-time-3h">+3h</button>
+                            <span class="status-tag" id="tsc-time-status">当前 06:00</span>
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <textarea id="chatInput" rows="1" placeholder="输入消息..." style="min-height:36px;"></textarea>
+                            <button class="send-btn" id="chatSendBtn">发送</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1268,6 +1366,27 @@
             // ============================================================
             function getEl(id) { return document.getElementById(id); }
             function addLog(msg) { console.log('[低语者]', msg); }
+
+            // ============================================================
+            //  全屏切换
+            // ============================================================
+            const fullscreenToggle = getEl('fullscreenToggle');
+            const app = getEl('app');
+            let isFullscreen = false;
+
+            fullscreenToggle.addEventListener('click', function() {
+                isFullscreen = !isFullscreen;
+                app.classList.toggle('fullscreen-mode', isFullscreen);
+                this.textContent = isFullscreen ? '✖' : '⛶';
+                this.title = isFullscreen ? '退出全屏' : '切换全屏';
+                // 全屏时隐藏滚动条（防止页面抖动）
+                document.body.style.overflow = isFullscreen ? 'hidden' : '';
+                // 重绘
+                setTimeout(() => {
+                    const output = getEl('storyOutput');
+                    if (output) output.scrollTop = output.scrollHeight;
+                }, 200);
+            });
 
             // ============================================================
             //  立绘模态框
@@ -2138,8 +2257,10 @@
                 });
             }
 
-function initStory() {
-                // 使用txt文件内容作为开场白
+            // ============================================================
+            //  初始化故事
+            // ============================================================
+            function initStory() {
                 const openingText = [
                     { type: 'narration',
                         content: '那个少年被锁链拴在甲板上时，太平洋的阳光正毫无遮拦地晒在他身上。' },
@@ -2284,6 +2405,55 @@ function initStory() {
                 });
             }
 
+            // ============================================================
+            //  聊天输入输出
+            // ============================================================
+            const chatInput = getEl('chatInput');
+            const chatSendBtn = getEl('chatSendBtn');
+
+            const mockReplies = [
+                { speaker: '露娜', content: '嗯，我知道了。你先休息吧。' },
+                { speaker: '露娜', content: '……你真有意思。' },
+                { speaker: '女神·佩尔西奥涅', content: '呵呵，多么有趣的灵魂。' },
+                { speaker: '系统', content: '感知到你的情绪波动……正在记录。' },
+                { speaker: '拉法', content: '……你还在坚持啊。好样的。' },
+                { speaker: '黑之魔王', content: '不错嘛，还有力气说话。' }
+            ];
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                // 添加用户消息
+                addStoryBlock('dialogue', text, '你');
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+                // 模拟回复
+                chatSendBtn.disabled = true;
+                chatSendBtn.textContent = '…';
+                setTimeout(() => {
+                    const reply = mockReplies[Math.floor(Math.random() * mockReplies.length)];
+                    addStoryBlock('dialogue', reply.content, reply.speaker);
+                    chatSendBtn.disabled = false;
+                    chatSendBtn.textContent = '发送';
+                    // 自动滚动
+                    storyOutput.scrollTop = storyOutput.scrollHeight;
+                }, 800 + Math.random() * 600);
+            }
+
+            chatSendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+                // 自适应高度
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+            });
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+            });
 
             // ============================================================
             //  初始化
@@ -2308,10 +2478,10 @@ function initStory() {
             console.log('📌 左列 = 角色立绘 + 导航（固定高度）');
             console.log('📌 右列 = 感知详情（固定高度）');
             console.log('🔒 需解锁：终末档案、小队通讯、作战记录、任务简报');
+            console.log('💬 底部输入框已启用，按回车发送消息。');
 
         })();
     </script>
 
 </body>
 </html>
-```
