@@ -58,7 +58,7 @@
         }
 
         /* ============================================================
-           顶栏（固定高度，不滚动）
+           顶栏
            ============================================================ */
         .topbar {
             display: flex;
@@ -138,7 +138,6 @@
             color: #81c784;
         }
 
-        /* 全屏切换按钮 */
         .fullscreen-toggle {
             background: none;
             border: none;
@@ -156,7 +155,7 @@
         }
 
         /* ============================================================
-           主体：横向三列布局（固定高度，各自滚动）
+           主体：三列布局
            ============================================================ */
         .main {
             display: flex;
@@ -168,7 +167,7 @@
             height: calc(100% - 56px);
         }
 
-        /* --- 左列：主角 + 侧边栏（固定宽度，内部滚动） --- */
+        /* 左列 */
         .left-column {
             flex: 0 0 200px;
             display: flex;
@@ -178,7 +177,6 @@
             height: 100%;
             overflow: hidden;
         }
-
         .left-column .character-card {
             background: rgba(255,255,255,0.02);
             border-radius: 12px;
@@ -207,11 +205,6 @@
             position: relative;
             flex-shrink: 0;
             transition: 0.2s;
-        }
-        .left-column .character-card .avatar-frame .char-avatar-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         .left-column .character-card .avatar-frame .char-avatar-fallback {
             font-size: 52px;
@@ -259,7 +252,6 @@
         .sidebar::-webkit-scrollbar { width: 3px; }
         .sidebar::-webkit-scrollbar-track { background: transparent; }
         .sidebar::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-
         .sidebar .channel-group-label {
             font-size: 9px;
             color: #5a5a7a;
@@ -314,7 +306,7 @@
             color: #81c784;
         }
 
-        /* --- 中列：正文输出区（固定高度，内部滚动） --- */
+        /* 中列 */
         .center-column {
             flex: 1 1 auto;
             background: rgba(255,255,255,0.01);
@@ -328,7 +320,6 @@
             height: 100%;
             overflow: hidden;
         }
-
         .center-column .page {
             display: none;
             flex-direction: column;
@@ -342,7 +333,6 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .center-column .page-header {
             display: flex;
             justify-content: space-between;
@@ -366,7 +356,7 @@
             white-space: nowrap;
         }
 
-        /* --- 正文输出区（可滚动） --- */
+        /* 正文输出区 */
         .story-output {
             flex: 1;
             overflow-y: auto;
@@ -380,7 +370,6 @@
         .story-output::-webkit-scrollbar { width: 4px; }
         .story-output::-webkit-scrollbar-track { background: transparent; }
         .story-output::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-
         .story-block {
             padding: 8px 12px;
             border-radius: 8px;
@@ -393,7 +382,6 @@
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .story-block.narration {
             background: rgba(255,255,255,0.02);
             border-left: 3px solid #4a4a6a;
@@ -433,7 +421,7 @@
             margin-right: 8px;
         }
 
-        /* --- 底部栏：时间控制 + 输入输出 --- */
+        /* 底部栏：时间 + 输入 */
         .bottom-bar {
             display: flex;
             align-items: center;
@@ -487,7 +475,6 @@
             margin-left: 4px;
             white-space: nowrap;
         }
-
         .bottom-bar .chat-input-wrapper {
             flex: 1;
             display: flex;
@@ -535,10 +522,12 @@
         .bottom-bar .chat-input-wrapper .send-btn:active {
             transform: scale(0.96);
         }
+        .bottom-bar .chat-input-wrapper .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-        /* ============================================================
-           其他页面卡片样式
-           ============================================================ */
+        /* 其他页面 */
         .info-card {
             background: rgba(255,255,255,0.02);
             border-radius: 10px;
@@ -556,7 +545,6 @@
         .info-card .warn { color: #fbbf24; }
         .info-card::-webkit-scrollbar { width: 3px; }
         .info-card::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-
         .list-items {
             display: flex;
             flex-direction: column;
@@ -675,11 +663,6 @@
             overflow: hidden;
             background: rgba(255,255,255,0.05);
         }
-        .whisper-item .avatar-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
         .whisper-item .info { flex: 1; min-width: 0; }
         .whisper-item .info .n {
             font-size: 12px;
@@ -699,7 +682,6 @@
             text-overflow: ellipsis;
             max-width: 80px;
         }
-
         .whisper-actions {
             display: flex;
             gap: 6px;
@@ -739,7 +721,7 @@
             white-space: nowrap;
         }
 
-        /* --- 右侧：低语者详情面板（固定宽度，内部滚动） --- */
+        /* 右侧面板 */
         .right-column {
             flex: 0 0 260px;
             background: rgba(255,255,255,0.01);
@@ -755,7 +737,6 @@
         }
         .right-column::-webkit-scrollbar { width: 3px; }
         .right-column::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-
         .right-column .panel-header {
             display: flex;
             justify-content: space-between;
@@ -776,7 +757,6 @@
             color: #5a5a7a;
             white-space: nowrap;
         }
-
         .right-column .detail-empty {
             flex: 1;
             display: flex;
@@ -791,7 +771,6 @@
             min-height: 200px;
         }
         .right-column .detail-empty .icon { font-size: 36px; opacity: 0.4; }
-
         .right-column .detail-content {
             flex: 1;
             display: flex;
@@ -803,7 +782,6 @@
         }
         .right-column .detail-content::-webkit-scrollbar { width: 3px; }
         .right-column .detail-content::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-
         .right-column .portrait-area {
             display: flex;
             flex-direction: column;
@@ -834,11 +812,6 @@
             flex-shrink: 0;
             transition: 0.2s;
         }
-        .right-column .portrait-area .portrait-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
         .right-column .portrait-area .detail-name {
             font-size: 14px;
             font-weight: 600;
@@ -857,7 +830,6 @@
             display: flex;
             gap: 10px;
         }
-
         .right-column .detail-section {
             background: rgba(255,255,255,0.02);
             border-radius: 8px;
@@ -880,7 +852,6 @@
         .right-column .detail-section .section-content .hl { color: #a78bfa; }
         .right-column .detail-section .section-content .hl2 { color: #4fc3f7; }
         .right-column .detail-section .section-content .warn { color: #fbbf24; }
-
         .right-column .detail-actions {
             display: flex;
             gap: 4px;
@@ -914,9 +885,7 @@
             border-color: #6a4aff;
         }
 
-        /* ============================================================
-           立绘查看模态框
-           ============================================================ */
+        /* 模态框 */
         .portrait-modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -987,9 +956,6 @@
             color: #c8cce8;
         }
 
-        /* ============================================================
-           模态框 (通用)
-           ============================================================ */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -1061,9 +1027,6 @@
             color: #c8cce8;
         }
 
-        /* ============================================================
-           小屏适配
-           ============================================================ */
         @media (max-width: 1300px) {
             .app {
                 min-width: 1200px;
@@ -1103,10 +1066,10 @@
             </div>
         </div>
 
-        <!-- ===== 主体：横向三列 ===== -->
+        <!-- ===== 主体 ===== -->
         <div class="main">
 
-            <!-- 左列：主角 + 侧边栏 -->
+            <!-- 左列 -->
             <div class="left-column">
                 <div class="character-card" id="charCard" title="点击查看大立绘">
                     <div class="avatar-frame" id="charAvatarFrame">
@@ -1154,19 +1117,17 @@
                 </div>
             </div>
 
-            <!-- 中列：正文输出区 -->
+            <!-- 中列 -->
             <div class="center-column">
 
-                <!-- 页面：正文输出（默认显示） -->
+                <!-- 正文页 -->
                 <div class="page active" id="page-story">
                     <div class="page-header">
                         <h3>📖 正文</h3>
                         <span class="sub" id="storyLocation">女神神殿 · 转生之间</span>
                     </div>
-                    <div class="story-output" id="storyOutput">
-                        <!-- 由JS生成 -->
-                    </div>
-                    <!-- 底部：时间控制 + 输入输出 -->
+                    <div class="story-output" id="storyOutput"></div>
+                    <!-- 底部 -->
                     <div class="bottom-bar">
                         <div class="time-control">
                             <span class="label">⏳</span>
@@ -1183,12 +1144,9 @@
                     </div>
                 </div>
 
-                <!-- 页面：角色档案 -->
+                <!-- 其他页面（档案、感知等）保持不变 -->
                 <div class="page" id="page-profile">
-                    <div class="page-header">
-                        <h3>📋 角色档案 · 格林</h3>
-                        <span class="sub">低语者 · 活性化阶段</span>
-                    </div>
+                    <div class="page-header"><h3>📋 角色档案 · 格林</h3><span class="sub">低语者 · 活性化阶段</span></div>
                     <div class="info-card">
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;">
                             <div><span style="color:#5a5a7a;">代号</span><br><span class="hl">低语者</span></div>
@@ -1207,12 +1165,8 @@
                     </div>
                 </div>
 
-                <!-- 页面：终末档案 -->
                 <div class="page" id="page-terminal-list">
-                    <div class="page-header">
-                        <h3>📜 终末档案</h3>
-                        <span class="sub" id="terminalSub">🔒 需要苍之学院权限</span>
-                    </div>
+                    <div class="page-header"><h3>📜 终末档案</h3><span class="sub" id="terminalSub">🔒 需要苍之学院权限</span></div>
                     <div class="unlock-card" id="unlockCard">
                         <span class="unlock-icon" id="unlockIcon">🔒</span>
                         <div class="unlock-text">
@@ -1224,12 +1178,8 @@
                     <div class="list-items" id="terminalList"></div>
                 </div>
 
-                <!-- 页面：任务简报 -->
                 <div class="page" id="page-mission">
-                    <div class="page-header">
-                        <h3>🎯 任务简报</h3>
-                        <span class="sub">🔒 需要苍之学院权限</span>
-                    </div>
+                    <div class="page-header"><h3>🎯 任务简报</h3><span class="sub">🔒 需要苍之学院权限</span></div>
                     <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
                         <div style="font-size:48px;opacity:0.3;">🔒</div>
                         <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁任务简报</div>
@@ -1237,12 +1187,8 @@
                     </div>
                 </div>
 
-                <!-- 页面：低语者感知 -->
                 <div class="page" id="page-whisper">
-                    <div class="page-header">
-                        <h3>🔮 低语者 · 感知网</h3>
-                        <span class="sub">点击「扫描」探测周围的心声</span>
-                    </div>
+                    <div class="page-header"><h3>🔮 低语者 · 感知网</h3><span class="sub">点击「扫描」探测周围的心声</span></div>
                     <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden;">
                         <div style="font-size:11px;color:#5a5a7a;flex-shrink:0;">
                             📡 R值 <span id="tsc-rValue-small">1.450</span> · 半径 50m
@@ -1259,12 +1205,8 @@
                     </div>
                 </div>
 
-                <!-- 页面：小队通讯 -->
                 <div class="page" id="page-squad">
-                    <div class="page-header">
-                        <h3>💬 小队通讯</h3>
-                        <span class="sub">🔒 需要苍之学院权限</span>
-                    </div>
+                    <div class="page-header"><h3>💬 小队通讯</h3><span class="sub">🔒 需要苍之学院权限</span></div>
                     <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
                         <div style="font-size:48px;opacity:0.3;">🔒</div>
                         <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁小队通讯</div>
@@ -1272,12 +1214,8 @@
                     </div>
                 </div>
 
-                <!-- 页面：作战记录 -->
                 <div class="page" id="page-records">
-                    <div class="page-header">
-                        <h3>📰 作战记录</h3>
-                        <span class="sub">🔒 需要苍之学院权限</span>
-                    </div>
+                    <div class="page-header"><h3>📰 作战记录</h3><span class="sub">🔒 需要苍之学院权限</span></div>
                     <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
                         <div style="font-size:48px;opacity:0.3;">🔒</div>
                         <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁作战记录</div>
@@ -1285,12 +1223,8 @@
                     </div>
                 </div>
 
-                <!-- 页面：设定集 -->
                 <div class="page" id="page-lore">
-                    <div class="page-header">
-                        <h3>📚 设定集</h3>
-                        <span class="sub">终末停滞委员会 · 世界观</span>
-                    </div>
+                    <div class="page-header"><h3>📚 设定集</h3><span class="sub">终末停滞委员会 · 世界观</span></div>
                     <div class="info-card">
                         <div style="margin-bottom:6px;font-size:13px;font-weight:500;color:#c8cce8;">⚔️ 终末停滞委员会</div>
                         <div>一群保护这个已经终结的世界，喜欢做傻事的人。</div>
@@ -1309,7 +1243,7 @@
 
             </div><!-- /center-column -->
 
-            <!-- 右列：低语者详情面板 -->
+            <!-- 右列 -->
             <div class="right-column" id="detailPanel">
                 <div class="panel-header">
                     <h4>🔮 感知详情</h4>
@@ -1326,9 +1260,7 @@
 
     </div><!-- /app -->
 
-    <!-- ============================================================
-    立绘查看模态框
-    ============================================================ -->
+    <!-- 模态框 -->
     <div class="portrait-modal-overlay" id="portraitModal">
         <div class="portrait-modal-box">
             <div class="big-portrait" id="bigPortrait">🧑</div>
@@ -1338,9 +1270,6 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    模态框 (通用)
-    ============================================================ -->
     <div class="modal-overlay" id="modal">
         <div class="modal-box">
             <div class="modal-header">
@@ -1373,15 +1302,12 @@
             const fullscreenToggle = getEl('fullscreenToggle');
             const app = getEl('app');
             let isFullscreen = false;
-
             fullscreenToggle.addEventListener('click', function() {
                 isFullscreen = !isFullscreen;
                 app.classList.toggle('fullscreen-mode', isFullscreen);
                 this.textContent = isFullscreen ? '✖' : '⛶';
                 this.title = isFullscreen ? '退出全屏' : '切换全屏';
-                // 全屏时隐藏滚动条（防止页面抖动）
                 document.body.style.overflow = isFullscreen ? 'hidden' : '';
-                // 重绘
                 setTimeout(() => {
                     const output = getEl('storyOutput');
                     if (output) output.scrollTop = output.scrollHeight;
@@ -1408,7 +1334,6 @@
                 pTitle.textContent = title || '';
                 modal.classList.add('show');
             }
-
             getEl('pClose').addEventListener('click', function() {
                 getEl('portraitModal').classList.remove('show');
             });
@@ -1416,9 +1341,6 @@
                 if (e.target === this) this.classList.remove('show');
             });
 
-            // ============================================================
-            //  生成长方形头像HTML
-            // ============================================================
             function makeThumbHtml(name, color, emoji) {
                 const initial = name.charAt(0).toUpperCase();
                 const bg = color || '#6a4aff';
@@ -1470,7 +1392,6 @@
                 records: getEl('page-records'),
                 lore: getEl('page-lore')
             };
-
             const lockedChannels = ['terminal-list', 'mission', 'squad', 'records'];
 
             channelItems.forEach(item => {
@@ -1498,12 +1419,7 @@
             });
 
             function getChannelName(channel) {
-                const map = {
-                    'terminal-list': '终末档案',
-                    'mission': '任务简报',
-                    'squad': '小队通讯',
-                    'records': '作战记录'
-                };
+                const map = { 'terminal-list': '终末档案', 'mission': '任务简报', 'squad': '小队通讯', 'records': '作战记录' };
                 return map[channel] || channel;
             }
 
@@ -1538,7 +1454,7 @@
             }
 
             // ============================================================
-            //  苍之学院权限系统
+            //  权限系统
             // ============================================================
             let academyPermission = false;
 
@@ -1637,9 +1553,6 @@
                 addLog('苍之学院权限已授予');
             }
 
-            // ============================================================
-            //  解锁按钮
-            // ============================================================
             document.querySelectorAll('.unlock-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     if (!hasAcademyPermission()) {
@@ -1669,7 +1582,7 @@
             });
 
             // ============================================================
-            //  终末档案数据
+            //  终末档案
             // ============================================================
             const terminalArchives = [{
                 id: 'soul-accumulator',
@@ -1809,7 +1722,9 @@
             // ============================================================
             //  时间系统
             // ============================================================
-            let currentHour = 6, currentMinute = 0, dayCount = 1;
+            let currentHour = 6,
+                currentMinute = 0,
+                dayCount = 1;
 
             function updateTimeDisplay() {
                 const h = String(currentHour).padStart(2, '0');
@@ -1840,9 +1755,10 @@
 
             function advanceTime(minutes) {
                 currentMinute += minutes;
-                while (currentMinute >= 60) { currentMinute -= 60; currentHour += 1; if (currentHour >= 24) { currentHour -= 24; dayCount += 1; } }
+                while (currentMinute >= 60) { currentMinute -= 60;
+                    currentHour += 1; if (currentHour >= 24) { currentHour -= 24;
+                        dayCount += 1; } }
                 updateTimeDisplay();
-
                 const timeTexts = [
                     '时间静静流逝，神殿内的光影悄然变化。',
                     '你感觉到周围的空气微微流动，远处传来若有若无的声响。',
@@ -1850,7 +1766,6 @@
                     '露娜在不远处安静地守候着，目光中带着关切。'
                 ];
                 addStoryBlock('narration', timeTexts[Math.floor(Math.random() * timeTexts.length)]);
-
                 if (currentHour >= 8 && currentHour <= 10 && !hasAcademyPermission() && Math.random() > 0.7) {
                     setTimeout(function() {
                         showModal('🏫 苍之学院',
@@ -1924,16 +1839,11 @@
                 }
             };
 
-            // ============================================================
-            //  生成感知
-            // ============================================================
             function generateWhispers() {
                 const list = getEl('tsc-whisperList');
                 if (!list) return;
-
                 const available = [whisperPool.luna, whisperPool.goddess];
                 const results = [];
-
                 for (const p of available) {
                     const w = p.whispers[Math.floor(Math.random() * p.whispers.length)];
                     const dist = p.name === '露娜' ? 3 + Math.floor(Math.random() * 5) : 10 + Math.floor(Math.random() * 10);
@@ -1953,7 +1863,6 @@
                         threat: p.threat
                     });
                 }
-
                 if (currentHour >= 21 && Math.random() > 0.5) {
                     results.push({
                         name: '门后的存在',
@@ -1971,12 +1880,10 @@
                         threat: '未知'
                     });
                 }
-
                 if (results.length === 0) {
                     list.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔇 周围没有可感知的存在</div>';
                     return;
                 }
-
                 list.innerHTML = results.map(w => {
                     const color = w.readStatus === '混沌' ? '#ffb300' : w.readStatus === '半可读' ? '#fbbf24' : '#b39ddb';
                     const preview = '「' + w.thought.slice(0, 8) + (w.thought.length > 8 ? '…」' : '」');
@@ -1993,23 +1900,17 @@
                 addLog('扫描完成');
             }
 
-            // ============================================================
-            //  点击目标 → 右侧详情 + 正文输出
-            // ============================================================
             window.tscShowTarget = function(dataStr) {
                 const data = JSON.parse(decodeURIComponent(dataStr));
                 const detailEmpty = getEl('detailEmpty');
                 const detailContent = getEl('detailContent');
                 const detailSub = getEl('detailSub');
-
                 detailEmpty.style.display = 'none';
                 detailContent.style.display = 'flex';
                 detailSub.textContent = data.name;
-
                 const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎', '温柔': '💖', '混沌': '🌀' };
                 const moodIcon = moodMap[data.mood] || '💬';
                 const statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' : '#81c784';
-
                 detailContent.innerHTML = `
                     <div class="portrait-area" onclick="showPortraitModal('${data.name}','${data.title}','${data.color}','${data.emoji}')">
                         ${makeDetailPortraitHtml(data.name, data.color, data.emoji)}
@@ -2044,7 +1945,6 @@
                         <button onclick="window.tscClearDetail()">✕ 清除</button>
                     </div>
                 `;
-
                 addStoryBlock('narration', '你集中精神，感知到' + data.name + '的存在。距离约' + data.distance + '米。');
                 if (data.readStatus === '可读') {
                     addStoryBlock('dialogue', data.thought, data.name);
@@ -2079,9 +1979,6 @@
                 getEl('detailSub').textContent = '未选择目标';
             };
 
-            // ============================================================
-            //  扫描按钮
-            // ============================================================
             const scanBtn = getEl('tsc-scanBtn');
             if (scanBtn) {
                 scanBtn.addEventListener('click', function() {
@@ -2101,9 +1998,6 @@
                 });
             }
 
-            // ============================================================
-            //  内心独白
-            // ============================================================
             const thoughts = [
                 '「这里是……女神的神殿？我还活着？」',
                 '「露娜小姐……她为什么要救我？」',
@@ -2125,9 +2019,6 @@
                 });
             }
 
-            // ============================================================
-            //  主角立绘点击
-            // ============================================================
             const charCard = getEl('charCard');
             if (charCard) {
                 charCard.addEventListener('click', function() {
@@ -2155,7 +2046,8 @@
 
                     ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'].forEach(id => {
                         const el = getEl(id);
-                        if (el) { el.textContent = '🔒'; el.classList.remove('unlocked'); }
+                        if (el) { el.textContent = '🔒';
+                            el.classList.remove('unlocked'); }
                     });
 
                     const unlockCard = getEl('unlockCard');
@@ -2180,7 +2072,6 @@
                     const terminalSub = getEl('terminalSub');
                     if (terminalSub) terminalSub.textContent = '🔒 需要苍之学院权限';
 
-                    // 重置各锁定页面
                     const missionPage = getEl('page-mission');
                     if (missionPage) {
                         missionPage.innerHTML = `
@@ -2192,7 +2083,6 @@
                             </div>
                         `;
                     }
-
                     const squadPage = getEl('page-squad');
                     if (squadPage) {
                         squadPage.innerHTML = `
@@ -2204,7 +2094,6 @@
                             </div>
                         `;
                     }
-
                     const recordsPage = getEl('page-records');
                     if (recordsPage) {
                         recordsPage.innerHTML = `
@@ -2262,54 +2151,37 @@
             // ============================================================
             function initStory() {
                 const openingText = [
-                    { type: 'narration',
-                        content: '那个少年被锁链拴在甲板上时，太平洋的阳光正毫无遮拦地晒在他身上。' },
-                    { type: 'narration',
-                        content: '他叫格林，十七岁。曾经只是个随处可见的普通高中生——不对，他连高中都没上过。初中毕业前，他被墨西哥黑手党绑架监禁，当奴隶使唤了三年。现在因为知道了太多秘密，成了麻烦，正被丢到一艘船上，准备卖到某个不知名的角落。' },
-                    { type: 'narration',
-                        content: '水手们从他身边经过时会刻意绕开，视线在他身上停留不到一秒就移开。他们在怕他。怕那个被称为"低语者"的能力——能窥探人心，能揭穿谎言，能看透组织里每一个人的秘密。' },
+                    { type: 'narration', content: '那个少年被锁链拴在甲板上时，太平洋的阳光正毫无遮拦地晒在他身上。' },
+                    { type: 'narration', content: '他叫格林，十七岁。曾经只是个随处可见的普通高中生——不对，他连高中都没上过。初中毕业前，他被墨西哥黑手党绑架监禁，当奴隶使唤了三年。现在因为知道了太多秘密，成了麻烦，正被丢到一艘船上，准备卖到某个不知名的角落。' },
+                    { type: 'narration', content: '水手们从他身边经过时会刻意绕开，视线在他身上停留不到一秒就移开。他们在怕他。怕那个被称为"低语者"的能力——能窥探人心，能揭穿谎言，能看透组织里每一个人的秘密。' },
                     { type: 'inner', content: '（可恶。头好痛……感觉快死了。）' },
-                    { type: 'narration',
-                        content: '被丢在这么显眼的地方任人围观，他人的思想不由分说地在脑中响起——他人的内心是毒药，它们疯狂搅乱着他的大脑，企图夺取他的思考。那些假装忠诚的干部、暗中通敌的线人、被收买的警察，所有见不得光的事，都由他一一揭开。他知道得太多了，所以被抛弃了。他是工具，用完了就该扔。' },
+                    { type: 'narration', content: '被丢在这么显眼的地方任人围观，他人的思想不由分说地在脑中响起——他人的内心是毒药，它们疯狂搅乱着他的大脑，企图夺取他的思考。那些假装忠诚的干部、暗中通敌的线人、被收买的警察，所有见不得光的事，都由他一一揭开。他知道得太多了，所以被抛弃了。他是工具，用完了就该扔。' },
                     { type: 'dialogue', content: '“格林，抱歉。”', speaker: '拉法' },
-                    { type: 'narration',
-                        content: '背后传来脚步声——是皮鞋的声音。但与脚步声相比，那说话声要小得多。他不用回头也知道是谁。' },
+                    { type: 'narration', content: '背后传来脚步声——是皮鞋的声音。但与脚步声相比，那说话声要小得多。他不用回头也知道是谁。' },
                     { type: 'dialogue', content: '“……拉法，你来了啊。”', speaker: '格林' },
-                    { type: 'narration',
-                        content: '拉斐尔·加西亚。尽管已经40多岁了，却依然是个肌肉发达的高大男人。他穿着一件黑色夹克，衣缝间隐约可见好几处刺青。他是老大的侄子，也是整个组织里唯一还拿他当人看的家伙。' },
+                    { type: 'narration', content: '拉斐尔·加西亚。尽管已经40多岁了，却依然是个肌肉发达的高大男人。他穿着一件黑色夹克，衣缝间隐约可见好几处刺青。他是老大的侄子，也是整个组织里唯一还拿他当人看的家伙。' },
                     { type: 'dialogue', content: '“小外甥来处理垃圾了。真是孝顺啊。”', speaker: '格林' },
-                    { type: 'dialogue', content: '“抱歉，格林。我本来想阻止叔叔的——如果我能说服他的话。但是，老大的命令是绝对的。”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“抱歉，格林。我本来想阻止叔叔的——如果我能说服他的话。但是，老大的命令是绝对的。”', speaker: '拉法' },
                     { type: 'narration', content: '格林没回答。他太了解拉法了。这个男人无论何时都心口如一，心里想什么，嘴上就说什么。在满是谎言的黑手党里，这种人才是异类。' },
-                    { type: 'dialogue',
-                        content: '“说到底，那些干部们——包括我叔叔在内——都开始害怕你了。格林，这几年家族急速扩张，快得不正常。这里头有你一大半功劳……不，是功劳太大了。你揭穿了所有人的秘密——警察和政治家的丑陋勾当，敌对帮派的弱点……还有，家族拼命想要隐藏的无数秘密。”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“说到底，那些干部们——包括我叔叔在内——都开始害怕你了。格林，这几年家族急速扩张，快得不正常。这里头有你一大半功劳……不，是功劳太大了。你揭穿了所有人的秘密——警察和政治家的丑陋勾当，敌对帮派的弱点……还有，家族拼命想要隐藏的无数秘密。”', speaker: '拉法' },
                     { type: 'narration', content: '也许这是理所当然的结果。他是一颗定时炸弹，是窥探内心向黑手党低语的恶魔。既是使内部崩溃的火种，又是一旦被敌对组织夺走就会带来毁灭的存在。' },
                     { type: 'dialogue', content: '“……格林。你为什么不求饶呢？”', speaker: '拉法' },
                     { type: 'dialogue', content: '“诶？”', speaker: '格林' },
-                    { type: 'dialogue',
-                        content: '“你一直都是这样。从来到我们这开始，你就总是垂着双阴郁的眼睛，几乎从不抱怨、不发牢骚，无论是命令还是拷问都默不作声地忍耐着。我一直把你当作朋友，可我从来没听你说过一句‘救救我’。”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“你一直都是这样。从来到我们这开始，你就总是垂着双阴郁的眼睛，几乎从不抱怨、不发牢骚，无论是命令还是拷问都默不作声地忍耐着。我一直把你当作朋友，可我从来没听你说过一句‘救救我’。”', speaker: '拉法' },
                     { type: 'narration', content: '那是。' },
                     { type: 'dialogue', content: '“为什么？”', speaker: '拉法' },
                     { type: 'inner', content: '为什么……？他刚试图思考，尖锐的疼痛就袭向大脑。' },
                     { type: 'dialogue', content: '“……因为希望这种东西，从来就没有拯救过我啊。”', speaker: '格林' },
-                    { type: 'narration',
-                        content: '拉法的眼神一瞬间像是要哭出来，然后立刻移开了视线。在他心湖的倒影里，浮现出一张小男孩的脸。他隐约想起，拉法曾经说过的他那10年前因心脏病去世的儿子，如果还活着的话，现在该和他同岁了吧。' },
-                    { type: 'dialogue',
-                        content: '“接下来会变得更热。把这个吃了吧。”拉法把一大颗糖扔进他嘴里，然后转身离去。那家伙明明长着一副坏人相，实际上干着十恶不赦的勾当，却是个让人哭笑不得的甜食党。',
-                        speaker: '拉法' },
+                    { type: 'narration', content: '拉法的眼神一瞬间像是要哭出来，然后立刻移开了视线。在他心湖的倒影里，浮现出一张小男孩的脸。他隐约想起，拉法曾经说过的他那10年前因心脏病去世的儿子，如果还活着的话，现在该和他同岁了吧。' },
+                    { type: 'dialogue', content: '“接下来会变得更热。把这个吃了吧。”拉法把一大颗糖扔进他嘴里，然后转身离去。那家伙明明长着一副坏人相，实际上干着十恶不赦的勾当，却是个让人哭笑不得的甜食党。', speaker: '拉法' },
                     { type: 'inner', content: '“……好甜。”' },
-                    { type: 'narration',
-                        content: '在太平洋的广阔天空下，被如奴隶一般拴着的他，只能不断舔着那颗甜得发腻的糖。然后，他听到了一道声音。' },
+                    { type: 'narration', content: '在太平洋的广阔天空下，被如奴隶一般拴着的他，只能不断舔着那颗甜得发腻的糖。然后，他听到了一道声音。' },
                     { type: 'dialogue', content: '“——那个看起来很好吃呢。可以给我吗？”', speaker: '黑之魔王' },
-                    { type: 'narration',
-                        content: '他吓了一跳。是女孩子银铃般的声音。一位穿着纯黑大衣的少女不知什么时候醒了，正伸着懒腰，乌黑的头发在阳光下泛着光。她和他一样被锁链拴着，但比他惨——整个人被拘束服紧紧绑住，像是关押一头猛兽。她的脸上带着刚睡醒的朦胧，眼睛却亮得像黑曜石。' },
+                    { type: 'narration', content: '他吓了一跳。是女孩子银铃般的声音。一位穿着纯黑大衣的少女不知什么时候醒了，正伸着懒腰，乌黑的头发在阳光下泛着光。她和他一样被锁链拴着，但比他惨——整个人被拘束服紧紧绑住，像是关押一头猛兽。她的脸上带着刚睡醒的朦胧，眼睛却亮得像黑曜石。' },
                     { type: 'dialogue', content: '“你嘴里还剩一点吧？啊——”', speaker: '黑之魔王' },
                     { type: 'inner', content: '“……认真的吗？”' },
                     { type: 'dialogue', content: '“喂，我在等你呢——”', speaker: '黑之魔王' },
-                    { type: 'narration',
-                        content: '他犹豫了一下。她明明被拘束得比他更严实，但她的内心中没有丝毫恶意。可怕的是，那里空无一物。他凑近她的嘴唇，沾着唾液的糖块顺着舌尖滑进她的口中——咔啦，门牙轻轻碰了一声。那是他的初吻。' },
+                    { type: 'narration', content: '他犹豫了一下。她明明被拘束得比他更严实，但她的内心中没有丝毫恶意。可怕的是，那里空无一物。他凑近她的嘴唇，沾着唾液的糖块顺着舌尖滑进她的口中——咔啦，门牙轻轻碰了一声。那是他的初吻。' },
                     { type: 'dialogue', content: '“嗯——！好甜！活过来了！得救了呢，谢谢——！”', speaker: '黑之魔王' },
                     { type: 'dialogue', content: '“……不，我也是。在最后能做一件好事，真是太好了。”', speaker: '格林' },
                     { type: 'dialogue', content: '“所以，你为什么会被关在这艘船上？”', speaker: '黑之魔王' },
@@ -2320,11 +2192,9 @@
                     { type: 'dialogue', content: '“不。我只是个——魔王。”', speaker: '格林' },
                     { type: 'narration', content: '他愣了。然后他试图读她的心——结果触到的是极其可怕的东西，漆黑到近乎疯狂的情感。她不是在开玩笑。她是认真的。' },
                     { type: 'dialogue', content: '“——毁灭宇宙。”', speaker: '黑之魔王' },
-                    { type: 'combat',
-                        content: '她的影子膨胀起来，苍蓝色的光芒灼烧着他的视网膜。下一秒，甲板变成了地狱。苍蓝色的影子像缝纫机一样反复贯穿水手的身体，血花溅满甲板，惨叫声此起彼伏。临死之人的思绪像洪水一样涌入他的脑海——我不想死。好可怕。救救我。好痛。好痛。他无法控制地放声大叫，直到喉咙沙哑。' },
+                    { type: 'combat', content: '她的影子膨胀起来，苍蓝色的光芒灼烧着他的视网膜。下一秒，甲板变成了地狱。苍蓝色的影子像缝纫机一样反复贯穿水手的身体，血花溅满甲板，惨叫声此起彼伏。临死之人的思绪像洪水一样涌入他的脑海——我不想死。好可怕。救救我。好痛。好痛。他无法控制地放声大叫，直到喉咙沙哑。' },
                     { type: 'dialogue', content: '“可怜的人啊。”', speaker: '黑之魔王' },
-                    { type: 'narration',
-                        content: '什么东西盖住了他的头。是她的手臂。她温柔地抱紧他，像在拥抱一个迷路的孩子。“你跟我一样呢。是同样的怪物，是那些无法成为人类、憧憬着人类、拥有强烈执念与方向性的存在。总有一天，会走向终末的存在。”' },
+                    { type: 'narration', content: '什么东西盖住了他的头。是她的手臂。她温柔地抱紧他，像在拥抱一个迷路的孩子。“你跟我一样呢。是同样的怪物，是那些无法成为人类、憧憬着人类、拥有强烈执念与方向性的存在。总有一天，会走向终末的存在。”' },
                     { type: 'dialogue', content: '“……你到底……是什么人……”', speaker: '格林' },
                     { type: 'dialogue', content: '“吾乃魔王！是与世界相对之人，绝不败北之人，不屈于光，勇往直前之人！”', speaker: '黑之魔王' },
                     { type: 'combat', content: '影之怪物从海面升起，撕裂大海。她扯断他的脚镣，站在巨影的掌心，笑着对他伸出手。' },
@@ -2345,45 +2215,31 @@
                     { type: 'dialogue', content: '“那么，我们就是敌人了！”', speaker: '黑之魔王' },
                     { type: 'combat', content: '影子怪物的手臂缠住船身。伴随着沉重的断裂声，整艘船开始缓缓地崩塌。他死死地抓住已经竖立起来的甲板上的扶手。' },
                     { type: 'dialogue', content: '“拜拜，再见了。我们彼此都要加油哦。”', speaker: '黑之魔王' },
-                    { type: 'narration',
-                        content: '她消失在苍蓝的光芒里。船被撕成碎片，他被汹涌的波涛抛向空中。他打从心底这么想。虽然他什么都不懂，但还是这么想。只知道，这样下去他会葬身海底。' },
-                    { type: 'inner',
-                        content: '（既然如此，我该怎么办？）还是要像以前一样，继续绷着阴沉的表情，任由命运殴打他的脸吗？（我不要那样。）即便是我。（即便是我，其实也想像那个魔王一样——）想要战斗。（即便是我，其实也——想要实现梦想。）——太狡猾了。' },
+                    { type: 'narration', content: '她消失在苍蓝的光芒里。船被撕成碎片，他被汹涌的波涛抛向空中。他打从心底这么想。虽然他什么都不懂，但还是这么想。只知道，这样下去他会葬身海底。' },
+                    { type: 'inner', content: '（既然如此，我该怎么办？）还是要像以前一样，继续绷着阴沉的表情，任由命运殴打他的脸吗？（我不要那样。）即便是我。（即便是我，其实也想像那个魔王一样——）想要战斗。（即便是我，其实也——想要实现梦想。）——太狡猾了。' },
                     { type: 'inner', content: '（啊啊，我——必须活下去。）' },
                     { type: 'combat', content: '他一边大叫着，一边开始游了起来。他拨开海水，用力蹬腿。发现了一块漂流的木材，他把身体靠了上去。' },
                     { type: 'dialogue', content: '“我……！才不是……沙袋……！我要活下去！我要活下去！”', speaker: '格林' },
-                    { type: 'narration',
-                        content: '他以为自己会死。但他没有。他看见了拉法——在水面上挣扎，手拍打着海水，嘴里灌了一口又一口的咸水。拉法不擅长游泳，肌肉发达的身体反而成了负担。他看到格林的时候，先是一愣，然后拼命地朝这边游。那块浮木撑不住两个人。格林心里清楚。' },
-                    { type: 'inner',
-                        content: '（啊。我，不是能做出这种事的人呢。）是吗。原来他是在这种绝境下，会优先选择去帮助其他人的家伙啊。抛弃熟人不管自己逃生——这种事光是想想就觉得恶心，从一开始就不算可选项。呵，真行啊，他。' },
+                    { type: 'narration', content: '他以为自己会死。但他没有。他看见了拉法——在水面上挣扎，手拍打着海水，嘴里灌了一口又一口的咸水。拉法不擅长游泳，肌肉发达的身体反而成了负担。他看到格林的时候，先是一愣，然后拼命地朝这边游。那块浮木撑不住两个人。格林心里清楚。' },
+                    { type: 'inner', content: '（啊。我，不是能做出这种事的人呢。）是吗。原来他是在这种绝境下，会优先选择去帮助其他人的家伙啊。抛弃熟人不管自己逃生——这种事光是想想就觉得恶心，从一开始就不算可选项。呵，真行啊，他。' },
                     { type: 'narration', content: '他游过去，把拉法推上浮木。' },
-                    { type: 'dialogue',
-                        content: '“等等！我……我抛弃了你啊！本来，该由我来拯救你的！只有我能救你！可我……我害怕，我拿不出勇气！我……我……哪有资格被你拯救啊！”',
-                        speaker: '拉法' },
-                    { type: 'dialogue',
-                        content: '“拉法。你以前经常给我的烤肉玉米饼，真的很好吃。总有一天，把食谱告诉我吧。”', speaker: '格林' },
+                    { type: 'dialogue', content: '“等等！我……我抛弃了你啊！本来，该由我来拯救你的！只有我能救你！可我……我害怕，我拿不出勇气！我……我……哪有资格被你拯救啊！”', speaker: '拉法' },
+                    { type: 'dialogue', content: '“拉法。你以前经常给我的烤肉玉米饼，真的很好吃。总有一天，把食谱告诉我吧。”', speaker: '格林' },
                     { type: 'narration', content: '然后他推着木板往前游。然后——力量耗尽了。他沉了下去。意识逐渐模糊——世界变成了深蓝色的、冰冷的虚无。' },
-                    { type: 'narration',
-                        content: '然后——他醒了。最先感受到的是后背传来的石板触感。冷硬的，但不刺骨。空气中弥漫着一股奇异的香气，像是焚香和干枯花瓣混合的气味。他睁开眼，看到高高的穹顶，画着从未见过的宗教画，神祇、羽翼、层层叠叠的光晕，陌生而遥远，却带着不容置疑的威严。乳白色的石柱粗大得像能把整座天空都撑起来。' },
+                    { type: 'narration', content: '然后——他醒了。最先感受到的是后背传来的石板触感。冷硬的，但不刺骨。空气中弥漫着一股奇异的香气，像是焚香和干枯花瓣混合的气味。他睁开眼，看到高高的穹顶，画着从未见过的宗教画，神祇、羽翼、层层叠叠的光晕，陌生而遥远，却带着不容置疑的威严。乳白色的石柱粗大得像能把整座天空都撑起来。' },
                     { type: 'inner', content: '他动了动手指，指尖发麻。' },
                     { type: 'dialogue', content: '“啊。早安——”', speaker: '露娜' },
-                    { type: 'narration',
-                        content: '他侧过头。视线里先映入的是一圈白色蕾丝发箍，然后是一张正俯身看着他的脸。水蓝色的运动服，纯白围裙，打满耳钉，眼角涂着淡淡的红色眼妆。她的语气随意得像是在跟邻居打招呼。' },
+                    { type: 'narration', content: '他侧过头。视线里先映入的是一圈白色蕾丝发箍，然后是一张正俯身看着他的脸。水蓝色的运动服，纯白围裙，打满耳钉，眼角涂着淡淡的红色眼妆。她的语气随意得像是在跟邻居打招呼。' },
                     { type: 'dialogue', content: '“身体状况如何——？”', speaker: '露娜' },
                     { type: 'inner', content: '他还没有回答。还在消化刚才发生的一切。' },
                     { type: 'dialogue', content: '“这里是……哪里？”', speaker: '格林' },
                     { type: 'dialogue', content: '“命运与转生的女神·佩尔西奥涅大人的神殿。你好像被佩尔西奥涅大人呼唤，获得了谒见的荣誉之类的。”', speaker: '露娜' },
                     { type: 'inner', content: '“……女神。”' },
-                    { type: 'narration',
-                        content: '然后，他听到了那道声音。“——看来你已经醒来了，人类啊。”那道声音从腹腔深处震颤而出，像歌剧歌手在穹顶下吟唱。他抬起头。神殿深处，一个翠绿色长发的女性站在那里，像光本身，又像是被光包裹着。她的压迫感让人本能地想要低头，喉咙发紧，像是连呼吸都被压住了。' },
-                    { type: 'dialogue',
-                        content: '“抱歉吓到你了。我们一直在注视着你。船只沉没的事，真是遗憾。不过，你做了件好事呢。”', speaker: '女神·佩尔西奥涅' },
+                    { type: 'narration', content: '然后，他听到了那道声音。“——看来你已经醒来了，人类啊。”那道声音从腹腔深处震颤而出，像歌剧歌手在穹顶下吟唱。他抬起头。神殿深处，一个翠绿色长发的女性站在那里，像光本身，又像是被光包裹着。她的压迫感让人本能地想要低头，喉咙发紧，像是连呼吸都被压住了。' },
+                    { type: 'dialogue', content: '“抱歉吓到你了。我们一直在注视着你。船只沉没的事，真是遗憾。不过，你做了件好事呢。”', speaker: '女神·佩尔西奥涅' },
                     { type: 'inner', content: '——救了拉法的事。' },
-                    { type: 'dialogue',
-                        content: '“你确实已经死去了。这一次，我召唤了你的灵魂。拜托你了，能否用你那闪耀的勇气，为这个世界伸出援手，带来救赎呢？”',
-                        speaker: '女神·佩尔西奥涅' },
-                    { type: 'narration',
-                        content: '她挥了挥手，一块石板从天花板上降下。他盯着那个陌生的世界看了一会儿，又看了看身边那个正叼着烟、像是早就看过这一切的女仆。' },
+                    { type: 'dialogue', content: '“你确实已经死去了。这一次，我召唤了你的灵魂。拜托你了，能否用你那闪耀的勇气，为这个世界伸出援手，带来救赎呢？”', speaker: '女神·佩尔西奥涅' },
+                    { type: 'narration', content: '她挥了挥手，一块石板从天花板上降下。他盯着那个陌生的世界看了一会儿，又看了看身边那个正叼着烟、像是早就看过这一切的女仆。' },
                     { type: 'dialogue', content: '“……这真的是异世界转生吗？”', speaker: '格林' },
                     { type: 'dialogue', content: '女神笑了，像母亲对着孩子那样温和。', speaker: '女神·佩尔西奥涅' },
                     { type: 'system', content: '你获得了低语者的感知能力。点击左侧「低语者感知」可以扫描周围的心声。' },
@@ -2406,11 +2262,15 @@
             }
 
             // ============================================================
-            //  聊天输入输出
+            //  【核心】聊天输入输出 —— 对接酒馆 API
             // ============================================================
             const chatInput = getEl('chatInput');
             const chatSendBtn = getEl('chatSendBtn');
 
+            // 自动检测酒馆地址（优先使用父窗口地址，否则用当前窗口地址）
+            const TAVERN_API = (window.parent && window.parent.location.origin) || window.location.origin;
+
+            // 降级模拟回复（API 不可用时使用）
             const mockReplies = [
                 { speaker: '露娜', content: '嗯，我知道了。你先休息吧。' },
                 { speaker: '露娜', content: '……你真有意思。' },
@@ -2423,30 +2283,74 @@
             function sendMessage() {
                 const text = chatInput.value.trim();
                 if (!text) return;
-                // 添加用户消息
+
+                // 显示用户消息
                 addStoryBlock('dialogue', text, '你');
                 chatInput.value = '';
                 chatInput.style.height = 'auto';
-                // 模拟回复
                 chatSendBtn.disabled = true;
-                chatSendBtn.textContent = '…';
-                setTimeout(() => {
-                    const reply = mockReplies[Math.floor(Math.random() * mockReplies.length)];
-                    addStoryBlock('dialogue', reply.content, reply.speaker);
-                    chatSendBtn.disabled = false;
-                    chatSendBtn.textContent = '发送';
-                    // 自动滚动
-                    storyOutput.scrollTop = storyOutput.scrollHeight;
-                }, 800 + Math.random() * 600);
+                chatSendBtn.textContent = '⏳';
+
+                // 显示“思考中”
+                const thinkingBlock = document.createElement('div');
+                thinkingBlock.className = 'story-block system';
+                thinkingBlock.id = 'thinking-indicator';
+                thinkingBlock.innerHTML = '<span class="time-tag">[' + getTimeString() + ']</span> 💭 AI 正在思考...';
+                storyOutput.appendChild(thinkingBlock);
+                storyOutput.scrollTop = storyOutput.scrollHeight;
+
+                // 调用酒馆 API
+                fetch(TAVERN_API + '/api/chat/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userInput: text })
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return res.json();
+                    })
+                    .then(data => {
+                        const indicator = document.getElementById('thinking-indicator');
+                        if (indicator) indicator.remove();
+
+                        // 提取回复（兼容不同版本的字段名）
+                        const reply = data.reply || data.message || data.response || data.text || '（AI 未返回内容）';
+
+                        // 尝试提取说话人（如果回复是 "角色名：内容" 格式）
+                        let speaker = '系统';
+                        let content = reply;
+                        const colonIndex = reply.search(/[：:]/);
+                        if (colonIndex > 0 && colonIndex < 15) {
+                            speaker = reply.substring(0, colonIndex).trim();
+                            content = reply.substring(colonIndex + 1).trim();
+                        }
+
+                        addStoryBlock('dialogue', content, speaker);
+                        storyOutput.scrollTop = storyOutput.scrollHeight;
+                    })
+                    .catch(err => {
+                        const indicator = document.getElementById('thinking-indicator');
+                        if (indicator) indicator.remove();
+
+                        // 报错提示 + 降级
+                        addStoryBlock('system', '⚠️ 连接酒馆失败：' + err.message + '。使用离线模拟。');
+                        const fallback = mockReplies[Math.floor(Math.random() * mockReplies.length)];
+                        addStoryBlock('dialogue', fallback.content, fallback.speaker);
+                        storyOutput.scrollTop = storyOutput.scrollHeight;
+                    })
+                    .finally(() => {
+                        chatSendBtn.disabled = false;
+                        chatSendBtn.textContent = '发送';
+                    });
             }
 
+            // 绑定事件
             chatSendBtn.addEventListener('click', sendMessage);
             chatInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
                 }
-                // 自适应高度
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 80) + 'px';
             });
@@ -2470,15 +2374,13 @@
                         pages[key].classList.toggle('active', key === 'story');
                     });
                 }
-                addLog('终端就绪');
+                addLog('终端就绪，酒馆 API 地址: ' + TAVERN_API);
             }, 300);
 
             console.log('✅ 终末停滞委员会 · 低语者终端已启动');
-            console.log('📌 中列 = 模型输出的正文（可滚动）');
-            console.log('📌 左列 = 角色立绘 + 导航（固定高度）');
-            console.log('📌 右列 = 感知详情（固定高度）');
-            console.log('🔒 需解锁：终末档案、小队通讯、作战记录、任务简报');
-            console.log('💬 底部输入框已启用，按回车发送消息。');
+            console.log('📌 全屏按钮位于左上角');
+            console.log('💬 底部输入框已对接酒馆 API (' + TAVERN_API + '/api/chat/send)');
+            console.log('💡 如果 API 不可用，会自动降级到模拟回复。');
 
         })();
     </script>
