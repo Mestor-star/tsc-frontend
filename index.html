@@ -5,15 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>终末停滞委员会 · 低语者终端</title>
     <style>
-        /* ============================================================
-           全局 & 主题
-           ============================================================ */
+        /* ===== 全局 & 主题 ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
+        html, body { width: 100%; height: 100%; overflow: hidden; }
         body {
             font-family: 'Segoe UI', 'Noto Sans SC', system-ui, sans-serif;
             background: #0b0d14;
@@ -23,7 +17,6 @@
             align-items: center;
             padding: 12px;
         }
-
         .app {
             max-width: 1600px;
             width: 100%;
@@ -39,7 +32,6 @@
             transition: all 0.3s ease;
             position: relative;
         }
-
         .app.fullscreen-mode {
             position: fixed !important;
             top: 0 !important;
@@ -56,9 +48,7 @@
             background: #0b0d14;
         }
 
-        /* ============================================================
-           顶栏
-           ============================================================ */
+        /* ===== 顶栏 ===== */
         .topbar {
             display: flex;
             align-items: center;
@@ -153,9 +143,7 @@
             color: #d0d4e0;
         }
 
-        /* ============================================================
-           主体：三列布局
-           ============================================================ */
+        /* ===== 主体 ===== */
         .main {
             display: flex;
             flex-direction: row;
@@ -201,7 +189,6 @@
             font-size: 52px;
             border: 1px solid rgba(106,74,255,0.2);
             overflow: hidden;
-            position: relative;
             flex-shrink: 0;
             transition: 0.2s;
         }
@@ -420,7 +407,7 @@
             margin-right: 8px;
         }
 
-        /* 底部栏：时间 + 输入 */
+        /* 底部栏 */
         .bottom-bar {
             display: flex;
             align-items: center;
@@ -720,9 +707,7 @@
             white-space: nowrap;
         }
 
-        /* ============================================================
-           右侧面板 — 统一管理感知详情 & 角色列表
-           ============================================================ */
+        /* ===== 右侧面板 ===== */
         .right-column {
             flex: 0 0 280px;
             background: rgba(255,255,255,0.01);
@@ -814,7 +799,7 @@
             color: #6a6a8a;
         }
 
-        /* 角色/感知详情（统一渲染区） */
+        /* 详情区 */
         .right-column .character-detail {
             flex: 1;
             display: flex;
@@ -842,7 +827,7 @@
         .right-column .portrait-area:hover { border-color: rgba(106,74,255,0.2); }
         .right-column .portrait-area .portrait-img {
             width: 120px;
-            height: 260px;    /* 拉长到 260px — 已确认 */
+            height: 260px;
             border-radius: 8px;
             background: rgba(255,255,255,0.05);
             display: flex;
@@ -929,9 +914,7 @@
             border-color: #6a4aff;
         }
 
-        /* ============================================================
-           模态框
-           ============================================================ */
+        /* ===== 模态框 ===== */
         .portrait-modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -1074,13 +1057,8 @@
         }
 
         @media (max-width: 1300px) {
-            .app {
-                min-width: 1200px;
-            }
-            body {
-                justify-content: flex-start;
-                overflow-x: auto;
-            }
+            .app { min-width: 1200px; }
+            body { justify-content: flex-start; overflow-x: auto; }
         }
     </style>
 </head>
@@ -1288,7 +1266,7 @@
 
             </div><!-- /center-column -->
 
-            <!-- 右列：统一管理感知和角色 -->
+            <!-- 右列 -->
             <div class="right-column" id="detailPanel">
                 <div class="panel-header">
                     <h4>👥 感知详情</h4>
@@ -1332,11 +1310,10 @@
         (function() {
             'use strict';
 
-            // ===== 工具 & DOM =====
             function getEl(id) { return document.getElementById(id); }
             function addLog(msg) { console.log('[低语者]', msg); }
 
-            // ===== 全屏切换（使用原生 Fullscreen API） =====
+            // ===== 全屏切换 =====
             const fullscreenToggle = getEl('fullscreenToggle');
             fullscreenToggle.addEventListener('click', function() {
                 if (!document.fullscreenElement) {
@@ -1349,12 +1326,10 @@
                     document.msExitFullscreen?.();
                 }
             });
-            // 监听全屏变化更新按钮图标
             document.addEventListener('fullscreenchange', function() {
                 const isFull = !!document.fullscreenElement;
                 fullscreenToggle.textContent = isFull ? '✖' : '⛶';
                 fullscreenToggle.title = isFull ? '退出全屏' : '切换全屏';
-                // 全屏时隐藏滚动条
                 document.body.style.overflow = isFull ? 'hidden' : '';
             });
 
@@ -1472,9 +1447,7 @@
                 storyOutput.scrollTop = storyOutput.scrollHeight;
             }
 
-            // ============================================================
-            //  权限系统（简化版）
-            // ============================================================
+            // ===== 权限系统 =====
             function grantAcademyPermission() {
                 academyPermission = true;
                 const permBadge = getEl('permBadge');
@@ -1534,9 +1507,7 @@
                 });
             });
 
-            // ============================================================
-            //  终末档案
-            // ============================================================
+            // ===== 终末档案 =====
             const terminalArchives = [{
                 id: 'soul-accumulator',
                 name: '灵魂蓄积器TM',
@@ -1546,7 +1517,6 @@
                 borderClass: 'purple',
                 tagClass: 'danger-tag',
                 description: '女神佩尔西奥涅的终末。以灵魂为燃料的蓄积装置，将人类转化为幸福幻梦中的灵魂电池。',
-                threat: '极高',
                 status: '已确认'
             }, {
                 id: 'golden-lion',
@@ -1557,7 +1527,6 @@
                 borderClass: 'gold',
                 tagClass: 'active-tag',
                 description: '钢铁的新娘所持有的异法。以契约之力驱动的黄金狮子，忠诚而危险。',
-                threat: '高',
                 status: '已确认'
             }, {
                 id: 'woodpecker',
@@ -1568,7 +1537,6 @@
                 borderClass: 'red',
                 tagClass: 'danger-tag',
                 description: '存在于尼泊尔山区的终末。以啄木鸟形态出现的异法，会啄食人类的记忆。',
-                threat: '高',
                 status: '已确认'
             }, {
                 id: 'organ-apartment',
@@ -1579,7 +1547,6 @@
                 borderClass: 'purple',
                 tagClass: 'danger-tag',
                 description: '巴塞罗那的仪式灾害。将整栋公寓转化为活体脏器，已由委员会处理。',
-                threat: '高',
                 status: '已处理'
             }, {
                 id: 'deep-cave',
@@ -1590,7 +1557,6 @@
                 borderClass: 'gray',
                 tagClass: '',
                 description: '委员会的训练设施。每次进入都会生成不同的深层结构，用于锻炼低语者的实战能力。',
-                threat: '中',
                 status: '训练用'
             }, {
                 id: 'clay-mask',
@@ -1601,7 +1567,6 @@
                 borderClass: 'gray',
                 tagClass: '',
                 description: '太平洋沿岸发现的终末。以泥塑面具形态出现，能够篡夺佩戴者的人格。已确认312个个体。',
-                threat: '中',
                 status: '调查中'
             }];
 
@@ -1666,13 +1631,11 @@
                     '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">阶段</div><div style="font-size:13px;color:#d0d4e0;">' + archive.stage + '</div></div>' +
                     '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">位置</div><div style="font-size:13px;color:#d0d4e0;">' + archive.location + '</div></div>' +
                     '<div style="margin-bottom:10px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;"><div style="font-size:12px;color:#5a5a7a;margin-bottom:3px;">描述</div><div style="font-size:12px;color:#aab0c8;line-height:1.6;">' + archive.description + '</div></div>' +
-                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>⚠️ 威胁等级：<span style="color:#f87171;">' + archive.threat + '</span></div><div>📋 状态：<span style="color:#81c784;">' + archive.status + '</span></div></div>'
+                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>📋 状态：<span style="color:#81c784;">' + archive.status + '</span></div></div>'
                 );
             };
 
-            // ============================================================
-            //  时间系统
-            // ============================================================
+            // ===== 时间系统 =====
             function updateTimeDisplay() {
                 const h = String(currentHour).padStart(2, '0');
                 const m = String(currentMinute).padStart(2, '0');
@@ -1744,25 +1707,23 @@
             getEl('tsc-time-3h').addEventListener('click', function() { advanceTime(180); });
             updateTimeDisplay();
 
-            // ============================================================
-            //  感知池
-            // ============================================================
+            // ===== 感知池 =====
             const whisperPool = {
                 luna: {
                     name: '露娜',
-                    type: '女仆 · 机械人偶',
+                    type: '神殿女仆',
                     color: '#7c4dff',
                     emoji: '👩',
-                    title: '女仆 · 机械人偶',
-                    status: '活跃 · 守护中',
+                    title: '神殿女仆 · 机械人偶',
+                    status: '服从 · 警惕',
                     whispers: [
-                        { text: '「{{user}}同学终于醒了……得让他吃点东西。」', mood: '关心' },
-                        { text: '「好累啊……又要干活了。」', mood: '疲惫' },
-                        { text: '「不能让他知道真相……否则会重蹈覆辙。」', mood: '恐惧' },
-                        { text: '「要是能救他……就好了。」', mood: '希望' }
+                        { text: '「……希望他不要问太多。」', mood: '警惕' },
+                        { text: '「这是女神的命令，我照做就是了。」', mood: '服从' },
+                        { text: '「……转生者，总是这样。」', mood: '冷漠' },
+                        { text: '「我只需要完成我的职责。」', mood: '机械' }
                     ],
-                    description: '{{user}}的专属女仆，机械人偶。外表温柔，内心隐藏着复杂的秘密。',
-                    relationship: '守护者',
+                    description: '女神神殿的女仆，被女神派来照顾你。她看起来恭敬而疏离，眼神里带着一丝警惕，像是被迫做这件事。',
+                    relationship: '陌生人',
                     threat: '无'
                 },
                 goddess: {
@@ -1845,29 +1806,19 @@
                 addLog('扫描完成');
             }
 
-            // ============================================================
-            //  点击感知对象 → 显示详情（修复：使用 characterDetail）
-            // ============================================================
+            // ===== 点击感知对象 =====
             window.tscShowTarget = function(dataStr) {
                 const data = JSON.parse(decodeURIComponent(dataStr));
                 const detail = getEl('characterDetail');
                 const sub = getEl('detailSub');
                 if (!detail) return;
-
                 sub.textContent = data.name;
-
-                // 获取玩家名字用于替换
                 const playerName = window.__TSC_PLAYER_NAME || '{{user}}';
-
-                // 替换 {{user}} 占位
                 const thought = data.thought.replace(/\{\{user\}\}/g, playerName);
                 const description = data.description.replace(/\{\{user\}\}/g, playerName);
-
                 const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎', '温柔': '💖', '混沌': '🌀' };
-                const moodIcon = moodMap[data.mood] || '💬';
                 const statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' :
                     '#81c784';
-
                 detail.innerHTML = `
                     <div class="portrait-area" onclick="showPortraitModal('${data.name}','${data.title}','${data.color}','${data.emoji}')">
                         <div class="portrait-img" style="background:${data.color};font-size:28px;">${data.emoji}</div>
@@ -1900,7 +1851,6 @@
                         <button onclick="window.tscClearDetail()">✕ 清除</button>
                     </div>
                 `;
-
                 addStoryBlock('narration', '你集中精神，感知到' + data.name + '的存在。距离约' + data.distance + '米。');
                 if (data.readStatus === '可读') {
                     addStoryBlock('dialogue', thought, data.name);
@@ -1916,7 +1866,6 @@
             window.tscDeepSense = function(dataStr) {
                 const data = JSON.parse(decodeURIComponent(dataStr));
                 const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎', '温柔': '💖', '混沌': '🌀' };
-                const moodIcon = moodMap[data.mood] || '💬';
                 const statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' :
                     '#81c784';
                 const playerName = window.__TSC_PLAYER_NAME || '{{user}}';
@@ -1927,7 +1876,7 @@
                     '<div><div style="font-size:16px;font-weight:600;color:#e0e4f0;">' + data.name + '</div><div style="font-size:12px;color:#7a7a9a;">' + data.type + '</div></div>' +
                     '</div>' +
                     '<div style="background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-bottom:10px;font-style:italic;color:#d0d4e0;font-size:13px;border-left:3px solid ' + statusColor + ';">' + thought + '</div>' +
-                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>📡 距离 ' + data.distance + 'm</div><div>' + moodIcon + ' ' + data.mood + '</div><div>🔮 ' + data.readStatus + '</div></div>'
+                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>📡 距离 ' + data.distance + 'm</div><div>' + (moodMap[data.mood] || '💬') + ' ' + data.mood + '</div><div>🔮 ' + data.readStatus + '</div></div>'
                 );
                 addStoryBlock('narration', '你加深了感知，' + data.name + '的情绪更加清晰地传来。');
             };
@@ -1936,17 +1885,15 @@
                 const detail = getEl('characterDetail');
                 const sub = getEl('detailSub');
                 if (detail) {
-                    detail.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色或感知对象查看详情</div>';
+                    detail.innerHTML =
+                        '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色或感知对象查看详情</div>';
                 }
                 if (sub) sub.textContent = '点击角色或感知对象查看';
-                // 取消角色列表的高亮
                 document.querySelectorAll('.character-item').forEach(el => el.classList.remove('active'));
                 currentSelectedId = null;
             };
 
-            // ============================================================
-            //  扫描按钮
-            // ============================================================
+            // ===== 扫描按钮 =====
             const scanBtn = getEl('tsc-scanBtn');
             if (scanBtn) {
                 scanBtn.addEventListener('click', function() {
@@ -1966,9 +1913,7 @@
                 });
             }
 
-            // ============================================================
-            //  内心独白
-            // ============================================================
+            // ===== 内心独白 =====
             const thoughts = [
                 '「这里是……女神的神殿？我还活着？」',
                 '「露娜小姐……她为什么要救我？」',
@@ -1990,9 +1935,7 @@
                 });
             }
 
-            // ============================================================
-            //  主角立绘点击
-            // ============================================================
+            // ===== 主角立绘 =====
             const charCard = getEl('charCard');
             if (charCard) {
                 charCard.addEventListener('click', function() {
@@ -2001,9 +1944,7 @@
                 });
             }
 
-            // ============================================================
-            //  重置
-            // ============================================================
+            // ===== 重置 =====
             const resetBtn = getEl('tsc-resetBtn');
             if (resetBtn) {
                 resetBtn.addEventListener('click', function() {
@@ -2077,25 +2018,8 @@
                 });
             }
 
-            // ============================================================
-            //  初始化故事
-            // ============================================================
+            // ===== 初始化故事 =====
             function initStory() {
-                // 注意：故事中涉及玩家名字的地方用 {{user}} 占位
-                const openingText = [
-                    { type: 'narration', content: '那个少年被锁链拴在甲板上时，太平洋的阳光正毫无遮拦地晒在他身上。' },
-                    { type: 'narration', content: '他叫{{user}}，十七岁。曾经只是个随处可见的普通高中生——不对，他连高中都没上过。初中毕业前，他被墨西哥黑手党绑架监禁，当奴隶使唤了三年。现在因为知道了太多秘密，成了麻烦，正被丢到一艘船上，准备卖到某个不知名的角落。' },
-                    // ... 其余故事文本保持不变，但所有“格林”都替换为“{{user}}”
-                    { type: 'dialogue', content: '“{{user}}，抱歉。”', speaker: '拉法' },
-                    { type: 'dialogue', content: '“……拉法，你来了啊。”', speaker: '{{user}}' },
-                    { type: 'dialogue', content: '“说到底，那些干部们——包括我叔叔在内——都开始害怕你了。{{user}}，这几年家族急速扩张，快得不正常。这里头有你一大半功劳……不，是功劳太大了。你揭穿了所有人的秘密——警察和政治家的丑陋勾当，敌对帮派的弱点……还有，家族拼命想要隐藏的无数秘密。”', speaker: '拉法' },
-                    { type: 'dialogue', content: '“……{{user}}。你为什么不求饶呢？”', speaker: '拉法' },
-                    { type: 'dialogue', content: '“诶？”', speaker: '{{user}}' },
-                    // ... 依此类推，所有“格林”替换为“{{user}}”
-                    // 为了节省篇幅，此处省略重复内容，实际完整文件中会全部替换
-                ];
-
-                // 临时简化：直接用替换函数处理
                 const rawTexts = [
                     { type: 'narration', content: '那个少年被锁链拴在甲板上时，太平洋的阳光正毫无遮拦地晒在他身上。' },
                     { type: 'narration', content: '他叫{{user}}，十七岁。曾经只是个随处可见的普通高中生——不对，他连高中都没上过。初中毕业前，他被墨西哥黑手党绑架监禁，当奴隶使唤了三年。现在因为知道了太多秘密，成了麻烦，正被丢到一艘船上，准备卖到某个不知名的角落。' },
@@ -2210,18 +2134,13 @@
                 });
             }
 
-            // ============================================================
-            //  聊天输入输出 —— 对接酒馆 API
-            // ============================================================
+            // ===== 聊天输入输出 =====
             const chatInput = getEl('chatInput');
             const chatSendBtn = getEl('chatSendBtn');
-
-            // 自动检测酒馆地址
             const TAVERN_API = (window.parent && window.parent.location.origin !== 'null') ?
                 window.parent.location.origin :
                 window.location.origin;
 
-            // 降级模拟回复
             const mockReplies = [
                 { speaker: '露娜', content: '嗯，我知道了。你先休息吧。' },
                 { speaker: '露娜', content: '……你真有意思。' },
@@ -2234,20 +2153,17 @@
             function sendMessage() {
                 const text = chatInput.value.trim();
                 if (!text) return;
-
                 addStoryBlock('dialogue', text, '你');
                 chatInput.value = '';
                 chatInput.style.height = 'auto';
                 chatSendBtn.disabled = true;
                 chatSendBtn.textContent = '⏳';
-
                 const thinkingBlock = document.createElement('div');
                 thinkingBlock.className = 'story-block system';
                 thinkingBlock.id = 'thinking-indicator';
                 thinkingBlock.innerHTML = '<span class="time-tag">[' + getTimeString() + ']</span> 💭 AI 正在思考...';
                 storyOutput.appendChild(thinkingBlock);
                 storyOutput.scrollTop = storyOutput.scrollHeight;
-
                 fetch(TAVERN_API + '/api/chat/send', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -2299,9 +2215,7 @@
                 this.style.height = Math.min(this.scrollHeight, 80) + 'px';
             });
 
-            // ============================================================
-            //  【核心】动态更新玩家名字
-            // ============================================================
+            // ===== 更新玩家名字 =====
             function updatePlayerName() {
                 let playerName = window.__TSC_PLAYER_NAME || '玩家';
                 if (!playerName || playerName === '玩家') {
@@ -2320,9 +2234,7 @@
                 addLog('玩家名字已更新为: ' + playerName);
             }
 
-            // ============================================================
-            //  右侧角色列表渲染
-            // ============================================================
+            // ===== 角色列表渲染 =====
             let currentSelectedId = null;
             let oldData = '';
 
@@ -2333,17 +2245,15 @@
                 const list = getEl('characterList');
                 const detail = getEl('characterDetail');
                 if (!list) return;
-
                 const ids = Object.keys(data);
                 if (ids.length === 0) {
                     list.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:12px;font-size:12px;">暂无角色数据</div>';
                     if (detail && !detail.innerHTML) {
                         detail.innerHTML =
-                        '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色查看详情</div>';
+                            '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色查看详情</div>';
                     }
                     return;
                 }
-
                 list.innerHTML = ids.map(id => {
                     const c = data[id] || {};
                     const isActive = (id === currentSelectedId);
@@ -2355,8 +2265,6 @@
                         </div>
                     </div>`;
                 }).join('');
-
-                // 如果当前选中的 ID 有效，显示详情
                 if (currentSelectedId && data[currentSelectedId]) {
                     renderDetail(currentSelectedId);
                 } else if (ids.length > 0) {
@@ -2365,7 +2273,6 @@
                     const firstItem = list.querySelector('.character-item');
                     if (firstItem) firstItem.classList.add('active');
                 }
-
                 updatePlayerName();
             };
 
@@ -2387,7 +2294,6 @@
                     detail.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">角色数据不存在</div>';
                     return;
                 }
-
                 const name = id.charAt(0).toUpperCase() + id.slice(1);
                 let html = `
                     <div class="portrait-area">
@@ -2400,12 +2306,10 @@
                         </div>
                     </div>
                 `;
-
                 const sectionMap = {
                     thought: { icon: '💭', style: 'font-style:italic;' },
                     description: { icon: '📖', style: '' }
                 };
-
                 Object.keys(fieldMap).forEach(field => {
                     if (excludeFields.includes(field)) return;
                     const label = fieldMap[field];
@@ -2419,23 +2323,18 @@
                         </div>
                     `;
                 });
-
                 html += `
                     <div class="detail-actions">
                         <button class="primary" onclick="showModal('${name}', '🔮 深度感知：${c.thought || '无心声'}', null)">🔮 深度感知</button>
                         <button onclick="window.tscClearDetail()">✕ 清除</button>
                     </div>
                 `;
-
                 detail.innerHTML = html;
-                // 更新子标题
                 const sub = getEl('detailSub');
                 if (sub) sub.textContent = name;
             }
 
-            // ============================================================
-            //  轮询监听变量变化
-            // ============================================================
+            // ===== 轮询监听 =====
             setInterval(function() {
                 const newData = JSON.stringify(window.__TSC_CHARACTERS || {});
                 if (newData !== oldData) {
@@ -2445,9 +2344,7 @@
                 }
             }, 1500);
 
-            // ============================================================
-            //  初始化
-            // ============================================================
+            // ===== 初始化 =====
             setTimeout(function() {
                 initStory();
                 generateWhispers();
@@ -2465,2362 +2362,7 @@
                 addLog('终端就绪，酒馆 API 地址: ' + TAVERN_API);
             }, 300);
 
-            console.log('✅ 终末停滞委员会 · 低语者终端已启动（自检通过）');
-            console.log('📌 全屏按钮使用原生 Fullscreen API');
-            console.log('💬 底部输入框已对接酒馆 API (' + TAVERN_API + '/api/chat/send)');
-            console.log('🔄 角色数据每1.5秒自动同步');
-        })();
-    </script>
-
-</body>
-</html>            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        /* ---- 全屏模式 ---- */
-        .app.fullscreen-mode {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: none !important;
-            min-height: 100vh !important;
-            border-radius: 0 !important;
-            border: none !important;
-            padding: 12px 16px !important;
-            box-shadow: none !important;
-            z-index: 999999 !important;
-            background: #0b0d14;
-        }
-
-        /* ============================================================
-           顶栏
-           ============================================================ */
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            gap: 8px 16px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #1e2238;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-            height: 44px;
-        }
-        .topbar .brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #c8cce8;
-            white-space: nowrap;
-        }
-        .topbar .brand .badge {
-            background: #2a2e4a;
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 10px;
-            font-weight: 400;
-            color: #8a8aaa;
-            white-space: nowrap;
-        }
-        .topbar .status-group {
-            display: flex;
-            align-items: center;
-            gap: 10px 20px;
-            flex-wrap: nowrap;
-            font-size: 12px;
-            color: #8a8aaa;
-            white-space: nowrap;
-        }
-        .topbar .status-group .val { color: #d0d4e0; }
-        .topbar .status-group .dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4fc3f7;
-            margin-right: 3px;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-        .topbar .user-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.03);
-            padding: 3px 12px 3px 8px;
-            border-radius: 30px;
-            border: 1px solid #2a2e44;
-            font-size: 12px;
-            white-space: nowrap;
-        }
-        .topbar .user-info .avatar { font-size: 18px; }
-        .topbar .user-info .perm-badge {
-            background: #1a1a2e;
-            padding: 1px 8px;
-            border-radius: 20px;
-            font-size: 10px;
-            color: #5a5a7a;
-            margin-left: 4px;
-        }
-        .topbar .user-info .perm-badge.granted {
-            background: #1a2a1a;
-            color: #81c784;
-        }
-
-        .fullscreen-toggle {
-            background: none;
-            border: none;
-            color: #8a8aaa;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-            line-height: 1;
-        }
-        .fullscreen-toggle:hover {
-            background: rgba(255,255,255,0.05);
-            color: #d0d4e0;
-        }
-
-        /* ============================================================
-           主体：三列布局
-           ============================================================ */
-        .main {
-            display: flex;
-            flex-direction: row;
-            gap: 12px;
-            flex: 1;
-            min-height: 0;
-            min-width: 0;
-            height: calc(100% - 56px);
-        }
-
-        /* 左列 */
-        .left-column {
-            flex: 0 0 200px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-width: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        .left-column .character-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 12px;
-            padding: 10px;
-            border: 1px solid rgba(255,255,255,0.04);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .left-column .character-card:hover { border-color: rgba(106,74,255,0.2); }
-        .left-column .character-card .avatar-frame {
-            width: 120px;
-            height: 160px;
-            border-radius: 10px;
-            background: radial-gradient(ellipse at 50% 30%, rgba(106,74,255,0.15), transparent 70%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 52px;
-            border: 1px solid rgba(106,74,255,0.2);
-            overflow: hidden;
-            position: relative;
-            flex-shrink: 0;
-            transition: 0.2s;
-        }
-        .left-column .character-card .avatar-frame .char-avatar-fallback {
-            font-size: 52px;
-            line-height: 1;
-            user-select: none;
-        }
-        .left-column .character-card .char-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e0e4f0;
-        }
-        .left-column .character-card .char-title {
-            font-size: 10px;
-            color: #6a6a8a;
-            letter-spacing: 1px;
-        }
-        .left-column .character-card .char-status {
-            font-size: 10px;
-            color: #8a8aaa;
-            display: flex;
-            gap: 8px;
-            margin-top: 2px;
-        }
-        .left-column .character-card .char-status .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #4fc3f7;
-            display: inline-block;
-            margin-right: 2px;
-        }
-
-        .sidebar {
-            background: rgba(255,255,255,0.02);
-            border-radius: 12px;
-            padding: 8px 4px 8px 6px;
-            border: 1px solid rgba(255,255,255,0.03);
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            flex: 1;
-            overflow-y: auto;
-            min-height: 0;
-        }
-        .sidebar::-webkit-scrollbar { width: 3px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .sidebar .channel-group-label {
-            font-size: 9px;
-            color: #5a5a7a;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 4px 8px 2px 8px;
-        }
-        .sidebar .channel-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #8a8aaa;
-            cursor: pointer;
-            transition: 0.15s;
-            border-left: 3px solid transparent;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .sidebar .channel-item:hover {
-            background: rgba(255,255,255,0.04);
-            color: #c8cce8;
-        }
-        .sidebar .channel-item.active {
-            background: rgba(106,74,255,0.10);
-            color: #d0d4e0;
-            border-left-color: #6a4aff;
-        }
-        .sidebar .channel-item .icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
-        .sidebar .channel-item .badge {
-            margin-left: auto;
-            background: #1a1a2e;
-            padding: 0 6px;
-            border-radius: 30px;
-            font-size: 9px;
-            color: #5a5a7a;
-            flex-shrink: 0;
-        }
-        .sidebar .channel-item .badge.active {
-            background: #2a2a4a;
-            color: #a78bfa;
-        }
-        .sidebar .channel-item .lock-icon {
-            margin-left: auto;
-            font-size: 11px;
-            color: #5a5a7a;
-            flex-shrink: 0;
-        }
-        .sidebar .channel-item .lock-icon.unlocked {
-            color: #81c784;
-        }
-
-        /* 中列 */
-        .center-column {
-            flex: 1 1 auto;
-            background: rgba(255,255,255,0.01);
-            border-radius: 12px;
-            padding: 12px 14px;
-            border: 1px solid rgba(255,255,255,0.03);
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            min-width: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        .center-column .page {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-            animation: fadeIn 0.25s ease;
-            min-height: 0;
-            overflow: hidden;
-        }
-        .center-column .page.active { display: flex; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .center-column .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            margin-bottom: 10px;
-            flex-wrap: nowrap;
-            gap: 4px 10px;
-            flex-shrink: 0;
-        }
-        .center-column .page-header h3 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #e0e4f0;
-            white-space: nowrap;
-        }
-        .center-column .page-header .sub {
-            font-size: 11px;
-            color: #5a5a7a;
-            white-space: nowrap;
-        }
-
-        /* 正文输出区 */
-        .story-output {
-            flex: 1;
-            overflow-y: auto;
-            padding: 8px 12px;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            scroll-behavior: smooth;
-        }
-        .story-output::-webkit-scrollbar { width: 4px; }
-        .story-output::-webkit-scrollbar-track { background: transparent; }
-        .story-output::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .story-block {
-            padding: 8px 12px;
-            border-radius: 8px;
-            line-height: 1.7;
-            font-size: 13px;
-            animation: blockIn 0.3s ease;
-            flex-shrink: 0;
-        }
-        @keyframes blockIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .story-block.narration {
-            background: rgba(255,255,255,0.02);
-            border-left: 3px solid #4a4a6a;
-            color: #aab0c8;
-        }
-        .story-block.dialogue {
-            background: rgba(106,74,255,0.06);
-            border-left: 3px solid #a78bfa;
-            color: #d0d4e0;
-        }
-        .story-block.dialogue .speaker {
-            font-weight: 600;
-            color: #a78bfa;
-            margin-right: 6px;
-        }
-        .story-block.system {
-            background: rgba(79,195,247,0.04);
-            border: 1px solid rgba(79,195,247,0.1);
-            border-left: 3px solid #4fc3f7;
-            color: #8a8aaa;
-            font-size: 12px;
-        }
-        .story-block.inner {
-            background: rgba(255,255,255,0.01);
-            border-left: 3px solid #fbbf24;
-            color: #c8a86a;
-            font-style: italic;
-        }
-        .story-block.combat {
-            background: rgba(248,113,113,0.04);
-            border-left: 3px solid #f87171;
-            color: #d0a0a0;
-        }
-        .story-block .time-tag {
-            font-size: 10px;
-            color: #4a4a6a;
-            margin-right: 8px;
-        }
-
-        /* 底部栏：时间 + 输入 */
-        .bottom-bar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            margin-top: 8px;
-            flex-shrink: 0;
-            flex-wrap: nowrap;
-        }
-        .bottom-bar .time-control {
-            display: flex;
-            align-items: center;
-            gap: 4px 6px;
-            flex-shrink: 0;
-        }
-        .bottom-bar .time-control .label {
-            font-size: 11px;
-            color: #5a5a7a;
-            margin-right: 2px;
-            white-space: nowrap;
-        }
-        .bottom-bar .time-control button {
-            background: transparent;
-            border: 1px solid #2a2e44;
-            color: #8a8aaa;
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-        .bottom-bar .time-control button:hover {
-            background: rgba(255,255,255,0.04);
-            border-color: #4a4a6a;
-            color: #c8cce8;
-        }
-        .bottom-bar .time-control button.primary {
-            border-color: #4a3a6a;
-            color: #b8b8e0;
-        }
-        .bottom-bar .time-control button.primary:hover {
-            background: rgba(106,74,255,0.10);
-            border-color: #6a4aff;
-        }
-        .bottom-bar .time-control .status-tag {
-            font-size: 11px;
-            color: #4a4a6a;
-            margin-left: 4px;
-            white-space: nowrap;
-        }
-        .bottom-bar .chat-input-wrapper {
-            flex: 1;
-            display: flex;
-            gap: 6px;
-            min-width: 0;
-        }
-        .bottom-bar .chat-input-wrapper textarea {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid #2a2e44;
-            border-radius: 8px;
-            padding: 6px 12px;
-            color: #d0d4e0;
-            resize: none;
-            font-family: inherit;
-            font-size: 13px;
-            outline: none;
-            line-height: 1.5;
-            min-height: 36px;
-            max-height: 80px;
-            transition: border 0.2s;
-        }
-        .bottom-bar .chat-input-wrapper textarea:focus {
-            border-color: #6a4aff;
-        }
-        .bottom-bar .chat-input-wrapper textarea::placeholder {
-            color: #5a5a7a;
-        }
-        .bottom-bar .chat-input-wrapper .send-btn {
-            background: #6a4aff;
-            border: none;
-            color: #fff;
-            padding: 6px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: 0.2s;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .bottom-bar .chat-input-wrapper .send-btn:hover {
-            background: #7c5cff;
-        }
-        .bottom-bar .chat-input-wrapper .send-btn:active {
-            transform: scale(0.96);
-        }
-        .bottom-bar .chat-input-wrapper .send-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* 其他页面 */
-        .info-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 10px;
-            padding: 10px 14px;
-            border: 1px solid rgba(255,255,255,0.03);
-            flex: 1;
-            overflow-y: auto;
-            min-height: 0;
-            line-height: 1.7;
-            font-size: 12px;
-            color: #aab0c8;
-        }
-        .info-card .hl { color: #a78bfa; }
-        .info-card .hl2 { color: #4fc3f7; }
-        .info-card .warn { color: #fbbf24; }
-        .info-card::-webkit-scrollbar { width: 3px; }
-        .info-card::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .list-items {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex: 1;
-            overflow-y: auto;
-            min-height: 0;
-            padding-right: 4px;
-        }
-        .list-items::-webkit-scrollbar { width: 3px; }
-        .list-items::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .list-item {
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
-            padding: 8px 12px;
-            border: 1px solid rgba(255,255,255,0.04);
-            transition: 0.15s;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .list-item:hover { border-color: rgba(106,74,255,0.15); }
-        .list-item .title { font-size: 12px; color: #d0d4e0; font-weight: 500; }
-        .list-item .desc { font-size: 11px; color: #6a6a8a; margin-top: 2px; }
-        .list-item .meta { font-size: 10px; color: #4a4a6a; margin-top: 3px; }
-        .list-item .tag {
-            display: inline-block;
-            font-size: 9px;
-            padding: 0 8px;
-            border-radius: 30px;
-            background: #1a1a2e;
-            color: #6a6a8a;
-        }
-        .list-item .tag.active-tag { background: #2a2a4a; color: #a78bfa; }
-        .list-item .tag.danger-tag { background: #2a1a1a; color: #f87171; }
-        .list-item .border-left { border-left: 3px solid #4fc3f7; }
-        .list-item .border-left.purple { border-left-color: #a78bfa; }
-        .list-item .border-left.gold { border-left-color: #fbbf24; }
-        .list-item .border-left.red { border-left-color: #f87171; }
-        .list-item .border-left.gray { border-left-color: #4a4a6a; }
-
-        .unlock-card {
-            background: rgba(106,74,255,0.06);
-            border: 1px solid rgba(106,74,255,0.2);
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-        .unlock-card .unlock-icon { font-size: 20px; flex-shrink: 0; }
-        .unlock-card .unlock-text { flex: 1; min-width: 0; }
-        .unlock-card .unlock-text .title { font-size: 12px; color: #d0d4e0; font-weight: 500; }
-        .unlock-card .unlock-text .desc { font-size: 11px; color: #8a8aaa; margin-top: 1px; }
-        .unlock-card button {
-            background: transparent;
-            border: 1px solid #4a3a6a;
-            color: #b8b8e0;
-            padding: 3px 14px;
-            border-radius: 30px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .unlock-card button:hover {
-            background: rgba(106,74,255,0.10);
-            border-color: #6a4aff;
-        }
-        .unlock-card button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .whisper-list-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            min-height: 0;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .whisper-list-container::-webkit-scrollbar { width: 3px; }
-        .whisper-list-container::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .whisper-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 8px;
-            padding: 6px 12px;
-            cursor: pointer;
-            transition: 0.15s;
-            flex-shrink: 0;
-        }
-        .whisper-item:hover {
-            background: rgba(255,255,255,0.04);
-            border-color: rgba(106,74,255,0.15);
-        }
-        .whisper-item .avatar-thumb {
-            width: 44px;
-            height: 58px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-            flex-shrink: 0;
-            overflow: hidden;
-            background: rgba(255,255,255,0.05);
-        }
-        .whisper-item .info { flex: 1; min-width: 0; }
-        .whisper-item .info .n {
-            font-size: 12px;
-            font-weight: 500;
-            color: #d0d4e0;
-        }
-        .whisper-item .info .t {
-            font-size: 10px;
-            color: #6a6a8a;
-        }
-        .whisper-item .preview {
-            font-size: 11px;
-            color: #8a8aaa;
-            text-align: right;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 80px;
-        }
-        .whisper-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: nowrap;
-            margin-top: 6px;
-            flex-shrink: 0;
-        }
-        .whisper-actions button {
-            background: transparent;
-            border: 1px solid #2a2e44;
-            color: #8a8aaa;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-        .whisper-actions button:hover {
-            border-color: #4a4a6a;
-            color: #c8cce8;
-        }
-        .whisper-actions button.primary {
-            border-color: #4a3a6a;
-            color: #b8b8e0;
-        }
-        .whisper-actions button.primary:hover {
-            background: rgba(106,74,255,0.10);
-            border-color: #6a4aff;
-        }
-        .whisper-actions .hint {
-            font-size: 10px;
-            color: #4a4a6a;
-            margin-left: auto;
-            align-self: center;
-            white-space: nowrap;
-        }
-
-        /* 右侧面板 */
-        .right-column {
-            flex: 0 0 260px;
-            background: rgba(255,255,255,0.01);
-            border-radius: 12px;
-            padding: 12px;
-            border: 1px solid rgba(255,255,255,0.03);
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            min-width: 0;
-            height: 100%;
-            overflow-y: auto;
-        }
-        .right-column::-webkit-scrollbar { width: 3px; }
-        .right-column::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .right-column .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            margin-bottom: 10px;
-            flex-shrink: 0;
-        }
-        .right-column .panel-header h4 {
-            font-size: 13px;
-            font-weight: 600;
-            color: #e0e4f0;
-            white-space: nowrap;
-        }
-        .right-column .panel-header .sub {
-            font-size: 10px;
-            color: #5a5a7a;
-            white-space: nowrap;
-        }
-        .right-column .detail-empty {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #4a4a6a;
-            font-size: 12px;
-            text-align: center;
-            gap: 6px;
-            padding: 16px;
-            min-height: 200px;
-        }
-        .right-column .detail-empty .icon { font-size: 36px; opacity: 0.4; }
-        .right-column .detail-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow-y: auto;
-            min-height: 0;
-            padding-right: 2px;
-        }
-        .right-column .detail-content::-webkit-scrollbar { width: 3px; }
-        .right-column .detail-content::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
-        .right-column .portrait-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            background: radial-gradient(ellipse at 50% 80%, rgba(60,40,120,0.12), transparent 70%);
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.03);
-            flex-shrink: 0;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .right-column .portrait-area:hover { border-color: rgba(106,74,255,0.2); }
-        .right-column .portrait-area .portrait-img {
-            width: 80px;
-            height: 106px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 6px;
-            border: 1px solid rgba(255,255,255,0.08);
-            overflow: hidden;
-            flex-shrink: 0;
-            transition: 0.2s;
-        }
-        .right-column .portrait-area .detail-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e0e4f0;
-        }
-        .right-column .portrait-area .detail-title {
-            font-size: 10px;
-            color: #6a6a8a;
-            letter-spacing: 1px;
-            margin-top: 1px;
-        }
-        .right-column .portrait-area .detail-status {
-            font-size: 10px;
-            color: #8a8aaa;
-            margin-top: 4px;
-            display: flex;
-            gap: 10px;
-        }
-        .right-column .detail-section {
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
-            padding: 8px 10px;
-            border: 1px solid rgba(255,255,255,0.03);
-            flex-shrink: 0;
-        }
-        .right-column .detail-section .section-label {
-            font-size: 9px;
-            color: #5a5a7a;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 3px;
-        }
-        .right-column .detail-section .section-content {
-            font-size: 12px;
-            color: #aab0c8;
-            line-height: 1.6;
-        }
-        .right-column .detail-section .section-content .hl { color: #a78bfa; }
-        .right-column .detail-section .section-content .hl2 { color: #4fc3f7; }
-        .right-column .detail-section .section-content .warn { color: #fbbf24; }
-        .right-column .detail-actions {
-            display: flex;
-            gap: 4px;
-            flex-wrap: nowrap;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-        .right-column .detail-actions button {
-            background: transparent;
-            border: 1px solid #2a2e44;
-            color: #8a8aaa;
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 10px;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
-            flex: 1;
-            white-space: nowrap;
-        }
-        .right-column .detail-actions button:hover {
-            border-color: #4a4a6a;
-            color: #c8cce8;
-        }
-        .right-column .detail-actions button.primary {
-            border-color: #4a3a6a;
-            color: #b8b8e0;
-        }
-        .right-column .detail-actions button.primary:hover {
-            background: rgba(106,74,255,0.10);
-            border-color: #6a4aff;
-        }
-
-        /* 模态框 */
-        .portrait-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            animation: fadeIn 0.3s ease;
-        }
-        .portrait-modal-overlay.show { display: flex; }
-        .portrait-modal-box {
-            background: #181c2a;
-            border: 1px solid rgba(106,74,255,0.3);
-            border-radius: 20px;
-            padding: 24px 32px;
-            max-width: 300px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 0 80px rgba(106,74,255,0.08);
-            animation: slideUp 0.3s ease;
-        }
-        .portrait-modal-box .big-portrait {
-            width: 180px;
-            height: 240px;
-            border-radius: 12px;
-            margin: 0 auto 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
-            font-weight: 600;
-            color: #fff;
-            border: 2px solid rgba(106,74,255,0.2);
-            overflow: hidden;
-            background: rgba(255,255,255,0.05);
-        }
-        .portrait-modal-box .big-portrait img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .portrait-modal-box .p-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #e0e4f0;
-        }
-        .portrait-modal-box .p-title {
-            font-size: 12px;
-            color: #6a6a8a;
-            margin-top: 2px;
-        }
-        .portrait-modal-box .p-close {
-            margin-top: 14px;
-            background: transparent;
-            border: 1px solid #2a2e44;
-            color: #8a8aaa;
-            padding: 4px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 13px;
-            transition: 0.15s;
-        }
-        .portrait-modal-box .p-close:hover {
-            border-color: #4a4a6a;
-            color: #c8cce8;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(6px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-box {
-            background: #181c2a;
-            border: 1px solid rgba(106,74,255,0.3);
-            border-radius: 16px;
-            padding: 20px 24px;
-            max-width: 420px;
-            width: 92%;
-            box-shadow: 0 0 60px rgba(106,74,255,0.06);
-            animation: slideUp 0.25s ease;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(16px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .modal-box .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .modal-box .modal-header h4 {
-            color: #e0e4f0;
-            font-size: 15px;
-        }
-        .modal-box .modal-header .close {
-            background: none;
-            border: none;
-            color: #5a5a7a;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .modal-box .modal-header .close:hover { color: #c8cce8; }
-        .modal-box .modal-body {
-            color: #aab0c8;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-        .modal-box .modal-body .highlight { color: #a78bfa; }
-        .modal-box .modal-footer {
-            margin-top: 12px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            text-align: right;
-        }
-        .modal-box .modal-footer button {
-            background: transparent;
-            border: 1px solid #2a2e44;
-            color: #8a8aaa;
-            padding: 3px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 12px;
-            transition: 0.15s;
-        }
-        .modal-box .modal-footer button:hover {
-            border-color: #4a4a6a;
-            color: #c8cce8;
-        }
-
-        @media (max-width: 1300px) {
-            .app {
-                min-width: 1200px;
-            }
-            body {
-                justify-content: flex-start;
-                overflow-x: auto;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- ============================================================
-    APP
-    ============================================================ -->
-    <div class="app" id="app">
-
-        <!-- ===== 顶栏 ===== -->
-        <div class="topbar">
-            <div style="display:flex;align-items:center;gap:6px;">
-                <button class="fullscreen-toggle" id="fullscreenToggle" title="切换全屏">⛶</button>
-                <div class="brand">
-                    🏛️ 终末停滞委员会 <span class="badge">低语者终端</span>
-                </div>
-            </div>
-            <div class="status-group">
-                <span><span class="dot"></span> <span class="val" id="topStatus">神殿 · 清晨</span></span>
-                <span>📅 <span class="val" id="topDate">第 1 日</span></span>
-                <span>⏱️ <span class="val" id="topTime">06:00</span></span>
-                <span>📊 R值 <span class="val" id="topR">1.450</span></span>
-            </div>
-            <div class="user-info">
-                <span class="avatar">🧑‍🎤</span>
-                <span id="topUser">格林</span>
-                <span class="perm-badge" id="permBadge">未加入学园</span>
-            </div>
-        </div>
-
-        <!-- ===== 主体 ===== -->
-        <div class="main">
-
-            <!-- 左列 -->
-            <div class="left-column">
-                <div class="character-card" id="charCard" title="点击查看大立绘">
-                    <div class="avatar-frame" id="charAvatarFrame">
-                        <div class="char-avatar-fallback" id="charAvatarFallback">🧑‍🎤</div>
-                    </div>
-                    <div class="char-name">格林</div>
-                    <div class="char-title">低语者 · Stage 4</div>
-                    <div class="char-status">
-                        <span><span class="dot"></span>苏醒 · 虚弱</span>
-                        <span>⚡ 活性化</span>
-                    </div>
-                </div>
-
-                <div class="sidebar" id="sidebar">
-                    <div class="channel-group-label">✦ 导航</div>
-                    <div class="channel-item active" data-channel="story">
-                        <span class="icon">📖</span> 正文
-                    </div>
-                    <div class="channel-item" data-channel="profile">
-                        <span class="icon">📋</span> 角色档案
-                    </div>
-                    <div class="channel-item" data-channel="whisper">
-                        <span class="icon">🔮</span> 低语者感知
-                        <span class="badge active" style="background:#2a2a4a;color:#a78bfa;">核心</span>
-                    </div>
-                    <div class="channel-item" data-channel="lore">
-                        <span class="icon">📚</span> 设定集
-                    </div>
-                    <div class="channel-item" data-channel="terminal-list">
-                        <span class="icon">📜</span> 终末档案
-                        <span class="lock-icon" id="terminalLockIcon">🔒</span>
-                    </div>
-                    <div class="channel-item" data-channel="squad">
-                        <span class="icon">💬</span> 小队通讯
-                        <span class="lock-icon" id="squadLockIcon">🔒</span>
-                    </div>
-                    <div class="channel-item" data-channel="records">
-                        <span class="icon">📰</span> 作战记录
-                        <span class="lock-icon" id="recordsLockIcon">🔒</span>
-                    </div>
-                    <div class="channel-item" data-channel="mission">
-                        <span class="icon">🎯</span> 任务简报
-                        <span class="lock-icon" id="missionLockIcon">🔒</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 中列 -->
-            <div class="center-column">
-
-                <!-- 正文页 -->
-                <div class="page active" id="page-story">
-                    <div class="page-header">
-                        <h3>📖 正文</h3>
-                        <span class="sub" id="storyLocation">女神神殿 · 转生之间</span>
-                    </div>
-                    <div class="story-output" id="storyOutput"></div>
-                    <!-- 底部 -->
-                    <div class="bottom-bar">
-                        <div class="time-control">
-                            <span class="label">⏳</span>
-                            <button class="primary" id="tsc-time-15m">+15m</button>
-                            <button class="primary" id="tsc-time-30m">+30m</button>
-                            <button class="primary" id="tsc-time-1h">+1h</button>
-                            <button class="primary" id="tsc-time-3h">+3h</button>
-                            <span class="status-tag" id="tsc-time-status">当前 06:00</span>
-                        </div>
-                        <div class="chat-input-wrapper">
-                            <textarea id="chatInput" rows="1" placeholder="输入消息..." style="min-height:36px;"></textarea>
-                            <button class="send-btn" id="chatSendBtn">发送</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 其他页面（档案、感知等）保持不变 -->
-                <div class="page" id="page-profile">
-                    <div class="page-header"><h3>📋 角色档案 · 格林</h3><span class="sub">低语者 · 活性化阶段</span></div>
-                    <div class="info-card">
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;">
-                            <div><span style="color:#5a5a7a;">代号</span><br><span class="hl">低语者</span></div>
-                            <div><span style="color:#5a5a7a;">Stage</span><br><span class="hl2">4 · 活性化</span></div>
-                            <div><span style="color:#5a5a7a;">状态</span><br><span class="warn" id="profileStatus">苏醒 · 虚弱</span></div>
-                            <div><span style="color:#5a5a7a;">装备</span><br><span id="profileWeapon">无（锁链已解）</span></div>
-                            <div style="grid-column:1/-1;margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.04);">
-                                <span style="color:#5a5a7a;">感知</span><br>
-                                <span id="profilePerception">神殿内弥漫着神性的气息……似乎还有其他的什么声音……？</span>
-                            </div>
-                            <div style="grid-column:1/-1;padding-top:3px;border-top:1px solid rgba(255,255,255,0.04);font-size:11px;color:#5a5a7a;">
-                                <span>📍 地点：<span id="profileLoc">女神神殿 · 转生之间</span></span>
-                                <span style="margin-left:12px;">⏳ <span id="profileTime">清晨</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="page" id="page-terminal-list">
-                    <div class="page-header"><h3>📜 终末档案</h3><span class="sub" id="terminalSub">🔒 需要苍之学院权限</span></div>
-                    <div class="unlock-card" id="unlockCard">
-                        <span class="unlock-icon" id="unlockIcon">🔒</span>
-                        <div class="unlock-text">
-                            <div class="title" id="unlockTitle">档案权限已锁定</div>
-                            <div class="desc" id="unlockDesc">加入苍之学院后可获得档案访问权限</div>
-                        </div>
-                        <button id="unlockBtn" disabled>未解锁</button>
-                    </div>
-                    <div class="list-items" id="terminalList"></div>
-                </div>
-
-                <div class="page" id="page-mission">
-                    <div class="page-header"><h3>🎯 任务简报</h3><span class="sub">🔒 需要苍之学院权限</span></div>
-                    <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
-                        <div style="font-size:48px;opacity:0.3;">🔒</div>
-                        <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁任务简报</div>
-                        <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
-                    </div>
-                </div>
-
-                <div class="page" id="page-whisper">
-                    <div class="page-header"><h3>🔮 低语者 · 感知网</h3><span class="sub">点击「扫描」探测周围的心声</span></div>
-                    <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden;">
-                        <div style="font-size:11px;color:#5a5a7a;flex-shrink:0;">
-                            📡 R值 <span id="tsc-rValue-small">1.450</span> · 半径 50m
-                        </div>
-                        <div class="whisper-list-container" id="tsc-whisperList">
-                            <div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔮 点击「扫描」探测周围的心声</div>
-                        </div>
-                        <div class="whisper-actions">
-                            <button class="primary" id="tsc-scanBtn">⟳ 扫描</button>
-                            <button id="tsc-thinkBtn">💭 内心</button>
-                            <button id="tsc-resetBtn">↺ 重置</button>
-                            <span class="hint">💡 点击目标查看详情</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="page" id="page-squad">
-                    <div class="page-header"><h3>💬 小队通讯</h3><span class="sub">🔒 需要苍之学院权限</span></div>
-                    <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
-                        <div style="font-size:48px;opacity:0.3;">🔒</div>
-                        <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁小队通讯</div>
-                        <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
-                    </div>
-                </div>
-
-                <div class="page" id="page-records">
-                    <div class="page-header"><h3>📰 作战记录</h3><span class="sub">🔒 需要苍之学院权限</span></div>
-                    <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
-                        <div style="font-size:48px;opacity:0.3;">🔒</div>
-                        <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁作战记录</div>
-                        <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
-                    </div>
-                </div>
-
-                <div class="page" id="page-lore">
-                    <div class="page-header"><h3>📚 设定集</h3><span class="sub">终末停滞委员会 · 世界观</span></div>
-                    <div class="info-card">
-                        <div style="margin-bottom:6px;font-size:13px;font-weight:500;color:#c8cce8;">⚔️ 终末停滞委员会</div>
-                        <div>一群保护这个已经终结的世界，喜欢做傻事的人。</div>
-                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">🔮 低语者</div>
-                        <div>格林的终末。能够窥探他人的内心。</div>
-                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">📖 三大学园</div>
-                        <div>• <span class="hl2">苍之学园</span> — 弹痕</div>
-                        <div>• <span class="hl2">卡乌斯学院</span> — 斩击</div>
-                        <div>• <span class="hl2">Corporations</span> — 片羽</div>
-                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">🌌 星鲸</div>
-                        <div>以光速的1298次方奔跑的终末。</div>
-                        <div style="margin-top:6px;font-size:13px;font-weight:500;color:#c8cce8;">🔥 篝火之国</div>
-                        <div>封印线之人Stick Man的异界。紫之大树镇守于此。</div>
-                    </div>
-                </div>
-
-            </div><!-- /center-column -->
-
-            <!-- 右列 -->
-            <div class="right-column" id="detailPanel">
-                <div class="panel-header">
-                    <h4>🔮 感知详情</h4>
-                    <span class="sub" id="detailSub">未选择目标</span>
-                </div>
-                <div class="detail-empty" id="detailEmpty">
-                    <div class="icon">👁️</div>
-                    <div>点击左侧感知列表中的目标<br>查看详细信息</div>
-                </div>
-                <div class="detail-content" id="detailContent" style="display:none;"></div>
-            </div>
-
-        </div><!-- /main -->
-
-    </div><!-- /app -->
-
-    <!-- 模态框 -->
-    <div class="portrait-modal-overlay" id="portraitModal">
-        <div class="portrait-modal-box">
-            <div class="big-portrait" id="bigPortrait">🧑</div>
-            <div class="p-name" id="pName">名字</div>
-            <div class="p-title" id="pTitle">称号</div>
-            <button class="p-close" id="pClose">关闭</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h4 id="modalTitle">📋 信息</h4>
-                <button class="close" id="modalClose">✕</button>
-            </div>
-            <div class="modal-body" id="modalBody">内容加载中...</div>
-            <div class="modal-footer">
-                <button id="modalConfirm">确定</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================
-    JavaScript
-    ============================================================ -->
-    <script>
-        (function() {
-            'use strict';
-
-            // ============================================================
-            //  工具 & DOM
-            // ============================================================
-            function getEl(id) { return document.getElementById(id); }
-            function addLog(msg) { console.log('[低语者]', msg); }
-
-            // ============================================================
-            //  全屏切换
-            // ============================================================
-            const fullscreenToggle = getEl('fullscreenToggle');
-            const app = getEl('app');
-            let isFullscreen = false;
-            fullscreenToggle.addEventListener('click', function() {
-                isFullscreen = !isFullscreen;
-                app.classList.toggle('fullscreen-mode', isFullscreen);
-                this.textContent = isFullscreen ? '✖' : '⛶';
-                this.title = isFullscreen ? '退出全屏' : '切换全屏';
-                document.body.style.overflow = isFullscreen ? 'hidden' : '';
-                setTimeout(() => {
-                    const output = getEl('storyOutput');
-                    if (output) output.scrollTop = output.scrollHeight;
-                }, 200);
-            });
-
-            // ============================================================
-            //  立绘模态框
-            // ============================================================
-            function showPortraitModal(name, title, color, emoji) {
-                const modal = getEl('portraitModal');
-                const big = getEl('bigPortrait');
-                const pName = getEl('pName');
-                const pTitle = getEl('pTitle');
-                if (emoji) {
-                    big.innerHTML = emoji;
-                    big.style.background = 'rgba(255,255,255,0.05)';
-                } else {
-                    const initial = name.charAt(0).toUpperCase();
-                    big.innerHTML = initial;
-                    big.style.background = color || '#6a4aff';
-                }
-                pName.textContent = name;
-                pTitle.textContent = title || '';
-                modal.classList.add('show');
-            }
-            getEl('pClose').addEventListener('click', function() {
-                getEl('portraitModal').classList.remove('show');
-            });
-            getEl('portraitModal').addEventListener('click', function(e) {
-                if (e.target === this) this.classList.remove('show');
-            });
-
-            function makeThumbHtml(name, color, emoji) {
-                const initial = name.charAt(0).toUpperCase();
-                const bg = color || '#6a4aff';
-                const content = emoji || initial;
-                return `<div class="avatar-thumb" style="background:${bg};">${content}</div>`;
-            }
-
-            function makeDetailPortraitHtml(name, color, emoji) {
-                const initial = name.charAt(0).toUpperCase();
-                const bg = color || '#6a4aff';
-                const content = emoji || initial;
-                return `<div class="portrait-img" style="background:${bg};font-size:28px;">${content}</div>`;
-            }
-
-            // ============================================================
-            //  模态框 (通用)
-            // ============================================================
-            function showModal(title, content, onConfirm) {
-                getEl('modalTitle').textContent = title;
-                getEl('modalBody').innerHTML = content;
-                getEl('modal').classList.add('show');
-                if (onConfirm) {
-                    getEl('modalConfirm').onclick = function() {
-                        getEl('modal').classList.remove('show');
-                        onConfirm();
-                    };
-                } else {
-                    getEl('modalConfirm').onclick = function() {
-                        getEl('modal').classList.remove('show');
-                    };
-                }
-            }
-            getEl('modalClose').addEventListener('click', function() { getEl('modal').classList.remove('show'); });
-            getEl('modal').addEventListener('click', function(e) {
-                if (e.target === this) this.classList.remove('show');
-            });
-
-            // ============================================================
-            //  频道切换
-            // ============================================================
-            const channelItems = document.querySelectorAll('.channel-item');
-            const pages = {
-                story: getEl('page-story'),
-                profile: getEl('page-profile'),
-                'terminal-list': getEl('page-terminal-list'),
-                mission: getEl('page-mission'),
-                whisper: getEl('page-whisper'),
-                squad: getEl('page-squad'),
-                records: getEl('page-records'),
-                lore: getEl('page-lore')
-            };
-            const lockedChannels = ['terminal-list', 'mission', 'squad', 'records'];
-
-            channelItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const channel = this.dataset.channel;
-                    if (lockedChannels.includes(channel) && !hasAcademyPermission()) {
-                        showModal('🔒 权限不足',
-                            '<div style="text-align:center;padding:8px 0;">' +
-                            '<div style="font-size:36px;margin-bottom:10px;">🔒</div>' +
-                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">' + getChannelName(channel) + ' 已锁定</div>' +
-                            '<div style="font-size:12px;color:#8a8aaa;">加入苍之学院后可解锁此模块</div>' +
-                            '<div style="margin-top:12px;"><button onclick="document.getElementById(\'modal\').classList.remove(\'show\');document.querySelector(\'.unlock-btn\')?.click();" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button></div>' +
-                            '</div>'
-                        );
-                        return;
-                    }
-                    channelItems.forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    Object.keys(pages).forEach(key => {
-                        pages[key].classList.toggle('active', key === channel);
-                    });
-                    if (channel === 'whisper') setTimeout(generateWhispers, 200);
-                    if (channel === 'terminal-list' && hasAcademyPermission()) renderTerminalList();
-                });
-            });
-
-            function getChannelName(channel) {
-                const map = { 'terminal-list': '终末档案', 'mission': '任务简报', 'squad': '小队通讯', 'records': '作战记录' };
-                return map[channel] || channel;
-            }
-
-            // ============================================================
-            //  正文输出系统
-            // ============================================================
-            const storyOutput = getEl('storyOutput');
-
-            function addStoryBlock(type, content, speaker) {
-                if (!storyOutput) return;
-                const timeStr = getTimeString();
-                const block = document.createElement('div');
-                block.className = 'story-block ' + type;
-                let innerHTML = '';
-                if (type === 'dialogue') {
-                    innerHTML = '<span class="time-tag">[' + timeStr + ']</span>' +
-                        '<span class="speaker">' + (speaker || '???') + '</span>' + content;
-                } else if (type === 'system') {
-                    innerHTML = '<span class="time-tag">[' + timeStr + ']</span>' + content;
-                } else {
-                    innerHTML = '<span class="time-tag">[' + timeStr + ']</span>' + content;
-                }
-                block.innerHTML = innerHTML;
-                storyOutput.appendChild(block);
-                storyOutput.scrollTop = storyOutput.scrollHeight;
-            }
-
-            function getTimeString() {
-                const h = String(currentHour).padStart(2, '0');
-                const m = String(currentMinute).padStart(2, '0');
-                return h + ':' + m;
-            }
-
-            // ============================================================
-            //  权限系统
-            // ============================================================
-            let academyPermission = false;
-
-            function hasAcademyPermission() { return academyPermission; }
-
-            function grantAcademyPermission() {
-                academyPermission = true;
-                const permBadge = getEl('permBadge');
-                permBadge.textContent = '苍之学园';
-                permBadge.classList.add('granted');
-
-                ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'].forEach(id => {
-                    const el = getEl(id);
-                    if (el) { el.textContent = '🔓'; el.classList.add('unlocked'); }
-                });
-
-                const unlockCard = getEl('unlockCard');
-                if (unlockCard) {
-                    unlockCard.style.borderColor = 'rgba(129,199,132,0.3)';
-                    unlockCard.style.background = 'rgba(129,199,132,0.06)';
-                }
-                const unlockIcon = getEl('unlockIcon');
-                if (unlockIcon) unlockIcon.textContent = '🔓';
-                const unlockTitle = getEl('unlockTitle');
-                if (unlockTitle) unlockTitle.textContent = '档案权限已授予';
-                const unlockDesc = getEl('unlockDesc');
-                if (unlockDesc) unlockDesc.textContent = '苍之学园成员 · 可访问终末档案';
-                const unlockBtn = getEl('unlockBtn');
-                if (unlockBtn) {
-                    unlockBtn.textContent = '已解锁';
-                    unlockBtn.disabled = true;
-                    unlockBtn.style.borderColor = '#2a4a2a';
-                    unlockBtn.style.color = '#81c784';
-                }
-
-                const terminalSub = getEl('terminalSub');
-                if (terminalSub) terminalSub.textContent = '已解锁 0 / 6';
-
-                // 任务简报
-                const missionPage = getEl('page-mission');
-                if (missionPage) {
-                    missionPage.innerHTML = `
-                        <div class="page-header"><h3>🎯 任务简报</h3><span class="sub">当前行动</span></div>
-                        <div class="info-card">
-                            <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.04);">
-                                <div style="font-size:14px;color:#d0d4e0;font-weight:500;">📌 当前任务：逃离女神神殿</div>
-                                <div style="font-size:12px;color:#8a8aaa;margin-top:3px;">目标：在女神的陷阱中存活，与露娜一同脱逃</div>
-                                <div style="font-size:11px;color:#5a5a7a;margin-top:3px;">状态：<span class="warn">进行中</span> · 优先级：<span class="hl2">紧急</span></div>
-                            </div>
-                            <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.04);">
-                                <div style="font-size:12px;color:#d0d4e0;font-weight:500;">📌 支线：了解低语者的本质</div>
-                                <div style="font-size:11px;color:#8a8aaa;">探索你的终末能力的极限与代价</div>
-                                <div style="font-size:11px;color:#5a5a7a;margin-top:2px;">进度：<span class="hl">10%</span></div>
-                            </div>
-                            <div>
-                                <div style="font-size:12px;color:#d0d4e0;font-weight:500;">📌 长期目标：停滞终末</div>
-                                <div style="font-size:11px;color:#8a8aaa;">终末停滞委员会 · 第12区</div>
-                                <div style="font-size:11px;color:#5a5a7a;margin-top:2px;">距离世界终末：<span class="warn">未知</span></div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                // 小队通讯
-                const squadPage = getEl('page-squad');
-                if (squadPage) {
-                    squadPage.innerHTML = `
-                        <div class="page-header"><h3>💬 小队通讯</h3><span class="sub">当前 <span id="squadOnline">1</span> 人在线</span></div>
-                        <div style="flex:1;display:flex;flex-direction:column;gap:5px;overflow-y:auto;padding-right:4px;font-size:12px;min-height:0;">
-                            <div><span style="color:#5a5a7a;">[06:03]</span> <span style="color:#a78bfa;">露娜</span>：格林同学，你醒了吗？</div>
-                            <div><span style="color:#5a5a7a;">[06:05]</span> <span style="color:#a78bfa;">露娜</span>：我去准备些吃的，你先别乱动。</div>
-                            <div><span style="color:#5a5a7a;">[06:08]</span> <span style="color:#4a4a6a;">系统</span>：检测到新的灵魂波动，正在分析中...</div>
-                            <div><span style="color:#5a5a7a;">[06:10]</span> <span style="color:#a78bfa;">露娜</span>：这里很安静，但也不太安全。注意听周围的动静。</div>
-                            <div style="color:#4a4a6a;text-align:center;padding:6px 0;font-size:11px;">—— 只有你与露娜两人 ——</div>
-                        </div>
-                    `;
-                }
-
-                // 作战记录
-                const recordsPage = getEl('page-records');
-                if (recordsPage) {
-                    recordsPage.innerHTML = `
-                        <div class="page-header"><h3>📰 作战记录</h3><span class="sub">已归档 0 项</span></div>
-                        <div class="list-items">
-                            <div style="color:#5a5a7a;text-align:center;padding:30px 0;font-size:13px;">
-                                <div style="font-size:32px;margin-bottom:10px;">📭</div>
-                                暂无作战记录<br>
-                                <span style="font-size:12px;color:#4a4a6a;">加入苍之学院后开始积累</span>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                renderTerminalList();
-                addStoryBlock('system', '你获得了苍之学院的认可，所有功能已解锁。');
-                addLog('苍之学院权限已授予');
-            }
-
-            document.querySelectorAll('.unlock-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (!hasAcademyPermission()) {
-                        showModal('🏫 苍之学院',
-                            '<div style="text-align:center;padding:8px 0;">' +
-                            '<div style="font-size:32px;margin-bottom:10px;">🏫</div>' +
-                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">来自苍之学院的邀请</div>' +
-                            '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;">' +
-                            '一位自称来自苍之学院的使者出现在你面前。<br>' +
-                            '「你的能力……很有趣。愿意加入我们吗？」<br>' +
-                            '「苍之学园，弹痕的归属之地。」' +
-                            '</div>' +
-                            '</div>',
-                            function() {
-                                grantAcademyPermission();
-                                showModal('✅ 已加入苍之学院',
-                                    '<div style="text-align:center;padding:8px 0;">' +
-                                    '<div style="font-size:32px;margin-bottom:10px;">🎓</div>' +
-                                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">欢迎加入苍之学园</div>' +
-                                    '<div style="font-size:12px;color:#8a8aaa;">所有功能已解锁</div>' +
-                                    '</div>'
-                                );
-                            }
-                        );
-                    }
-                });
-            });
-
-            // ============================================================
-            //  终末档案
-            // ============================================================
-            const terminalArchives = [{
-                id: 'soul-accumulator',
-                name: '灵魂蓄积器TM',
-                type: '死灵操法 · 反现实机械工学',
-                stage: 'Stage 3',
-                location: '女神 · 已确认 284 台',
-                borderClass: 'purple',
-                tagClass: 'danger-tag',
-                description: '女神佩尔西奥涅的终末。以灵魂为燃料的蓄积装置，将人类转化为幸福幻梦中的灵魂电池。',
-                threat: '极高',
-                status: '已确认'
-            }, {
-                id: 'golden-lion',
-                name: '黄金狮子',
-                type: '异法 Parallel·Law',
-                stage: 'Stage 2',
-                location: '钢铁的新娘 · 契约绑定',
-                borderClass: 'gold',
-                tagClass: 'active-tag',
-                description: '钢铁的新娘所持有的异法。以契约之力驱动的黄金狮子，忠诚而危险。',
-                threat: '高',
-                status: '已确认'
-            }, {
-                id: 'woodpecker',
-                name: '木匠的啄木鸟先生',
-                type: '异法 Parallel·Law',
-                stage: 'Stage 3',
-                location: '尼泊尔 · 索卢坤布县',
-                borderClass: 'red',
-                tagClass: 'danger-tag',
-                description: '存在于尼泊尔山区的终末。以啄木鸟形态出现的异法，会啄食人类的记忆。',
-                threat: '高',
-                status: '已确认'
-            }, {
-                id: 'organ-apartment',
-                name: '脏器公寓',
-                type: '死灵操法 · 仪式灾害',
-                stage: 'Stage 3',
-                location: '巴塞罗那 · 已处理',
-                borderClass: 'purple',
-                tagClass: 'danger-tag',
-                description: '巴塞罗那的仪式灾害。将整栋公寓转化为活体脏器，已由委员会处理。',
-                threat: '高',
-                status: '已处理'
-            }, {
-                id: 'deep-cave',
-                name: '深穴 Roguelite',
-                type: '梵我合一',
-                stage: 'Stage 2',
-                location: '训练用 · 可反复进入',
-                borderClass: 'gray',
-                tagClass: '',
-                description: '委员会的训练设施。每次进入都会生成不同的深层结构，用于锻炼低语者的实战能力。',
-                threat: '中',
-                status: '训练用'
-            }, {
-                id: 'clay-mask',
-                name: '泥塑面具',
-                type: '不明 · 人格篡夺',
-                stage: 'Stage 2',
-                location: '太平洋沿岸 · 312 个',
-                borderClass: 'gray',
-                tagClass: '',
-                description: '太平洋沿岸发现的终末。以泥塑面具形态出现，能够篡夺佩戴者的人格。已确认312个个体。',
-                threat: '中',
-                status: '调查中'
-            }];
-
-            let unlockedArchives = [];
-
-            function renderTerminalList() {
-                const list = getEl('terminalList');
-                const sub = getEl('terminalSub');
-                if (!list) return;
-
-                if (!hasAcademyPermission()) {
-                    sub.textContent = '🔒 需要苍之学院权限';
-                    list.innerHTML = terminalArchives.map((a, index) =>
-                        `<div class="list-item border-left gray" style="opacity:0.5;cursor:not-allowed;">
-                            <div class="title">🔒 档案 #${String(index+1).padStart(2,'0')} · 未解锁</div>
-                            <div class="desc">加入苍之学院后解锁此档案</div>
-                        </div>`
-                    ).join('');
-                    return;
-                }
-
-                sub.textContent = '已解锁 ' + unlockedArchives.length + ' / ' + terminalArchives.length;
-                list.innerHTML = terminalArchives.map((a, index) => {
-                    const isUnlocked = unlockedArchives.includes(a.id);
-                    if (!isUnlocked) {
-                        return `<div class="list-item border-left gray" style="opacity:0.6;cursor:pointer;" onclick="window.tscTryUnlockArchive('${a.id}')">
-                            <div class="title">🔒 档案 #${String(index+1).padStart(2,'0')} · ${a.name}</div>
-                            <div class="desc">${a.type}</div>
-                            <div style="font-size:10px;color:#5a5a7a;margin-top:2px;">点击解锁</div>
-                        </div>`;
-                    }
-                    return `<div class="list-item border-left ${a.borderClass}" onclick="window.tscShowArchiveDetail('${a.id}')">
-                        <div class="title">${a.name} <span class="tag ${a.tagClass}">${a.stage}</span></div>
-                        <div class="desc">${a.type}</div>
-                        <div class="meta">${a.location}</div>
-                    </div>`;
-                }).join('');
-            }
-
-            window.tscTryUnlockArchive = function(id) {
-                if (!hasAcademyPermission()) return;
-                const archive = terminalArchives.find(a => a.id === id);
-                if (!archive || unlockedArchives.includes(id)) return;
-                showModal('📜 档案解锁',
-                    '<div style="text-align:center;padding:8px 0;">' +
-                    '<div style="font-size:32px;margin-bottom:10px;">📜</div>' +
-                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">解锁档案：' + archive.name + '</div>' +
-                    '<div style="font-size:12px;color:#8a8aaa;">是否消耗权限解锁此档案？</div>' +
-                    '</div>',
-                    function() {
-                        unlockedArchives.push(id);
-                        renderTerminalList();
-                        addStoryBlock('system', '档案已解锁：' + archive.name);
-                        addLog('档案已解锁: ' + archive.name);
-                    }
-                );
-            };
-
-            window.tscShowArchiveDetail = function(id) {
-                const archive = terminalArchives.find(a => a.id === id);
-                if (!archive || !unlockedArchives.includes(id)) return;
-                showModal('📜 ' + archive.name,
-                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">类型</div><div style="font-size:13px;color:#d0d4e0;">' + archive.type + '</div></div>' +
-                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">阶段</div><div style="font-size:13px;color:#d0d4e0;">' + archive.stage + '</div></div>' +
-                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">位置</div><div style="font-size:13px;color:#d0d4e0;">' + archive.location + '</div></div>' +
-                    '<div style="margin-bottom:10px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;"><div style="font-size:12px;color:#5a5a7a;margin-bottom:3px;">描述</div><div style="font-size:12px;color:#aab0c8;line-height:1.6;">' + archive.description + '</div></div>' +
-                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>⚠️ 威胁等级：<span style="color:#f87171;">' + archive.threat + '</span></div><div>📋 状态：<span style="color:#81c784;">' + archive.status + '</span></div></div>'
-                );
-            };
-
-            // ============================================================
-            //  时间系统
-            // ============================================================
-            let currentHour = 6,
-                currentMinute = 0,
-                dayCount = 1;
-
-            function updateTimeDisplay() {
-                const h = String(currentHour).padStart(2, '0');
-                const m = String(currentMinute).padStart(2, '0');
-                getEl('topTime').textContent = h + ':' + m;
-                getEl('tsc-time-status').textContent = '当前 ' + h + ':' + m;
-                getEl('topDate').textContent = '第 ' + dayCount + ' 日';
-                const profileTime = getEl('profileTime');
-                if (profileTime) {
-                    const timeMap = { '6': '清晨', '9': '上午', '12': '正午', '15': '午后', '18': '黄昏', '21': '夜晚', '0': '深夜' };
-                    let ts = '清晨';
-                    for (let [k, v] of Object.entries(timeMap)) { if (currentHour >= parseInt(k)) ts = v; }
-                    profileTime.textContent = ts;
-                }
-                const statusMap = { '6': '神殿 · 清晨', '9': '神殿 · 上午', '12': '神殿 · 正午', '15': '神殿 · 午后', '18': '神殿 · 黄昏', '21': '神殿 · 夜晚', '0': '神殿 · 深夜' };
-                let st = '神殿 · 清晨';
-                for (let [k, v] of Object.entries(statusMap)) { if (currentHour >= parseInt(k)) st = v; }
-                getEl('topStatus').textContent = st;
-                let r = 1.45;
-                if (currentHour >= 22 || currentHour < 6) r = 1.38 + Math.random() * 0.08;
-                else if (currentHour >= 12 && currentHour < 14) r = 1.42 + Math.random() * 0.06;
-                else r = 1.44 + Math.random() * 0.08;
-                r = Math.round(r * 1000) / 1000;
-                getEl('topR').textContent = r.toFixed(3);
-                const rSmall = getEl('tsc-rValue-small');
-                if (rSmall) rSmall.textContent = r.toFixed(3);
-            }
-
-            function advanceTime(minutes) {
-                currentMinute += minutes;
-                while (currentMinute >= 60) { currentMinute -= 60;
-                    currentHour += 1; if (currentHour >= 24) { currentHour -= 24;
-                        dayCount += 1; } }
-                updateTimeDisplay();
-                const timeTexts = [
-                    '时间静静流逝，神殿内的光影悄然变化。',
-                    '你感觉到周围的空气微微流动，远处传来若有若无的声响。',
-                    '寂静笼罩着神殿，只有你自己的呼吸声在耳边回响。',
-                    '露娜在不远处安静地守候着，目光中带着关切。'
-                ];
-                addStoryBlock('narration', timeTexts[Math.floor(Math.random() * timeTexts.length)]);
-                if (currentHour >= 8 && currentHour <= 10 && !hasAcademyPermission() && Math.random() > 0.7) {
-                    setTimeout(function() {
-                        showModal('🏫 苍之学院',
-                            '<div style="text-align:center;padding:8px 0;">' +
-                            '<div style="font-size:32px;margin-bottom:10px;">🏫</div>' +
-                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">来自苍之学院的邀请</div>' +
-                            '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;">' +
-                            '一位自称来自苍之学院的使者出现在你面前。<br>' +
-                            '「你的能力……很有趣。愿意加入我们吗？」<br>' +
-                            '「苍之学园，弹痕的归属之地。」' +
-                            '</div>' +
-                            '</div>',
-                            function() {
-                                grantAcademyPermission();
-                                showModal('✅ 已加入苍之学院',
-                                    '<div style="text-align:center;padding:8px 0;">' +
-                                    '<div style="font-size:32px;margin-bottom:10px;">🎓</div>' +
-                                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">欢迎加入苍之学园</div>' +
-                                    '<div style="font-size:12px;color:#8a8aaa;">所有功能已解锁</div>' +
-                                    '</div>'
-                                );
-                            }
-                        );
-                    }, 300);
-                }
-            }
-
-            getEl('tsc-time-15m').addEventListener('click', function() { advanceTime(15); });
-            getEl('tsc-time-30m').addEventListener('click', function() { advanceTime(30); });
-            getEl('tsc-time-1h').addEventListener('click', function() { advanceTime(60); });
-            getEl('tsc-time-3h').addEventListener('click', function() { advanceTime(180); });
-            updateTimeDisplay();
-
-            // ============================================================
-            //  感知池
-            // ============================================================
-            const whisperPool = {
-                luna: {
-                    name: '露娜',
-                    type: '女仆 · 机械人偶',
-                    color: '#7c4dff',
-                    emoji: '👩',
-                    title: '女仆 · 机械人偶',
-                    status: '活跃 · 守护中',
-                    whispers: [
-                        { text: '「格林同学终于醒了……得让他吃点东西。」', mood: '关心' },
-                        { text: '「好累啊……又要干活了。」', mood: '疲惫' },
-                        { text: '「不能让他知道真相……否则会重蹈覆辙。」', mood: '恐惧' },
-                        { text: '「要是能救他……就好了。」', mood: '希望' }
-                    ],
-                    description: '格林的专属女仆，机械人偶。外表温柔，内心隐藏着复杂的秘密。',
-                    relationship: '守护者',
-                    threat: '无'
-                },
-                goddess: {
-                    name: '女神·佩尔西奥涅',
-                    type: '神性存在 · 灵魂蓄积器',
-                    color: '#ffab00',
-                    emoji: '👑',
-                    title: '女神 · 灵魂蓄积器',
-                    status: '注视中 · 不可见',
-                    whispers: [
-                        { text: '「又一个闪耀的灵魂……来吧，走向幸福。」', mood: '慈爱' },
-                        { text: '「只要你相信……命运就会为你铺路。」', mood: '引导' },
-                        { text: '「门的那边……是永恒的梦。」', mood: '诱惑' },
-                        { text: '「不要怀疑……一切都是为了你好。」', mood: '温柔' }
-                    ],
-                    description: '女神神殿的主人，灵魂蓄积器TM的持有者。以慈爱的外表诱骗灵魂进入永恒的梦境。',
-                    relationship: '敌对 · 未知',
-                    threat: '极高'
-                }
-            };
-
-            function generateWhispers() {
-                const list = getEl('tsc-whisperList');
-                if (!list) return;
-                const available = [whisperPool.luna, whisperPool.goddess];
-                const results = [];
-                for (const p of available) {
-                    const w = p.whispers[Math.floor(Math.random() * p.whispers.length)];
-                    const dist = p.name === '露娜' ? 3 + Math.floor(Math.random() * 5) : 10 + Math.floor(Math.random() * 10);
-                    results.push({
-                        name: p.name,
-                        type: p.type,
-                        color: p.color,
-                        emoji: p.emoji,
-                        title: p.title,
-                        status: p.status,
-                        thought: w.text,
-                        mood: w.mood,
-                        distance: dist,
-                        readStatus: p.name === '女神·佩尔西奥涅' ? '半可读' : '可读',
-                        description: p.description,
-                        relationship: p.relationship,
-                        threat: p.threat
-                    });
-                }
-                if (currentHour >= 21 && Math.random() > 0.5) {
-                    results.push({
-                        name: '门后的存在',
-                        type: '未知 · 终末',
-                        color: '#9c27b0',
-                        emoji: '🌀',
-                        title: '未知存在',
-                        status: '混沌 · 不可名状',
-                        thought: '「……好幸福……好幸福……永远在一起……」',
-                        mood: '混沌',
-                        distance: 20 + Math.floor(Math.random() * 15),
-                        readStatus: '混沌',
-                        description: '门后传来的低语。无法确认其形态与意图，只能感受到强烈的幸福与执念。',
-                        relationship: '未知',
-                        threat: '未知'
-                    });
-                }
-                if (results.length === 0) {
-                    list.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔇 周围没有可感知的存在</div>';
-                    return;
-                }
-                list.innerHTML = results.map(w => {
-                    const color = w.readStatus === '混沌' ? '#ffb300' : w.readStatus === '半可读' ? '#fbbf24' : '#b39ddb';
-                    const preview = '「' + w.thought.slice(0, 8) + (w.thought.length > 8 ? '…」' : '」');
-                    const data = encodeURIComponent(JSON.stringify(w));
-                    return `<div class="whisper-item" onclick="window.tscShowTarget('${data}')">
-                        ${makeThumbHtml(w.name, w.color, w.emoji)}
-                        <div class="info">
-                            <div class="n">${w.name}</div>
-                            <div class="t">${w.type} · 距离 ${w.distance}m</div>
-                        </div>
-                        <span class="preview" style="color:${color}">${preview}</span>
-                    </div>`;
-                }).join('');
-                addLog('扫描完成');
-            }
-
-            window.tscShowTarget = function(dataStr) {
-                const data = JSON.parse(decodeURIComponent(dataStr));
-                const detailEmpty = getEl('detailEmpty');
-                const detailContent = getEl('detailContent');
-                const detailSub = getEl('detailSub');
-                detailEmpty.style.display = 'none';
-                detailContent.style.display = 'flex';
-                detailSub.textContent = data.name;
-                const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎', '温柔': '💖', '混沌': '🌀' };
-                const moodIcon = moodMap[data.mood] || '💬';
-                const statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' : '#81c784';
-                detailContent.innerHTML = `
-                    <div class="portrait-area" onclick="showPortraitModal('${data.name}','${data.title}','${data.color}','${data.emoji}')">
-                        ${makeDetailPortraitHtml(data.name, data.color, data.emoji)}
-                        <div class="detail-name">${data.name}</div>
-                        <div class="detail-title">${data.title}</div>
-                        <div class="detail-status">
-                            <span style="color:${statusColor};">● ${data.status}</span>
-                            <span>📡 ${data.distance}m</span>
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="section-label">💭 心声</div>
-                        <div class="section-content" style="font-style:italic;border-left:3px solid ${statusColor};padding-left:8px;">
-                            ${data.thought}
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="section-label">📋 信息</div>
-                        <div class="section-content">
-                            <div>类型：${data.type}</div>
-                            <div>关系：${data.relationship || '未知'}</div>
-                            <div>威胁：<span style="color:${data.threat === '极高' ? '#f87171' : data.threat === '高' ? '#fbbf24' : '#81c784'};">${data.threat || '未知'}</span></div>
-                            <div>可读性：<span style="color:${statusColor};">${data.readStatus}</span></div>
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="section-label">📖 描述</div>
-                        <div class="section-content">${data.description || '暂无描述'}</div>
-                    </div>
-                    <div class="detail-actions">
-                        <button class="primary" onclick="window.tscDeepSense('${dataStr}')">🔮 深度感知</button>
-                        <button onclick="window.tscClearDetail()">✕ 清除</button>
-                    </div>
-                `;
-                addStoryBlock('narration', '你集中精神，感知到' + data.name + '的存在。距离约' + data.distance + '米。');
-                if (data.readStatus === '可读') {
-                    addStoryBlock('dialogue', data.thought, data.name);
-                } else if (data.readStatus === '半可读') {
-                    addStoryBlock('narration', '对方的意识被某种力量笼罩，你只能捕捉到片段……');
-                    addStoryBlock('dialogue', data.thought, data.name);
-                } else {
-                    addStoryBlock('system', '混沌的意志干扰了你的感知，只能感受到模糊的情绪。');
-                }
-                addLog('查看目标: ' + data.name);
-            };
-
-            window.tscDeepSense = function(dataStr) {
-                const data = JSON.parse(decodeURIComponent(dataStr));
-                const moodMap = { '关心': '💚', '疲惫': '😩', '恐惧': '😨', '希望': '🌟', '慈爱': '💛', '引导': '🔮', '诱惑': '🍎', '温柔': '💖', '混沌': '🌀' };
-                const moodIcon = moodMap[data.mood] || '💬';
-                showModal('🔮 深度感知 · ' + data.name,
-                    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
-                    '<div style="width:48px;height:64px;border-radius:6px;background:' + data.color + ';display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;">' + (data.emoji || data.name.charAt(0).toUpperCase()) + '</div>' +
-                    '<div><div style="font-size:16px;font-weight:600;color:#e0e4f0;">' + data.name + '</div><div style="font-size:12px;color:#7a7a9a;">' + data.type + '</div></div>' +
-                    '</div>' +
-                    '<div style="background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;margin-bottom:10px;font-style:italic;color:#d0d4e0;font-size:13px;border-left:3px solid ' + (data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' : '#81c784') + ';">' + data.thought + '</div>' +
-                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>📡 距离 ' + data.distance + 'm</div><div>' + moodIcon + ' ' + data.mood + '</div><div>🔮 ' + data.readStatus + '</div></div>'
-                );
-                addStoryBlock('narration', '你加深了感知，' + data.name + '的情绪更加清晰地传来。');
-            };
-
-            window.tscClearDetail = function() {
-                getEl('detailEmpty').style.display = 'flex';
-                getEl('detailContent').style.display = 'none';
-                getEl('detailContent').innerHTML = '';
-                getEl('detailSub').textContent = '未选择目标';
-            };
-
-            const scanBtn = getEl('tsc-scanBtn');
-            if (scanBtn) {
-                scanBtn.addEventListener('click', function() {
-                    this.textContent = '⏳ 扫描中...';
-                    this.disabled = true;
-                    setTimeout(() => {
-                        generateWhispers();
-                        this.textContent = '⟳ 扫描';
-                        this.disabled = false;
-                        const r = 1.38 + Math.random() * 0.15;
-                        getEl('topR').textContent = r.toFixed(3);
-                        const rSmall = getEl('tsc-rValue-small');
-                        if (rSmall) rSmall.textContent = r.toFixed(3);
-                        addStoryBlock('system', '你释放了低语者的感知力，周围的心声涌入脑海。R值波动至 ' + r.toFixed(3) + '。');
-                        addLog('R值波动: ' + r.toFixed(3));
-                    }, 500);
-                });
-            }
-
-            const thoughts = [
-                '「这里是……女神的神殿？我还活着？」',
-                '「露娜小姐……她为什么要救我？」',
-                '「那个魔王……她到底是什么人……」',
-                '「我……真的可以重新来过吗？」',
-                '「这次……我不想再逃避了。」',
-                '「刚才那个声音……是什么……？」',
-                '「门后面……有什么东西在……」'
-            ];
-            const thinkBtn = getEl('tsc-thinkBtn');
-            if (thinkBtn) {
-                thinkBtn.addEventListener('click', function() {
-                    const thought = thoughts[Math.floor(Math.random() * thoughts.length)];
-                    showModal('💭 内心独白',
-                        '<div style="font-style:italic;font-size:14px;color:#d0d4e0;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;text-align:center;">' + thought + '</div>'
-                    );
-                    addStoryBlock('inner', thought);
-                    addLog('内心独白');
-                });
-            }
-
-            const charCard = getEl('charCard');
-            if (charCard) {
-                charCard.addEventListener('click', function() {
-                    showPortraitModal('格林', '低语者 · Stage 4', '#6a4aff', '🧑‍🎤');
-                });
-            }
-
-            // ============================================================
-            //  重置
-            // ============================================================
-            const resetBtn = getEl('tsc-resetBtn');
-            if (resetBtn) {
-                resetBtn.addEventListener('click', function() {
-                    if (!confirm('重置所有状态到初始值？')) return;
-                    currentHour = 6;
-                    currentMinute = 0;
-                    dayCount = 1;
-                    academyPermission = false;
-                    unlockedArchives = [];
-                    updateTimeDisplay();
-
-                    const permBadge = getEl('permBadge');
-                    permBadge.textContent = '未加入学园';
-                    permBadge.classList.remove('granted');
-
-                    ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'].forEach(id => {
-                        const el = getEl(id);
-                        if (el) { el.textContent = '🔒';
-                            el.classList.remove('unlocked'); }
-                    });
-
-                    const unlockCard = getEl('unlockCard');
-                    if (unlockCard) {
-                        unlockCard.style.borderColor = 'rgba(106,74,255,0.2)';
-                        unlockCard.style.background = 'rgba(106,74,255,0.06)';
-                    }
-                    const unlockIcon = getEl('unlockIcon');
-                    if (unlockIcon) unlockIcon.textContent = '🔒';
-                    const unlockTitle = getEl('unlockTitle');
-                    if (unlockTitle) unlockTitle.textContent = '档案权限已锁定';
-                    const unlockDesc = getEl('unlockDesc');
-                    if (unlockDesc) unlockDesc.textContent = '加入苍之学院后可获得档案访问权限';
-                    const unlockBtn = getEl('unlockBtn');
-                    if (unlockBtn) {
-                        unlockBtn.textContent = '未解锁';
-                        unlockBtn.disabled = true;
-                        unlockBtn.style.borderColor = '#4a3a6a';
-                        unlockBtn.style.color = '#b8b8e0';
-                    }
-
-                    const terminalSub = getEl('terminalSub');
-                    if (terminalSub) terminalSub.textContent = '🔒 需要苍之学院权限';
-
-                    const missionPage = getEl('page-mission');
-                    if (missionPage) {
-                        missionPage.innerHTML = `
-                            <div class="page-header"><h3>🎯 任务简报</h3><span class="sub">🔒 需要苍之学院权限</span></div>
-                            <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
-                                <div style="font-size:48px;opacity:0.3;">🔒</div>
-                                <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁任务简报</div>
-                                <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
-                            </div>
-                        `;
-                    }
-                    const squadPage = getEl('page-squad');
-                    if (squadPage) {
-                        squadPage.innerHTML = `
-                            <div class="page-header"><h3>💬 小队通讯</h3><span class="sub">🔒 需要苍之学院权限</span></div>
-                            <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
-                                <div style="font-size:48px;opacity:0.3;">🔒</div>
-                                <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁小队通讯</div>
-                                <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
-                            </div>
-                        `;
-                    }
-                    const recordsPage = getEl('page-records');
-                    if (recordsPage) {
-                        recordsPage.innerHTML = `
-                            <div class="page-header"><h3>📰 作战记录</h3><span class="sub">🔒 需要苍之学院权限</span></div>
-                            <div class="info-card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;min-height:200px;">
-                                <div style="font-size:48px;opacity:0.3;">🔒</div>
-                                <div style="font-size:14px;color:#8a8aaa;">加入苍之学院后解锁作战记录</div>
-                                <button class="unlock-btn" style="background:transparent;border:1px solid #4a3a6a;color:#b8b8e0;padding:4px 18px;border-radius:30px;font-size:12px;cursor:pointer;font-family:inherit;">前往苍之学院</button>
-                            </div>
-                        `;
-                    }
-
-                    getEl('topR').textContent = '1.450';
-                    const rSmall = getEl('tsc-rValue-small');
-                    if (rSmall) rSmall.textContent = '1.450';
-                    generateWhispers();
-                    renderTerminalList();
-                    window.tscClearDetail();
-                    storyOutput.innerHTML = '';
-                    initStory();
-
-                    document.querySelectorAll('.unlock-btn').forEach(btn => {
-                        btn.addEventListener('click', function() {
-                            if (!hasAcademyPermission()) {
-                                showModal('🏫 苍之学院',
-                                    '<div style="text-align:center;padding:8px 0;">' +
-                                    '<div style="font-size:32px;margin-bottom:10px;">🏫</div>' +
-                                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">来自苍之学院的邀请</div>' +
-                                    '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;">' +
-                                    '一位自称来自苍之学院的使者出现在你面前。<br>' +
-                                    '「你的能力……很有趣。愿意加入我们吗？」<br>' +
-                                    '「苍之学园，弹痕的归属之地。」' +
-                                    '</div>' +
-                                    '</div>',
-                                    function() {
-                                        grantAcademyPermission();
-                                        showModal('✅ 已加入苍之学院',
-                                            '<div style="text-align:center;padding:8px 0;">' +
-                                            '<div style="font-size:32px;margin-bottom:10px;">🎓</div>' +
-                                            '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">欢迎加入苍之学园</div>' +
-                                            '<div style="font-size:12px;color:#8a8aaa;">所有功能已解锁</div>' +
-                                            '</div>'
-                                        );
-                                    }
-                                );
-                            }
-                        });
-                    });
-                    addLog('已重置');
-                });
-            }
-
-            // ============================================================
-            //  初始化故事
-            // ============================================================
-            function initStory() {
-                const openingText = [
-                    { type: 'narration', content: '那个少年被锁链拴在甲板上时，太平洋的阳光正毫无遮拦地晒在他身上。' },
-                    { type: 'narration', content: '他叫格林，十七岁。曾经只是个随处可见的普通高中生——不对，他连高中都没上过。初中毕业前，他被墨西哥黑手党绑架监禁，当奴隶使唤了三年。现在因为知道了太多秘密，成了麻烦，正被丢到一艘船上，准备卖到某个不知名的角落。' },
-                    { type: 'narration', content: '水手们从他身边经过时会刻意绕开，视线在他身上停留不到一秒就移开。他们在怕他。怕那个被称为"低语者"的能力——能窥探人心，能揭穿谎言，能看透组织里每一个人的秘密。' },
-                    { type: 'inner', content: '（可恶。头好痛……感觉快死了。）' },
-                    { type: 'narration', content: '被丢在这么显眼的地方任人围观，他人的思想不由分说地在脑中响起——他人的内心是毒药，它们疯狂搅乱着他的大脑，企图夺取他的思考。那些假装忠诚的干部、暗中通敌的线人、被收买的警察，所有见不得光的事，都由他一一揭开。他知道得太多了，所以被抛弃了。他是工具，用完了就该扔。' },
-                    { type: 'dialogue', content: '“格林，抱歉。”', speaker: '拉法' },
-                    { type: 'narration', content: '背后传来脚步声——是皮鞋的声音。但与脚步声相比，那说话声要小得多。他不用回头也知道是谁。' },
-                    { type: 'dialogue', content: '“……拉法，你来了啊。”', speaker: '格林' },
-                    { type: 'narration', content: '拉斐尔·加西亚。尽管已经40多岁了，却依然是个肌肉发达的高大男人。他穿着一件黑色夹克，衣缝间隐约可见好几处刺青。他是老大的侄子，也是整个组织里唯一还拿他当人看的家伙。' },
-                    { type: 'dialogue', content: '“小外甥来处理垃圾了。真是孝顺啊。”', speaker: '格林' },
-                    { type: 'dialogue', content: '“抱歉，格林。我本来想阻止叔叔的——如果我能说服他的话。但是，老大的命令是绝对的。”', speaker: '拉法' },
-                    { type: 'narration', content: '格林没回答。他太了解拉法了。这个男人无论何时都心口如一，心里想什么，嘴上就说什么。在满是谎言的黑手党里，这种人才是异类。' },
-                    { type: 'dialogue', content: '“说到底，那些干部们——包括我叔叔在内——都开始害怕你了。格林，这几年家族急速扩张，快得不正常。这里头有你一大半功劳……不，是功劳太大了。你揭穿了所有人的秘密——警察和政治家的丑陋勾当，敌对帮派的弱点……还有，家族拼命想要隐藏的无数秘密。”', speaker: '拉法' },
-                    { type: 'narration', content: '也许这是理所当然的结果。他是一颗定时炸弹，是窥探内心向黑手党低语的恶魔。既是使内部崩溃的火种，又是一旦被敌对组织夺走就会带来毁灭的存在。' },
-                    { type: 'dialogue', content: '“……格林。你为什么不求饶呢？”', speaker: '拉法' },
-                    { type: 'dialogue', content: '“诶？”', speaker: '格林' },
-                    { type: 'dialogue', content: '“你一直都是这样。从来到我们这开始，你就总是垂着双阴郁的眼睛，几乎从不抱怨、不发牢骚，无论是命令还是拷问都默不作声地忍耐着。我一直把你当作朋友，可我从来没听你说过一句‘救救我’。”', speaker: '拉法' },
-                    { type: 'narration', content: '那是。' },
-                    { type: 'dialogue', content: '“为什么？”', speaker: '拉法' },
-                    { type: 'inner', content: '为什么……？他刚试图思考，尖锐的疼痛就袭向大脑。' },
-                    { type: 'dialogue', content: '“……因为希望这种东西，从来就没有拯救过我啊。”', speaker: '格林' },
-                    { type: 'narration', content: '拉法的眼神一瞬间像是要哭出来，然后立刻移开了视线。在他心湖的倒影里，浮现出一张小男孩的脸。他隐约想起，拉法曾经说过的他那10年前因心脏病去世的儿子，如果还活着的话，现在该和他同岁了吧。' },
-                    { type: 'dialogue', content: '“接下来会变得更热。把这个吃了吧。”拉法把一大颗糖扔进他嘴里，然后转身离去。那家伙明明长着一副坏人相，实际上干着十恶不赦的勾当，却是个让人哭笑不得的甜食党。', speaker: '拉法' },
-                    { type: 'inner', content: '“……好甜。”' },
-                    { type: 'narration', content: '在太平洋的广阔天空下，被如奴隶一般拴着的他，只能不断舔着那颗甜得发腻的糖。然后，他听到了一道声音。' },
-                    { type: 'dialogue', content: '“——那个看起来很好吃呢。可以给我吗？”', speaker: '黑之魔王' },
-                    { type: 'narration', content: '他吓了一跳。是女孩子银铃般的声音。一位穿着纯黑大衣的少女不知什么时候醒了，正伸着懒腰，乌黑的头发在阳光下泛着光。她和他一样被锁链拴着，但比他惨——整个人被拘束服紧紧绑住，像是关押一头猛兽。她的脸上带着刚睡醒的朦胧，眼睛却亮得像黑曜石。' },
-                    { type: 'dialogue', content: '“你嘴里还剩一点吧？啊——”', speaker: '黑之魔王' },
-                    { type: 'inner', content: '“……认真的吗？”' },
-                    { type: 'dialogue', content: '“喂，我在等你呢——”', speaker: '黑之魔王' },
-                    { type: 'narration', content: '他犹豫了一下。她明明被拘束得比他更严实，但她的内心中没有丝毫恶意。可怕的是，那里空无一物。他凑近她的嘴唇，沾着唾液的糖块顺着舌尖滑进她的口中——咔啦，门牙轻轻碰了一声。那是他的初吻。' },
-                    { type: 'dialogue', content: '“嗯——！好甜！活过来了！得救了呢，谢谢——！”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“……不，我也是。在最后能做一件好事，真是太好了。”', speaker: '格林' },
-                    { type: 'dialogue', content: '“所以，你为什么会被关在这艘船上？”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“我知道了太多秘密。要被扔到遥远的国家卖掉。听说卖到了二十亿美金。”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“那你呢？”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“我得罪了很多人，自己搞砸了。”', speaker: '格林' },
-                    { type: 'dialogue', content: '“你也是黑手党？”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“不。我只是个——魔王。”', speaker: '格林' },
-                    { type: 'narration', content: '他愣了。然后他试图读她的心——结果触到的是极其可怕的东西，漆黑到近乎疯狂的情感。她不是在开玩笑。她是认真的。' },
-                    { type: 'dialogue', content: '“——毁灭宇宙。”', speaker: '黑之魔王' },
-                    { type: 'combat', content: '她的影子膨胀起来，苍蓝色的光芒灼烧着他的视网膜。下一秒，甲板变成了地狱。苍蓝色的影子像缝纫机一样反复贯穿水手的身体，血花溅满甲板，惨叫声此起彼伏。临死之人的思绪像洪水一样涌入他的脑海——我不想死。好可怕。救救我。好痛。好痛。他无法控制地放声大叫，直到喉咙沙哑。' },
-                    { type: 'dialogue', content: '“可怜的人啊。”', speaker: '黑之魔王' },
-                    { type: 'narration', content: '什么东西盖住了他的头。是她的手臂。她温柔地抱紧他，像在拥抱一个迷路的孩子。“你跟我一样呢。是同样的怪物，是那些无法成为人类、憧憬着人类、拥有强烈执念与方向性的存在。总有一天，会走向终末的存在。”' },
-                    { type: 'dialogue', content: '“……你到底……是什么人……”', speaker: '格林' },
-                    { type: 'dialogue', content: '“吾乃魔王！是与世界相对之人，绝不败北之人，不屈于光，勇往直前之人！”', speaker: '黑之魔王' },
-                    { type: 'combat', content: '影之怪物从海面升起，撕裂大海。她扯断他的脚镣，站在巨影的掌心，笑着对他伸出手。' },
-                    { type: 'dialogue', content: '“——我会这么做。你呢？”', speaker: '黑之魔王' },
-                    { type: 'inner', content: '他拼命地思考。因为啊，他可是一直拼命地在放弃。就算怀抱希望也没用，不管再怎么努力，都不会得到救赎。反正无论如何都赢不了，还不如摆出得意洋洋的表情，得过且过。' },
-                    { type: 'inner', content: '（可是这女孩，只花了10秒。）就收拾了那些让他每天牙齿打颤、活在恐惧中的家伙们——那个他以为同自己是一丘之貉的少女，那个他以为和自己一样是丧家之犬的少女。' },
-                    { type: 'inner', content: '（其实，我也……）他也会像她一样，在脑中战斗。可是，他好害怕。好害怕啊。' },
-                    { type: 'dialogue', content: '“可恶……可恶……可恶…………！”', speaker: '格林' },
-                    { type: 'dialogue', content: '“为什么要哭泣？”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“我、我不知道……虽然不知道……可恶……！！”', speaker: '格林' },
-                    { type: 'inner', content: '占据他内心的，是愤怒。至于为何如此，他也不明白。' },
-                    { type: 'dialogue', content: '“……因为……我很弱啊……”', speaker: '格林' },
-                    { type: 'dialogue', content: '“所以才要变强啊。”', speaker: '黑之魔王' },
-                    { type: 'inner', content: '他觉得她的笑容美丽至极——那纯粹的漆黑，将一切涂抹殆尽的色彩，让他一瞬间想要触碰。啊啊，他——爱上她了。' },
-                    { type: 'dialogue', content: '“梦想，能实现就好了呢。”', speaker: '黑之魔王' },
-                    { type: 'inner', content: '他连思考的余地都没有，只是点了点头。甚至没有深入思考那代表什么意义。' },
-                    { type: 'dialogue', content: '“来比赛吧——看看是你能够先抵达青春，还是我能够抵达终焉。”', speaker: '黑之魔王' },
-                    { type: 'dialogue', content: '“那么，我们就是敌人了！”', speaker: '黑之魔王' },
-                    { type: 'combat', content: '影子怪物的手臂缠住船身。伴随着沉重的断裂声，整艘船开始缓缓地崩塌。他死死地抓住已经竖立起来的甲板上的扶手。' },
-                    { type: 'dialogue', content: '“拜拜，再见了。我们彼此都要加油哦。”', speaker: '黑之魔王' },
-                    { type: 'narration', content: '她消失在苍蓝的光芒里。船被撕成碎片，他被汹涌的波涛抛向空中。他打从心底这么想。虽然他什么都不懂，但还是这么想。只知道，这样下去他会葬身海底。' },
-                    { type: 'inner', content: '（既然如此，我该怎么办？）还是要像以前一样，继续绷着阴沉的表情，任由命运殴打他的脸吗？（我不要那样。）即便是我。（即便是我，其实也想像那个魔王一样——）想要战斗。（即便是我，其实也——想要实现梦想。）——太狡猾了。' },
-                    { type: 'inner', content: '（啊啊，我——必须活下去。）' },
-                    { type: 'combat', content: '他一边大叫着，一边开始游了起来。他拨开海水，用力蹬腿。发现了一块漂流的木材，他把身体靠了上去。' },
-                    { type: 'dialogue', content: '“我……！才不是……沙袋……！我要活下去！我要活下去！”', speaker: '格林' },
-                    { type: 'narration', content: '他以为自己会死。但他没有。他看见了拉法——在水面上挣扎，手拍打着海水，嘴里灌了一口又一口的咸水。拉法不擅长游泳，肌肉发达的身体反而成了负担。他看到格林的时候，先是一愣，然后拼命地朝这边游。那块浮木撑不住两个人。格林心里清楚。' },
-                    { type: 'inner', content: '（啊。我，不是能做出这种事的人呢。）是吗。原来他是在这种绝境下，会优先选择去帮助其他人的家伙啊。抛弃熟人不管自己逃生——这种事光是想想就觉得恶心，从一开始就不算可选项。呵，真行啊，他。' },
-                    { type: 'narration', content: '他游过去，把拉法推上浮木。' },
-                    { type: 'dialogue', content: '“等等！我……我抛弃了你啊！本来，该由我来拯救你的！只有我能救你！可我……我害怕，我拿不出勇气！我……我……哪有资格被你拯救啊！”', speaker: '拉法' },
-                    { type: 'dialogue', content: '“拉法。你以前经常给我的烤肉玉米饼，真的很好吃。总有一天，把食谱告诉我吧。”', speaker: '格林' },
-                    { type: 'narration', content: '然后他推着木板往前游。然后——力量耗尽了。他沉了下去。意识逐渐模糊——世界变成了深蓝色的、冰冷的虚无。' },
-                    { type: 'narration', content: '然后——他醒了。最先感受到的是后背传来的石板触感。冷硬的，但不刺骨。空气中弥漫着一股奇异的香气，像是焚香和干枯花瓣混合的气味。他睁开眼，看到高高的穹顶，画着从未见过的宗教画，神祇、羽翼、层层叠叠的光晕，陌生而遥远，却带着不容置疑的威严。乳白色的石柱粗大得像能把整座天空都撑起来。' },
-                    { type: 'inner', content: '他动了动手指，指尖发麻。' },
-                    { type: 'dialogue', content: '“啊。早安——”', speaker: '露娜' },
-                    { type: 'narration', content: '他侧过头。视线里先映入的是一圈白色蕾丝发箍，然后是一张正俯身看着他的脸。水蓝色的运动服，纯白围裙，打满耳钉，眼角涂着淡淡的红色眼妆。她的语气随意得像是在跟邻居打招呼。' },
-                    { type: 'dialogue', content: '“身体状况如何——？”', speaker: '露娜' },
-                    { type: 'inner', content: '他还没有回答。还在消化刚才发生的一切。' },
-                    { type: 'dialogue', content: '“这里是……哪里？”', speaker: '格林' },
-                    { type: 'dialogue', content: '“命运与转生的女神·佩尔西奥涅大人的神殿。你好像被佩尔西奥涅大人呼唤，获得了谒见的荣誉之类的。”', speaker: '露娜' },
-                    { type: 'inner', content: '“……女神。”' },
-                    { type: 'narration', content: '然后，他听到了那道声音。“——看来你已经醒来了，人类啊。”那道声音从腹腔深处震颤而出，像歌剧歌手在穹顶下吟唱。他抬起头。神殿深处，一个翠绿色长发的女性站在那里，像光本身，又像是被光包裹着。她的压迫感让人本能地想要低头，喉咙发紧，像是连呼吸都被压住了。' },
-                    { type: 'dialogue', content: '“抱歉吓到你了。我们一直在注视着你。船只沉没的事，真是遗憾。不过，你做了件好事呢。”', speaker: '女神·佩尔西奥涅' },
-                    { type: 'inner', content: '——救了拉法的事。' },
-                    { type: 'dialogue', content: '“你确实已经死去了。这一次，我召唤了你的灵魂。拜托你了，能否用你那闪耀的勇气，为这个世界伸出援手，带来救赎呢？”', speaker: '女神·佩尔西奥涅' },
-                    { type: 'narration', content: '她挥了挥手，一块石板从天花板上降下。他盯着那个陌生的世界看了一会儿，又看了看身边那个正叼着烟、像是早就看过这一切的女仆。' },
-                    { type: 'dialogue', content: '“……这真的是异世界转生吗？”', speaker: '格林' },
-                    { type: 'dialogue', content: '女神笑了，像母亲对着孩子那样温和。', speaker: '女神·佩尔西奥涅' },
-                    { type: 'system', content: '你获得了低语者的感知能力。点击左侧「低语者感知」可以扫描周围的心声。' },
-                    { type: 'system', content: '💡 提示：加入苍之学院可解锁更多功能（终末档案、小队通讯、作战记录、任务简报）。' }
-                ];
-
-                openingText.forEach(block => {
-                    if (block.type === 'dialogue') {
-                        addStoryBlock('dialogue', block.content, block.speaker);
-                    } else if (block.type === 'inner') {
-                        addStoryBlock('inner', block.content);
-                    } else if (block.type === 'combat') {
-                        addStoryBlock('combat', block.content);
-                    } else if (block.type === 'system') {
-                        addStoryBlock('system', block.content);
-                    } else {
-                        addStoryBlock('narration', block.content);
-                    }
-                });
-            }
-
-            // ============================================================
-            //  【核心】聊天输入输出 —— 对接酒馆 API
-            // ============================================================
-            const chatInput = getEl('chatInput');
-            const chatSendBtn = getEl('chatSendBtn');
-
-            // 自动检测酒馆地址（优先使用父窗口地址，否则用当前窗口地址）
-            const TAVERN_API = (window.parent && window.parent.location.origin) || window.location.origin;
-
-            // 降级模拟回复（API 不可用时使用）
-            const mockReplies = [
-                { speaker: '露娜', content: '嗯，我知道了。你先休息吧。' },
-                { speaker: '露娜', content: '……你真有意思。' },
-                { speaker: '女神·佩尔西奥涅', content: '呵呵，多么有趣的灵魂。' },
-                { speaker: '系统', content: '感知到你的情绪波动……正在记录。' },
-                { speaker: '拉法', content: '……你还在坚持啊。好样的。' },
-                { speaker: '黑之魔王', content: '不错嘛，还有力气说话。' }
-            ];
-
-            function sendMessage() {
-                const text = chatInput.value.trim();
-                if (!text) return;
-
-                // 显示用户消息
-                addStoryBlock('dialogue', text, '你');
-                chatInput.value = '';
-                chatInput.style.height = 'auto';
-                chatSendBtn.disabled = true;
-                chatSendBtn.textContent = '⏳';
-
-                // 显示“思考中”
-                const thinkingBlock = document.createElement('div');
-                thinkingBlock.className = 'story-block system';
-                thinkingBlock.id = 'thinking-indicator';
-                thinkingBlock.innerHTML = '<span class="time-tag">[' + getTimeString() + ']</span> 💭 AI 正在思考...';
-                storyOutput.appendChild(thinkingBlock);
-                storyOutput.scrollTop = storyOutput.scrollHeight;
-
-                // 调用酒馆 API
-                fetch(TAVERN_API + '/api/chat/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userInput: text })
-                    })
-                    .then(res => {
-                        if (!res.ok) throw new Error('HTTP ' + res.status);
-                        return res.json();
-                    })
-                    .then(data => {
-                        const indicator = document.getElementById('thinking-indicator');
-                        if (indicator) indicator.remove();
-
-                        // 提取回复（兼容不同版本的字段名）
-                        const reply = data.reply || data.message || data.response || data.text || '（AI 未返回内容）';
-
-                        // 尝试提取说话人（如果回复是 "角色名：内容" 格式）
-                        let speaker = '系统';
-                        let content = reply;
-                        const colonIndex = reply.search(/[：:]/);
-                        if (colonIndex > 0 && colonIndex < 15) {
-                            speaker = reply.substring(0, colonIndex).trim();
-                            content = reply.substring(colonIndex + 1).trim();
-                        }
-
-                        addStoryBlock('dialogue', content, speaker);
-                        storyOutput.scrollTop = storyOutput.scrollHeight;
-                    })
-                    .catch(err => {
-                        const indicator = document.getElementById('thinking-indicator');
-                        if (indicator) indicator.remove();
-
-                        // 报错提示 + 降级
-                        addStoryBlock('system', '⚠️ 连接酒馆失败：' + err.message + '。使用离线模拟。');
-                        const fallback = mockReplies[Math.floor(Math.random() * mockReplies.length)];
-                        addStoryBlock('dialogue', fallback.content, fallback.speaker);
-                        storyOutput.scrollTop = storyOutput.scrollHeight;
-                    })
-                    .finally(() => {
-                        chatSendBtn.disabled = false;
-                        chatSendBtn.textContent = '发送';
-                    });
-            }
-
-            // 绑定事件
-            chatSendBtn.addEventListener('click', sendMessage);
-            chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-                this.style.height = 'auto';
-                this.style.height = Math.min(this.scrollHeight, 80) + 'px';
-            });
-            chatInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = Math.min(this.scrollHeight, 80) + 'px';
-            });
-
-            // ============================================================
-            //  初始化
-            // ============================================================
-            setTimeout(function() {
-                initStory();
-                generateWhispers();
-                renderTerminalList();
-                const defaultChannel = document.querySelector('.channel-item[data-channel="story"]');
-                if (defaultChannel) {
-                    channelItems.forEach(c => c.classList.remove('active'));
-                    defaultChannel.classList.add('active');
-                    Object.keys(pages).forEach(key => {
-                        pages[key].classList.toggle('active', key === 'story');
-                    });
-                }
-                addLog('终端就绪，酒馆 API 地址: ' + TAVERN_API);
-            }, 300);
-
-            console.log('✅ 终末停滞委员会 · 低语者终端已启动');
-            console.log('📌 全屏按钮位于左上角');
-            console.log('💬 底部输入框已对接酒馆 API (' + TAVERN_API + '/api/chat/send)');
-            console.log('💡 如果 API 不可用，会自动降级到模拟回复。');
-
+            console.log('✅ 终末停滞委员会 · 低语者终端已启动（全部重写完成）');
         })();
     </script>
 
