@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>终末停滞委员会 · 低语者终端</title>
     <style>
-        /* ===== 全局 & 主题 ===== */
+        /* ============================================================
+           全局 & 主题
+           ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100%; overflow: hidden; }
         body {
@@ -48,6 +50,7 @@
             background: #0b0d14;
         }
 
+        /* ===== 顶栏 ===== */
         .topbar {
             display: flex;
             align-items: center;
@@ -74,9 +77,10 @@
         .fullscreen-toggle { background: none; border: none; color: #8a8aaa; font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: 0.2s; line-height: 1; }
         .fullscreen-toggle:hover { background: rgba(255,255,255,0.05); color: #d0d4e0; }
 
+        /* ===== 主体三列 ===== */
         .main { display: flex; flex-direction: row; gap: 12px; flex: 1; min-height: 0; min-width: 0; height: calc(100% - 56px); }
 
-        /* ===== 左列 ===== */
+        /* 左列 */
         .left-column { flex: 0 0 200px; display: flex; flex-direction: column; gap: 10px; min-width: 0; height: 100%; overflow: hidden; }
         .left-column .character-card {
             background: rgba(255,255,255,0.02);
@@ -152,7 +156,7 @@
         .sidebar .channel-item .lock-icon { margin-left: auto; font-size: 11px; color: #5a5a7a; flex-shrink: 0; }
         .sidebar .channel-item .lock-icon.unlocked { color: #81c784; }
 
-        /* ===== 中列 ===== */
+        /* 中列 */
         .center-column { flex: 1 1 auto; background: rgba(255,255,255,0.01); border-radius: 12px; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.03); display: flex; flex-direction: column; min-height: 0; min-width: 0; height: 100%; overflow: hidden; }
         .center-column .page { display: none; flex-direction: column; height: 100%; animation: fadeIn 0.25s ease; min-height: 0; overflow: hidden; }
         .center-column .page.active { display: flex; }
@@ -205,6 +209,7 @@
         .right-column .panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 10px; flex-shrink: 0; }
         .right-column .panel-header h4 { font-size: 13px; font-weight: 600; color: #e0e4f0; white-space: nowrap; }
         .right-column .panel-header .sub { font-size: 10px; color: #5a5a7a; white-space: nowrap; }
+
         .right-column .character-list { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; max-height: 180px; overflow-y: auto; margin-bottom: 10px; }
         .right-column .character-list::-webkit-scrollbar { width: 3px; }
         .right-column .character-list::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
@@ -219,16 +224,19 @@
         .right-column .character-detail { flex: 1; display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow-y: auto; padding-right: 2px; }
         .right-column .character-detail::-webkit-scrollbar { width: 3px; }
         .right-column .character-detail::-webkit-scrollbar-thumb { background: #2a2e4a; border-radius: 4px; }
+
         .right-column .portrait-area { display: flex; flex-direction: column; align-items: center; padding: 14px 10px; background: radial-gradient(ellipse at 50% 80%, rgba(60,40,120,0.12), transparent 70%); border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); flex-shrink: 0; cursor: pointer; transition: 0.2s; }
         .right-column .portrait-area:hover { border-color: rgba(106,74,255,0.2); }
-        .right-column .portrait-area .portrait-img { width: 120px; height: 260px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 300; color: #5a5a7a; margin-bottom: 8px; border: 1px dashed rgba(255,255,255,0.08); overflow: hidden; flex-shrink: 0; transition: 0.2s; }
+        .right-column .portrait-area .portrait-img { width: 140px; height: 300px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 300; color: #5a5a7a; margin-bottom: 8px; border: 1px dashed rgba(255,255,255,0.08); overflow: hidden; flex-shrink: 0; transition: 0.2s; }
         .right-column .portrait-area .portrait-img img { width: 100%; height: 100%; object-fit: cover; }
         .right-column .portrait-area .detail-name { font-size: 16px; font-weight: 600; color: #e0e4f0; }
         .right-column .portrait-area .detail-title { font-size: 11px; color: #6a6a8a; letter-spacing: 1px; margin-top: 2px; }
         .right-column .portrait-area .detail-status { font-size: 10px; color: #8a8aaa; margin-top: 4px; display: flex; gap: 12px; }
+
         .right-column .detail-section { background: rgba(255,255,255,0.02); border-radius: 8px; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.03); flex-shrink: 0; }
         .right-column .detail-section .section-label { font-size: 9px; color: #5a5a7a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .right-column .detail-section .section-content { font-size: 12px; color: #aab0c8; line-height: 1.6; }
+
         .right-column .detail-actions { display: flex; gap: 6px; flex-wrap: nowrap; margin-top: 4px; flex-shrink: 0; }
         .right-column .detail-actions button { background: transparent; border: 1px solid #2a2e44; color: #8a8aaa; padding: 3px 12px; border-radius: 30px; font-size: 10px; cursor: pointer; transition: 0.15s; font-family: inherit; flex: 1; white-space: nowrap; }
         .right-column .detail-actions button:hover { border-color: #4a4a6a; color: #c8cce8; }
@@ -239,8 +247,8 @@
         .placeholder-text { font-size: 14px; color: #5a5a7a; letter-spacing: 2px; }
         .portrait-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10000; animation: fadeIn 0.3s ease; }
         .portrait-modal-overlay.show { display: flex; }
-        .portrait-modal-box { background: #181c2a; border: 1px solid rgba(106,74,255,0.3); border-radius: 20px; padding: 24px 32px; max-width: 90vw; max-height: 90vh; text-align: center; box-shadow: 0 0 80px rgba(106,74,255,0.08); animation: slideUp 0.3s ease; overflow: hidden; }
-        .portrait-modal-box .big-portrait { width: auto; max-width: 80vw; max-height: 70vh; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 300; color: #5a5a7a; border: 1px dashed rgba(106,74,255,0.2); overflow: hidden; background: rgba(255,255,255,0.05); min-height: 120px; min-width: 120px; }
+        .portrait-modal-box { background: #181c2a; border: 1px solid rgba(106,74,255,0.3); border-radius: 20px; padding: 24px 32px; max-width: 92vw; max-height: 90vh; text-align: center; box-shadow: 0 0 80px rgba(106,74,255,0.08); animation: slideUp 0.3s ease; overflow: hidden; }
+        .portrait-modal-box .big-portrait { width: auto; max-width: 85vw; max-height: 75vh; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 300; color: #5a5a7a; border: 1px dashed rgba(106,74,255,0.2); overflow: hidden; background: rgba(255,255,255,0.05); min-height: 200px; min-width: 200px; }
         .portrait-modal-box .big-portrait img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .portrait-modal-box .p-name { font-size: 18px; font-weight: 600; color: #e0e4f0; }
         .portrait-modal-box .p-title { font-size: 12px; color: #6a6a8a; margin-top: 2px; }
@@ -511,18 +519,21 @@
             'use strict';
 
             // ===== 工具 =====
-            function getEl(id) {
-                const el = document.getElementById(id);
-                if (!el) console.warn('[低语者] 元素未找到:', id);
-                return el;
-            }
-
+            function getEl(id) { const el = document.getElementById(id); if (!el) console.warn('[低语者] 元素未找到:', id); return el; }
             function addLog(msg) { console.log('[低语者]', msg); }
 
-            // ===== 全局 API =====
-            const TAVERN_API = (window.parent && window.parent.location.origin !== 'null') ?
-                window.parent.location.origin :
-                window.location.origin;
+            // ===== 酒馆 API 地址（修复版） =====
+            let TAVERN_API = window.__TSC_API__ || 'http://127.0.0.1:8000';
+            if (window.parent && window.parent.location.origin !== 'null') {
+                const parentOrigin = window.parent.location.origin;
+                if (parentOrigin.includes('127.0.0.1') || parentOrigin.includes('localhost')) {
+                    TAVERN_API = parentOrigin;
+                }
+            }
+            if (!TAVERN_API.includes('127.0.0.1') && !TAVERN_API.includes('localhost')) {
+                TAVERN_API = 'http://127.0.0.1:8000';
+            }
+            console.log('[低语者] 使用酒馆 API 地址:', TAVERN_API);
 
             // ===== 全屏切换 =====
             const fullscreenToggle = getEl('fullscreenToggle');
@@ -530,12 +541,12 @@
                 fullscreenToggle.addEventListener('click', function() {
                     if (!document.fullscreenElement) {
                         document.documentElement.requestFullscreen?.() ||
-                            document.documentElement.webkitRequestFullscreen?.() ||
-                            document.documentElement.msRequestFullscreen?.();
+                        document.documentElement.webkitRequestFullscreen?.() ||
+                        document.documentElement.msRequestFullscreen?.();
                     } else {
                         document.exitFullscreen?.() ||
-                            document.webkitExitFullscreen?.() ||
-                            document.msExitFullscreen?.();
+                        document.webkitExitFullscreen?.() ||
+                        document.msExitFullscreen?.();
                     }
                 });
                 document.addEventListener('fullscreenchange', function() {
@@ -565,11 +576,9 @@
                 modal.classList.add('show');
             }
             const pClose = getEl('pClose');
-            if (pClose) { pClose.addEventListener('click', function() { getEl('portraitModal').classList.remove('show'); }); }
+            if (pClose) pClose.addEventListener('click', function() { getEl('portraitModal').classList.remove('show'); });
             const portraitModal = getEl('portraitModal');
-            if (portraitModal) {
-                portraitModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
-            }
+            if (portraitModal) portraitModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
 
             function showModal(title, content, onConfirm) {
                 const modal = getEl('modal');
@@ -588,14 +597,12 @@
                 }
             }
             const modalClose = getEl('modalClose');
-            if (modalClose) { modalClose.addEventListener('click', function() { getEl('modal').classList.remove('show'); }); }
+            if (modalClose) modalClose.addEventListener('click', function() { getEl('modal').classList.remove('show'); });
             const modal = getEl('modal');
-            if (modal) {
-                modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
-            }
+            if (modal) modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
 
             // ============================================================
-            //  【核心】侧边栏切换 —— 绑定在 DOM 元素上，确保可用
+            //  侧边栏切换
             // ============================================================
             const channelItems = document.querySelectorAll('.channel-item');
             const pageMap = {
@@ -612,29 +619,20 @@
             let academyPermission = false;
 
             function hasAcademyPermission() { return academyPermission; }
-
             function checkAcademyUnlock() {
-                if (window.__TSC_ACADEMY_UNLOCKED === true && !academyPermission) {
-                    grantAcademyPermission();
-                }
+                if (window.__TSC_ACADEMY_UNLOCKED === true && !academyPermission) grantAcademyPermission();
             }
-
             function grantAcademyPermission() {
                 if (academyPermission) return;
                 academyPermission = true;
                 const permBadge = getEl('permBadge');
-                if (permBadge) { permBadge.textContent = '苍之学园';
-                    permBadge.classList.add('granted'); }
-                ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'].forEach(id => {
+                if (permBadge) { permBadge.textContent = '苍之学园'; permBadge.classList.add('granted'); }
+                ['terminalLockIcon','squadLockIcon','recordsLockIcon','missionLockIcon'].forEach(id => {
                     const el = getEl(id);
-                    if (el) { el.textContent = '🔓';
-                        el.classList.add('unlocked'); }
+                    if (el) { el.textContent = '🔓'; el.classList.add('unlocked'); }
                 });
                 const unlockCard = getEl('unlockCard');
-                if (unlockCard) {
-                    unlockCard.style.borderColor = 'rgba(129,199,132,0.3)';
-                    unlockCard.style.background = 'rgba(129,199,132,0.06)';
-                }
+                if (unlockCard) { unlockCard.style.borderColor = 'rgba(129,199,132,0.3)'; unlockCard.style.background = 'rgba(129,199,132,0.06)'; }
                 const unlockIcon = getEl('unlockIcon');
                 if (unlockIcon) unlockIcon.textContent = '🔓';
                 const unlockTitle = getEl('unlockTitle');
@@ -642,12 +640,7 @@
                 const unlockDesc = getEl('unlockDesc');
                 if (unlockDesc) unlockDesc.textContent = '苍之学园成员 · 可访问终末档案';
                 const unlockBtn = getEl('unlockBtn');
-                if (unlockBtn) {
-                    unlockBtn.textContent = '已解锁';
-                    unlockBtn.disabled = true;
-                    unlockBtn.style.borderColor = '#2a4a2a';
-                    unlockBtn.style.color = '#81c784';
-                }
+                if (unlockBtn) { unlockBtn.textContent = '已解锁'; unlockBtn.disabled = true; unlockBtn.style.borderColor = '#2a4a2a'; unlockBtn.style.color = '#81c784'; }
                 const terminalSub = getEl('terminalSub');
                 if (terminalSub) terminalSub.textContent = '已解锁 0 / 6';
                 renderTerminalList();
@@ -655,17 +648,10 @@
                 addLog('苍之学院权限已授予');
             }
 
-            // 绑定侧边栏点击事件 —— 用最可靠的方式
             channelItems.forEach(function(item) {
                 item.addEventListener('click', function(e) {
                     var channel = this.dataset.channel;
-                    if (!channel) {
-                        console.warn('[侧边栏] 点击项缺少 data-channel');
-                        return;
-                    }
-                    console.log('[侧边栏] 点击:', channel);
-
-                    // 权限检查
+                    if (!channel) { console.warn('[侧边栏] 缺少 data-channel'); return; }
                     if (lockedChannels.indexOf(channel) !== -1 && !hasAcademyPermission()) {
                         showModal('🏛️ 苍之学院',
                             '<div style="text-align:center;padding:8px 0;">' +
@@ -674,44 +660,23 @@
                             '<div style="font-size:12px;color:#8a8aaa;line-height:1.8;text-align:left;">' +
                             '苍之学院是终末停滞委员会的核心力量之一，使用「弹痕」作战，以无秩序、重成果、轻视伦理的作风著称。<br><br>' +
                             '要加入苍之学院，你需要在故事中推进到特定剧情节点，获得学院的认可。当条件满足时，权限将自动解锁。' +
-                            '</div>' +
-                            '<div style="margin-top:12px;font-size:11px;color:#5a5a7a;">💡 提示：继续推进主线剧情以解锁。</div>' +
+                            '</div><div style="margin-top:12px;font-size:11px;color:#5a5a7a;">💡 提示：继续推进主线剧情以解锁。</div>' +
                             '</div>'
                         );
                         return;
                     }
-
-                    // 更新激活状态
                     channelItems.forEach(function(c) { c.classList.remove('active'); });
                     this.classList.add('active');
-
-                    // 切换页面
-                    for (var key in pageMap) {
-                        var page = pageMap[key];
-                        if (page) {
-                            page.classList.toggle('active', key === channel);
-                        }
-                    }
-
-                    // 额外操作
-                    if (channel === 'whisper') {
-                        setTimeout(generateWhispers, 200);
-                    }
-                    if (channel === 'terminal-list' && hasAcademyPermission()) {
-                        renderTerminalList();
-                    }
+                    for (var key in pageMap) { var page = pageMap[key]; if (page) page.classList.toggle('active', key === channel); }
+                    if (channel === 'whisper') setTimeout(generateWhispers, 200);
+                    if (channel === 'terminal-list' && hasAcademyPermission()) renderTerminalList();
                 });
             });
 
             // ===== 正文输出 =====
             var storyOutput = getEl('storyOutput');
-            var currentHour = 6,
-                currentMinute = 0,
-                dayCount = 1;
-
-            function getTimeString() {
-                return String(currentHour).padStart(2, '0') + ':' + String(currentMinute).padStart(2, '0');
-            }
+            var currentHour = 6, currentMinute = 0, dayCount = 1;
+            function getTimeString() { return String(currentHour).padStart(2,'0') + ':' + String(currentMinute).padStart(2,'0'); }
 
             function getAvatarHtml(speaker) {
                 var charData = window.__TSC_CHARACTERS || {};
@@ -719,35 +684,18 @@
                 var found = null;
                 for (var key in charData) {
                     var name = charData[key].name || key;
-                    if (name.toLowerCase() === lowerSpeaker || key.toLowerCase() === lowerSpeaker) {
-                        found = charData[key];
-                        break;
-                    }
+                    if (name.toLowerCase() === lowerSpeaker || key.toLowerCase() === lowerSpeaker) { found = charData[key]; break; }
                 }
                 var avatarUrl = found?.avatarUrl || found?.avatar || null;
-                if (avatarUrl) {
-                    return '<div class="avatar"><img src="' + avatarUrl + '" alt="' + speaker + '" /></div>';
-                } else {
-                    return '<div class="avatar"><span class="placeholder-text">?</span></div>';
-                }
+                if (avatarUrl) return '<div class="avatar"><img src="' + avatarUrl + '" alt="' + speaker + '" /></div>';
+                else return '<div class="avatar"><span class="placeholder-text">?</span></div>';
             }
 
             function addStoryBlock(type, content, speaker) {
                 if (!storyOutput) return;
                 var timeStr = getTimeString();
-                var avatarHtml = '';
-                if (speaker && type === 'dialogue') {
-                    avatarHtml = getAvatarHtml(speaker);
-                } else {
-                    avatarHtml = '<div class="avatar" style="visibility:hidden;"><span class="placeholder-text">?</span></div>';
-                }
-                var bubbleContent = '';
-                if (type === 'dialogue') {
-                    bubbleContent = '<span class="time-tag">[' + timeStr + ']</span><span class="speaker">' + (speaker || '???') +
-                        '</span>' + content;
-                } else {
-                    bubbleContent = '<span class="time-tag">[' + timeStr + ']</span>' + content;
-                }
+                var avatarHtml = (speaker && type === 'dialogue') ? getAvatarHtml(speaker) : '<div class="avatar" style="visibility:hidden;"><span class="placeholder-text">?</span></div>';
+                var bubbleContent = (type === 'dialogue') ? '<span class="time-tag">[' + timeStr + ']</span><span class="speaker">' + (speaker || '???') + '</span>' + content : '<span class="time-tag">[' + timeStr + ']</span>' + content;
                 var block = document.createElement('div');
                 block.className = 'story-block ' + type;
                 block.innerHTML = avatarHtml + '<div class="bubble">' + bubbleContent + '</div>';
@@ -756,68 +704,14 @@
             }
 
             // ===== 终末档案 =====
-            var terminalArchives = [{
-                id: 'soul-accumulator',
-                name: '灵魂蓄积器TM',
-                type: '死灵操法 · 反现实机械工学',
-                stage: 'Stage 3',
-                location: '女神 · 已确认 284 台',
-                borderClass: 'purple',
-                tagClass: 'danger-tag',
-                description: '女神佩尔西奥涅的终末。以灵魂为燃料的蓄积装置，将人类转化为幸福幻梦中的灵魂电池。',
-                status: '已确认'
-            }, {
-                id: 'golden-lion',
-                name: '黄金狮子',
-                type: '异法 Parallel·Law',
-                stage: 'Stage 2',
-                location: '钢铁的新娘 · 契约绑定',
-                borderClass: 'gold',
-                tagClass: 'active-tag',
-                description: '钢铁的新娘所持有的异法。以契约之力驱动的黄金狮子，忠诚而危险。',
-                status: '已确认'
-            }, {
-                id: 'woodpecker',
-                name: '木匠的啄木鸟先生',
-                type: '异法 Parallel·Law',
-                stage: 'Stage 3',
-                location: '尼泊尔 · 索卢坤布县',
-                borderClass: 'red',
-                tagClass: 'danger-tag',
-                description: '存在于尼泊尔山区的终末。以啄木鸟形态出现的异法，会啄食人类的记忆。',
-                status: '已确认'
-            }, {
-                id: 'organ-apartment',
-                name: '脏器公寓',
-                type: '死灵操法 · 仪式灾害',
-                stage: 'Stage 3',
-                location: '巴塞罗那 · 已处理',
-                borderClass: 'purple',
-                tagClass: 'danger-tag',
-                description: '巴塞罗那的仪式灾害。将整栋公寓转化为活体脏器，已由委员会处理。',
-                status: '已处理'
-            }, {
-                id: 'deep-cave',
-                name: '深穴 Roguelite',
-                type: '梵我合一',
-                stage: 'Stage 2',
-                location: '训练用 · 可反复进入',
-                borderClass: 'gray',
-                tagClass: '',
-                description: '委员会的训练设施。每次进入都会生成不同的深层结构，用于锻炼低语者的实战能力。',
-                status: '训练用'
-            }, {
-                id: 'clay-mask',
-                name: '泥塑面具',
-                type: '不明 · 人格篡夺',
-                stage: 'Stage 2',
-                location: '太平洋沿岸 · 312 个',
-                borderClass: 'gray',
-                tagClass: '',
-                description: '太平洋沿岸发现的终末。以泥塑面具形态出现，能够篡夺佩戴者的人格。已确认312个个体。',
-                status: '调查中'
-            }];
-
+            var terminalArchives = [
+                { id: 'soul-accumulator', name: '灵魂蓄积器TM', type: '死灵操法 · 反现实机械工学', nature: '死灵操法', stage: 'Stage 3', location: '女神 · 已确认 284 台', borderClass: 'purple', tagClass: 'danger-tag', description: '女神佩尔西奥涅的终末。以灵魂为燃料的蓄积装置。', status: '已确认' },
+                { id: 'golden-lion', name: '黄金狮子', type: '异法 Parallel·Law', nature: '异法', stage: 'Stage 2', location: '钢铁的新娘 · 契约绑定', borderClass: 'gold', tagClass: 'active-tag', description: '钢铁的新娘所持有的异法。以契约之力驱动的黄金狮子。', status: '已确认' },
+                { id: 'woodpecker', name: '木匠的啄木鸟先生', type: '异法 Parallel·Law', nature: '异法', stage: 'Stage 3', location: '尼泊尔 · 索卢坤布县', borderClass: 'red', tagClass: 'danger-tag', description: '存在于尼泊尔山区的终末。以啄木鸟形态出现的异法。', status: '已确认' },
+                { id: 'organ-apartment', name: '脏器公寓', type: '死灵操法 · 仪式灾害', nature: '死灵操法', stage: 'Stage 3', location: '巴塞罗那 · 已处理', borderClass: 'purple', tagClass: 'danger-tag', description: '巴塞罗那的仪式灾害。将整栋公寓转化为活体脏器。', status: '已处理' },
+                { id: 'deep-cave', name: '深穴 Roguelite', type: '梵我合一', nature: '梵我合一', stage: 'Stage 2', location: '训练用 · 可反复进入', borderClass: 'gray', tagClass: '', description: '委员会的训练设施。每次进入都会生成不同的深层结构。', status: '训练用' },
+                { id: 'clay-mask', name: '泥塑面具', type: '不明 · 人格篡夺', nature: '人格篡夺', stage: 'Stage 2', location: '太平洋沿岸 · 312 个', borderClass: 'gray', tagClass: '', description: '太平洋沿岸发现的终末。以泥塑面具形态出现，能够篡夺佩戴者的人格。', status: '调查中' }
+            ];
             var unlockedArchives = [];
 
             function renderTerminalList() {
@@ -828,9 +722,8 @@
                     sub.textContent = '🔒 需要苍之学院权限';
                     list.innerHTML = terminalArchives.map(function(a, index) {
                         return '<div class="list-item border-left gray" style="opacity:0.5;cursor:not-allowed;">' +
-                            '<div class="title">🔒 档案 #' + String(index + 1).padStart(2, '0') + ' · 未解锁</div>' +
-                            '<div class="desc">加入苍之学院后解锁此档案</div>' +
-                            '</div>';
+                            '<div class="title">🔒 档案 #' + String(index+1).padStart(2,'0') + ' · 未解锁</div>' +
+                            '<div class="desc">加入苍之学院后解锁此档案</div></div>';
                     }).join('');
                     return;
                 }
@@ -838,20 +731,15 @@
                 list.innerHTML = terminalArchives.map(function(a, index) {
                     var isUnlocked = unlockedArchives.indexOf(a.id) !== -1;
                     if (!isUnlocked) {
-                        return '<div class="list-item border-left gray" style="opacity:0.6;cursor:pointer;" onclick="window.tscTryUnlockArchive(\'' +
-                            a.id + '\')">' +
-                            '<div class="title">🔒 档案 #' + String(index + 1).padStart(2, '0') + ' · ' + a.name +
-                            '</div>' +
+                        return '<div class="list-item border-left gray" style="opacity:0.6;cursor:pointer;" onclick="window.tscTryUnlockArchive(\'' + a.id + '\')">' +
+                            '<div class="title">🔒 档案 #' + String(index+1).padStart(2,'0') + ' · ' + a.name + '</div>' +
                             '<div class="desc">' + a.type + '</div>' +
-                            '<div style="font-size:10px;color:#5a5a7a;margin-top:2px;">点击解锁</div>' +
-                            '</div>';
+                            '<div style="font-size:10px;color:#5a5a7a;margin-top:2px;">点击解锁</div></div>';
                     }
-                    return '<div class="list-item border-left ' + a.borderClass + '" onclick="window.tscShowArchiveDetail(\'' +
-                        a.id + '\')">' +
+                    return '<div class="list-item border-left ' + a.borderClass + '" onclick="window.tscShowArchiveDetail(\'' + a.id + '\')">' +
                         '<div class="title">' + a.name + ' <span class="tag ' + a.tagClass + '">' + a.stage + '</span></div>' +
                         '<div class="desc">' + a.type + '</div>' +
-                        '<div class="meta">' + a.location + '</div>' +
-                        '</div>';
+                        '<div class="meta">' + a.location + '</div></div>';
                 }).join('');
             }
 
@@ -859,93 +747,57 @@
                 if (!hasAcademyPermission()) return;
                 var archive = terminalArchives.find(function(a) { return a.id === id; });
                 if (!archive || unlockedArchives.indexOf(id) !== -1) return;
-                showModal('📜 档案解锁',
-                    '<div style="text-align:center;padding:8px 0;">' +
-                    '<div style="font-size:32px;margin-bottom:10px;">📜</div>' +
-                    '<div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">解锁档案：' + archive.name + '</div>' +
-                    '<div style="font-size:12px;color:#8a8aaa;">是否消耗权限解锁此档案？</div>' +
-                    '</div>',
-                    function() {
-                        unlockedArchives.push(id);
-                        renderTerminalList();
-                        addStoryBlock('system', '档案已解锁：' + archive.name);
-                        addLog('档案已解锁: ' + archive.name);
-                    }
-                );
+                showModal('📜 档案解锁', '<div style="text-align:center;padding:8px 0;"><div style="font-size:32px;margin-bottom:10px;">📜</div><div style="font-size:14px;color:#d0d4e0;margin-bottom:6px;">解锁档案：' + archive.name + '</div><div style="font-size:12px;color:#8a8aaa;">是否消耗权限解锁此档案？</div></div>', function() {
+                    unlockedArchives.push(id);
+                    renderTerminalList();
+                    addStoryBlock('system', '档案已解锁：' + archive.name);
+                    addLog('档案已解锁: ' + archive.name);
+                });
             };
 
             window.tscShowArchiveDetail = function(id) {
                 var archive = terminalArchives.find(function(a) { return a.id === id; });
                 if (!archive || unlockedArchives.indexOf(id) === -1) return;
                 showModal('📜 ' + archive.name,
-                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">类型</div><div style="font-size:13px;color:#d0d4e0;">' +
-                    archive.type + '</div></div>' +
-                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">阶段</div><div style="font-size:13px;color:#d0d4e0;">' +
-                    archive.stage + '</div></div>' +
-                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">位置</div><div style="font-size:13px;color:#d0d4e0;">' +
-                    archive.location + '</div></div>' +
-                    '<div style="margin-bottom:10px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;"><div style="font-size:12px;color:#5a5a7a;margin-bottom:3px;">描述</div><div style="font-size:12px;color:#aab0c8;line-height:1.6;">' +
-                    archive.description + '</div></div>' +
-                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>📋 状态：<span style="color:#81c784;">' +
-                    archive.status + '</span></div></div>'
+                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">类型</div><div style="font-size:13px;color:#d0d4e0;">' + archive.type + '</div></div>' +
+                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">性质</div><div style="font-size:13px;color:#d0d4e0;">' + (archive.nature || archive.type) + '</div></div>' +
+                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">阶段</div><div style="font-size:13px;color:#d0d4e0;">' + archive.stage + '</div></div>' +
+                    '<div style="margin-bottom:10px;"><div style="font-size:12px;color:#5a5a7a;">位置</div><div style="font-size:13px;color:#d0d4e0;">' + archive.location + '</div></div>' +
+                    '<div style="margin-bottom:10px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;"><div style="font-size:12px;color:#5a5a7a;margin-bottom:3px;">描述</div><div style="font-size:12px;color:#aab0c8;line-height:1.6;">' + archive.description + '</div></div>' +
+                    '<div style="display:flex;gap:14px;font-size:12px;color:#8a8aaa;"><div>📋 状态：<span style="color:#81c784;">' + archive.status + '</span></div></div>'
                 );
             };
 
             // ===== 时间系统 =====
             function updateTimeDisplay() {
-                var h = String(currentHour).padStart(2, '0');
-                var m = String(currentMinute).padStart(2, '0');
-                var topTime = getEl('topTime');
-                if (topTime) topTime.textContent = h + ':' + m;
-                var statusTag = getEl('tsc-time-status');
-                if (statusTag) statusTag.textContent = '当前 ' + h + ':' + m;
-                var topDate = getEl('topDate');
-                if (topDate) topDate.textContent = '第 ' + dayCount + ' 日';
-                var timeMap = { '6': '清晨', '9': '上午', '12': '正午', '15': '午后', '18': '黄昏', '21': '夜晚', '0': '深夜' };
-                var ts = '清晨';
-                for (var k in timeMap) { if (currentHour >= parseInt(k)) ts = timeMap[k]; }
-                var profileTime = getEl('profileTime');
-                if (profileTime) profileTime.textContent = ts;
-                var statusMap = { '6': '神殿 · 清晨', '9': '神殿 · 上午', '12': '神殿 · 正午', '15': '神殿 · 午后', '18': '神殿 · 黄昏',
-                    '21': '神殿 · 夜晚', '0': '神殿 · 深夜' };
-                var st = '神殿 · 清晨';
-                for (var k2 in statusMap) { if (currentHour >= parseInt(k2)) st = statusMap[k2]; }
-                var topStatus = getEl('topStatus');
-                if (topStatus) topStatus.textContent = st;
-                var r = 1.45;
-                if (currentHour >= 22 || currentHour < 6) r = 1.38 + Math.random() * 0.08;
-                else if (currentHour >= 12 && currentHour < 14) r = 1.42 + Math.random() * 0.06;
-                else r = 1.44 + Math.random() * 0.08;
-                r = Math.round(r * 1000) / 1000;
-                var topR = getEl('topR');
-                if (topR) topR.textContent = r.toFixed(3);
-                var rSmall = getEl('tsc-rValue-small');
-                if (rSmall) rSmall.textContent = r.toFixed(3);
+                var h = String(currentHour).padStart(2,'0');
+                var m = String(currentMinute).padStart(2,'0');
+                var topTime = getEl('topTime'); if (topTime) topTime.textContent = h + ':' + m;
+                var statusTag = getEl('tsc-time-status'); if (statusTag) statusTag.textContent = '当前 ' + h + ':' + m;
+                var topDate = getEl('topDate'); if (topDate) topDate.textContent = '第 ' + dayCount + ' 日';
+                var timeMap = { '6':'清晨','9':'上午','12':'正午','15':'午后','18':'黄昏','21':'夜晚','0':'深夜' };
+                var ts = '清晨'; for (var k in timeMap) { if (currentHour >= parseInt(k)) ts = timeMap[k]; }
+                var profileTime = getEl('profileTime'); if (profileTime) profileTime.textContent = ts;
+                var statusMap = { '6':'神殿 · 清晨','9':'神殿 · 上午','12':'神殿 · 正午','15':'神殿 · 午后','18':'神殿 · 黄昏','21':'神殿 · 夜晚','0':'神殿 · 深夜' };
+                var st = '神殿 · 清晨'; for (var k2 in statusMap) { if (currentHour >= parseInt(k2)) st = statusMap[k2]; }
+                var topStatus = getEl('topStatus'); if (topStatus) topStatus.textContent = st;
+                var r = 1.45; if (currentHour >= 22 || currentHour < 6) r = 1.38 + Math.random()*0.08; else if (currentHour >= 12 && currentHour < 14) r = 1.42 + Math.random()*0.06; else r = 1.44 + Math.random()*0.08;
+                r = Math.round(r*1000)/1000;
+                var topR = getEl('topR'); if (topR) topR.textContent = r.toFixed(3);
+                var rSmall = getEl('tsc-rValue-small'); if (rSmall) rSmall.textContent = r.toFixed(3);
             }
 
             function advanceTime(minutes) {
                 currentMinute += minutes;
-                while (currentMinute >= 60) { currentMinute -= 60;
-                    currentHour += 1; if (currentHour >= 24) { currentHour -= 24;
-                        dayCount += 1; } }
+                while (currentMinute >= 60) { currentMinute -= 60; currentHour += 1; if (currentHour >= 24) { currentHour -= 24; dayCount += 1; } }
                 updateTimeDisplay();
-                var timeTexts = [
-                    '时间静静流逝，神殿内的光影悄然变化。',
-                    '你感觉到周围的空气微微流动，远处传来若有若无的声响。',
-                    '寂静笼罩着神殿，只有你自己的呼吸声在耳边回响。',
-                    '露娜在不远处安静地守候着，目光中带着关切。'
-                ];
+                var timeTexts = ['时间静静流逝，神殿内的光影悄然变化。','你感觉到周围的空气微微流动，远处传来若有若无的声响。','寂静笼罩着神殿，只有你自己的呼吸声在耳边回响。','露娜在不远处安静地守候着，目光中带着关切。'];
                 addStoryBlock('narration', timeTexts[Math.floor(Math.random() * timeTexts.length)]);
             }
-
-            var btn15 = getEl('tsc-time-15m');
-            var btn30 = getEl('tsc-time-30m');
-            var btn1h = getEl('tsc-time-1h');
-            var btn3h = getEl('tsc-time-3h');
-            if (btn15) btn15.addEventListener('click', function() { advanceTime(15); });
-            if (btn30) btn30.addEventListener('click', function() { advanceTime(30); });
-            if (btn1h) btn1h.addEventListener('click', function() { advanceTime(60); });
-            if (btn3h) btn3h.addEventListener('click', function() { advanceTime(180); });
+            var btn15 = getEl('tsc-time-15m'); if (btn15) btn15.addEventListener('click', function() { advanceTime(15); });
+            var btn30 = getEl('tsc-time-30m'); if (btn30) btn30.addEventListener('click', function() { advanceTime(30); });
+            var btn1h = getEl('tsc-time-1h'); if (btn1h) btn1h.addEventListener('click', function() { advanceTime(60); });
+            var btn3h = getEl('tsc-time-3h'); if (btn3h) btn3h.addEventListener('click', function() { advanceTime(180); });
             updateTimeDisplay();
 
             // ===== 感知池 =====
@@ -953,6 +805,7 @@
                 luna: {
                     name: '露娜',
                     type: '神殿女仆',
+                    nature: '机械人偶',
                     color: '#7c4dff',
                     title: '神殿女仆 · 机械人偶',
                     status: '服从 · 警惕',
@@ -969,6 +822,7 @@
                 goddess: {
                     name: '女神·佩尔西奥涅',
                     type: '神性存在 · 灵魂蓄积器',
+                    nature: '灵魂蓄积器',
                     color: '#ffab00',
                     title: '女神 · 灵魂蓄积器',
                     status: '注视中 · 不可见',
@@ -992,10 +846,11 @@
                 for (var i = 0; i < available.length; i++) {
                     var p = available[i];
                     var w = p.whispers[Math.floor(Math.random() * p.whispers.length)];
-                    var dist = p.name === '露娜' ? 3 + Math.floor(Math.random() * 5) : 10 + Math.floor(Math.random() * 10);
+                    var dist = p.name === '露娜' ? 3 + Math.floor(Math.random()*5) : 10 + Math.floor(Math.random()*10);
                     results.push({
                         name: p.name,
                         type: p.type,
+                        nature: p.nature || p.type,
                         color: p.color,
                         title: p.title,
                         status: p.status,
@@ -1012,38 +867,33 @@
                     results.push({
                         name: '门后的存在',
                         type: '未知 · 终末',
+                        nature: '混沌',
                         color: '#9c27b0',
                         title: '未知存在',
                         status: '混沌 · 不可名状',
                         thought: '「……好幸福……好幸福……永远在一起……」',
                         mood: '混沌',
-                        distance: 20 + Math.floor(Math.random() * 15),
+                        distance: 20 + Math.floor(Math.random()*15),
                         readStatus: '混沌',
                         description: '门后传来的低语，无法确认其形态与意图。',
                         relationship: '未知',
                         threat: '未知'
                     });
                 }
-                if (results.length === 0) {
-                    list.innerHTML =
-                        '<div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔇 周围没有可感知的存在</div>';
-                    return;
-                }
+                if (results.length === 0) { list.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px 0;font-size:12px;">🔇 周围没有可感知的存在</div>'; return; }
                 list.innerHTML = results.map(function(w) {
                     var color = w.readStatus === '混沌' ? '#ffb300' : w.readStatus === '半可读' ? '#fbbf24' : '#b39ddb';
-                    var preview = '「' + w.thought.slice(0, 8) + (w.thought.length > 8 ? '…」' : '」');
+                    var preview = '「' + w.thought.slice(0,8) + (w.thought.length > 8 ? '…」' : '」');
                     var data = encodeURIComponent(JSON.stringify(w));
                     return '<div class="whisper-item" onclick="window.tscShowTarget(\'' + data + '\')">' +
                         '<div class="avatar-thumb" style="background:' + w.color + ';font-size:14px;color:#5a5a7a;display:flex;align-items:center;justify-content:center;">?</div>' +
-                        '<div class="info"><div class="n">' + w.name + '</div><div class="t">' + w.type + ' · 距离 ' + w
-                        .distance + 'm</div></div>' +
-                        '<span class="preview" style="color:' + color + '">' + preview + '</span>' +
-                        '</div>';
+                        '<div class="info"><div class="n">' + w.name + '</div><div class="t">' + w.type + ' · 距离 ' + w.distance + 'm</div></div>' +
+                        '<span class="preview" style="color:' + color + '">' + preview + '</span></div>';
                 }).join('');
                 addLog('扫描完成');
             }
 
-            // ===== 点击感知对象 =====
+            // ===== 点击感知对象（含性质） =====
             window.tscShowTarget = function(dataStr) {
                 var data = JSON.parse(decodeURIComponent(dataStr));
                 var detail = getEl('characterDetail');
@@ -1053,8 +903,8 @@
                 var playerName = window.__TSC_PLAYER_NAME || '{{user}}';
                 var thought = data.thought.replace(/\{\{user\}\}/g, playerName);
                 var description = data.description.replace(/\{\{user\}\}/g, playerName);
-                var statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' :
-                    '#81c784';
+                var statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' : '#81c784';
+                var nature = data.nature || data.type || '未知';
 
                 var portraitImg = '<div class="portrait-img"><span class="placeholder-text">?</span></div>';
                 var charData = window.__TSC_CHARACTERS || {};
@@ -1065,44 +915,33 @@
                         break;
                     }
                 }
-                if (avatarUrl) {
-                    portraitImg = '<div class="portrait-img"><img src="' + avatarUrl + '" alt="' + data.name + '" /></div>';
-                }
+                if (avatarUrl) portraitImg = '<div class="portrait-img"><img src="' + avatarUrl + '" alt="' + data.name + '" /></div>';
 
                 detail.innerHTML =
-                    '<div class="portrait-area" onclick="showPortraitModal(\'' + data.name + '\',\'' + data.title + '\',\'' +
-                    data.color + '\',\'' + (avatarUrl || '') + '\')">' +
+                    '<div class="portrait-area" onclick="showPortraitModal(\'' + data.name + '\',\'' + data.title + '\',\'' + data.color + '\',\'' + (avatarUrl || '') + '\')">' +
                     portraitImg +
                     '<div class="detail-name">' + data.name + '</div>' +
                     '<div class="detail-title">' + data.title + '</div>' +
-                    '<div class="detail-status"><span style="color:' + statusColor + ';">● ' + data.status +
-                    '</span><span>📡 ' + data.distance + 'm</span></div>' +
+                    '<div class="detail-status"><span style="color:' + statusColor + ';">● ' + data.status + '</span><span>📡 ' + data.distance + 'm</span></div>' +
                     '</div>' +
-                    '<div class="detail-section"><div class="section-label">💭 心声</div><div class="section-content" style="font-style:italic;border-left:3px solid ' +
-                    statusColor + ';padding-left:8px;">' + thought + '</div></div>' +
+                    '<div class="detail-section"><div class="section-label">💭 心声</div><div class="section-content" style="font-style:italic;border-left:3px solid ' + statusColor + ';padding-left:8px;">' + thought + '</div></div>' +
                     '<div class="detail-section"><div class="section-label">📋 信息</div><div class="section-content">' +
                     '<div>类型：' + data.type + '</div>' +
+                    '<div>性质：' + nature + '</div>' +
                     '<div>关系：' + (data.relationship || '未知') + '</div>' +
-                    '<div>威胁：<span style="color:' + (data.threat === '极高' ? '#f87171' : data.threat === '高' ? '#fbbf24' :
-                        '#81c784') + ';">' + (data.threat || '未知') + '</span></div>' +
+                    '<div>威胁：<span style="color:' + (data.threat === '极高' ? '#f87171' : data.threat === '高' ? '#fbbf24' : '#81c784') + ';">' + (data.threat || '未知') + '</span></div>' +
                     '<div>可读性：<span style="color:' + statusColor + ';">' + data.readStatus + '</span></div>' +
                     '</div></div>' +
-                    '<div class="detail-section"><div class="section-label">📖 描述</div><div class="section-content">' + (
-                        description || '暂无描述') + '</div></div>' +
+                    '<div class="detail-section"><div class="section-label">📖 描述</div><div class="section-content">' + (description || '暂无描述') + '</div></div>' +
                     '<div class="detail-actions">' +
                     '<button class="primary" onclick="window.tscDeepSense(\'' + dataStr + '\')">🔮 深度感知</button>' +
                     '<button onclick="window.tscClearDetail()">✕ 清除</button>' +
                     '</div>';
 
                 addStoryBlock('narration', '你集中精神，感知到' + data.name + '的存在。距离约' + data.distance + '米。');
-                if (data.readStatus === '可读') {
-                    addStoryBlock('dialogue', thought, data.name);
-                } else if (data.readStatus === '半可读') {
-                    addStoryBlock('narration', '对方的意识被某种力量笼罩，你只能捕捉到片段……');
-                    addStoryBlock('dialogue', thought, data.name);
-                } else {
-                    addStoryBlock('system', '混沌的意志干扰了你的感知，只能感受到模糊的情绪。');
-                }
+                if (data.readStatus === '可读') addStoryBlock('dialogue', thought, data.name);
+                else if (data.readStatus === '半可读') { addStoryBlock('narration', '对方的意识被某种力量笼罩，你只能捕捉到片段……'); addStoryBlock('dialogue', thought, data.name); }
+                else addStoryBlock('system', '混沌的意志干扰了你的感知，只能感受到模糊的情绪。');
                 addLog('查看目标: ' + data.name);
             };
 
@@ -1112,100 +951,75 @@
                 var detail = getEl('characterDetail');
                 var sub = getEl('detailSub');
                 if (!detail) return;
-                detail.innerHTML =
-                    '<div style="color:#aab0c8;text-align:center;padding:20px;"><div style="font-size:24px;margin-bottom:8px;">🌀</div><div>正在感知 ' +
-                    data.name + ' 的内心...</div></div>';
+                detail.innerHTML = '<div style="color:#aab0c8;text-align:center;padding:20px;"><div style="font-size:24px;margin-bottom:8px;">🌀</div><div>正在感知 ' + data.name + ' 的内心...</div></div>';
                 sub.textContent = data.name + ' (深度感知中)';
 
                 var playerName = window.__TSC_PLAYER_NAME || '{{user}}';
                 var thought = data.thought.replace(/\{\{user\}\}/g, playerName);
                 var description = data.description.replace(/\{\{user\}\}/g, playerName);
                 var prompt = '你正在深度感知 ' + data.name + ' 的内心世界。\n' +
-                    data.name + ' 当前状态：' + data.status + '，距离 ' + data.distance + ' 米，关系：' + data.relationship +
-                    '。\n' +
-                    '她的心声片段：' + thought + '。\n' +
-                    '她的描述：' + description + '。\n' +
-                    '请以 ' + data.name + ' 的第一人称视角，生成一段她此刻真实的内心独白，表达她未说出口的想法和情绪。\n' +
-                    '风格简短而富有感染力，不超过80字。只输出内心独白内容，不要添加其他说明。';
+                    data.name + ' 当前状态：' + data.status + '，距离 ' + data.distance + ' 米，关系：' + data.relationship + '。\n' +
+                    '她的心声片段：' + thought + '。\n她的描述：' + description + '。\n' +
+                    '请以 ' + data.name + ' 的第一人称视角，生成一段她此刻真实的内心独白，表达她未说出口的想法和情绪。\n风格简短而富有感染力，不超过80字。只输出内心独白内容。';
 
                 fetch(TAVERN_API + '/api/chat/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userInput: prompt })
-                    })
-                    .then(function(res) {
-                        if (!res.ok) throw new Error('HTTP ' + res.status);
-                        return res.json();
-                    })
-                    .then(function(res) {
-                        var reply = res.reply || res.message || res.response || res.text || '（AI 未返回内容）';
-                        var statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' :
-                            '#81c784';
-                        var portraitImg = '<div class="portrait-img"><span class="placeholder-text">?</span></div>';
-                        var charData = window.__TSC_CHARACTERS || {};
-                        var avatarUrl = null;
-                        for (var key in charData) {
-                            if (charData[key].name === data.name || key.toLowerCase() === data.name.toLowerCase()) {
-                                avatarUrl = charData[key].avatarUrl || charData[key].avatar || null;
-                                break;
-                            }
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userInput: prompt })
+                })
+                .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+                .then(function(res) {
+                    var reply = res.reply || res.message || res.response || res.text || '（AI 未返回内容）';
+                    var statusColor = data.readStatus === '混沌' ? '#ffb300' : data.readStatus === '半可读' ? '#fbbf24' : '#81c784';
+                    var portraitImg = '<div class="portrait-img"><span class="placeholder-text">?</span></div>';
+                    var charData = window.__TSC_CHARACTERS || {};
+                    var avatarUrl = null;
+                    for (var key in charData) {
+                        if (charData[key].name === data.name || key.toLowerCase() === data.name.toLowerCase()) {
+                            avatarUrl = charData[key].avatarUrl || charData[key].avatar || null;
+                            break;
                         }
-                        if (avatarUrl) {
-                            portraitImg = '<div class="portrait-img"><img src="' + avatarUrl + '" alt="' + data.name +
-                                '" /></div>';
-                        }
-
-                        detail.innerHTML =
-                            '<div class="portrait-area" onclick="showPortraitModal(\'' + data.name + '\',\'' + data
-                            .title + '\',\'' + data.color + '\',\'' + (avatarUrl || '') + '\')">' +
-                            portraitImg +
-                            '<div class="detail-name">' + data.name + '</div>' +
-                            '<div class="detail-title">' + data.title + '</div>' +
-                            '<div class="detail-status"><span style="color:' + statusColor + ';">● ' + data.status +
-                            '</span><span>📡 ' + data.distance + 'm</span></div>' +
-                            '</div>' +
-                            '<div class="detail-section"><div class="section-label">💭 心声</div><div class="section-content" style="font-style:italic;border-left:3px solid ' +
-                            statusColor + ';padding-left:8px;">' + thought + '</div></div>' +
-                            '<div class="detail-section"><div class="section-label">💬 深度感知</div><div class="section-content" style="font-style:italic;color:#c8a86a;">' +
-                            reply + '</div></div>' +
-                            '<div class="detail-section"><div class="section-label">📋 信息</div><div class="section-content">' +
-                            '<div>类型：' + data.type + '</div>' +
-                            '<div>关系：' + (data.relationship || '未知') + '</div>' +
-                            '<div>威胁：<span style="color:' + (data.threat === '极高' ? '#f87171' : data.threat === '高' ?
-                                '#fbbf24' : '#81c784') + ';">' + (data.threat || '未知') + '</span></div>' +
-                            '<div>可读性：<span style="color:' + statusColor + ';">' + data.readStatus + '</span></div>' +
-                            '</div></div>' +
-                            '<div class="detail-section"><div class="section-label">📖 描述</div><div class="section-content">' +
-                            (description || '暂无描述') + '</div></div>' +
-                            '<div class="detail-actions">' +
-                            '<button class="primary" onclick="window.tscDeepSense(\'' + dataStr +
-                            '\')">🔄 重新感知</button>' +
-                            '<button onclick="window.tscClearDetail()">✕ 清除</button>' +
-                            '</div>';
-                        sub.textContent = data.name + ' (深度感知)';
-                        addStoryBlock('system', '深度感知 · ' + data.name + '：' + reply);
-                    })
-                    .catch(function(err) {
-                        detail.innerHTML =
-                            '<div style="color:#f87171;text-align:center;padding:20px;"><div style="font-size:24px;margin-bottom:8px;">⚠️</div><div>深度感知失败：' +
-                            err.message +
-                            '</div><button onclick="window.tscDeepSense(\'' + dataStr +
-                            '\')" style="margin-top:10px;background:transparent;border:1px solid #6a4aff;color:#b8b8e0;padding:4px 16px;border-radius:30px;cursor:pointer;">重试</button></div>';
-                        sub.textContent = data.name + ' (深度感知失败)';
-                        addStoryBlock('system', '⚠️ 深度感知 ' + data.name + ' 失败：' + err.message);
-                    });
+                    }
+                    if (avatarUrl) portraitImg = '<div class="portrait-img"><img src="' + avatarUrl + '" alt="' + data.name + '" /></div>';
+                    var nature = data.nature || data.type || '未知';
+                    detail.innerHTML =
+                        '<div class="portrait-area" onclick="showPortraitModal(\'' + data.name + '\',\'' + data.title + '\',\'' + data.color + '\',\'' + (avatarUrl || '') + '\')">' +
+                        portraitImg +
+                        '<div class="detail-name">' + data.name + '</div>' +
+                        '<div class="detail-title">' + data.title + '</div>' +
+                        '<div class="detail-status"><span style="color:' + statusColor + ';">● ' + data.status + '</span><span>📡 ' + data.distance + 'm</span></div>' +
+                        '</div>' +
+                        '<div class="detail-section"><div class="section-label">💭 心声</div><div class="section-content" style="font-style:italic;border-left:3px solid ' + statusColor + ';padding-left:8px;">' + thought + '</div></div>' +
+                        '<div class="detail-section"><div class="section-label">💬 深度感知</div><div class="section-content" style="font-style:italic;color:#c8a86a;">' + reply + '</div></div>' +
+                        '<div class="detail-section"><div class="section-label">📋 信息</div><div class="section-content">' +
+                        '<div>类型：' + data.type + '</div>' +
+                        '<div>性质：' + nature + '</div>' +
+                        '<div>关系：' + (data.relationship || '未知') + '</div>' +
+                        '<div>威胁：<span style="color:' + (data.threat === '极高' ? '#f87171' : data.threat === '高' ? '#fbbf24' : '#81c784') + ';">' + (data.threat || '未知') + '</span></div>' +
+                        '<div>可读性：<span style="color:' + statusColor + ';">' + data.readStatus + '</span></div>' +
+                        '</div></div>' +
+                        '<div class="detail-section"><div class="section-label">📖 描述</div><div class="section-content">' + (description || '暂无描述') + '</div></div>' +
+                        '<div class="detail-actions">' +
+                        '<button class="primary" onclick="window.tscDeepSense(\'' + dataStr + '\')">🔄 重新感知</button>' +
+                        '<button onclick="window.tscClearDetail()">✕ 清除</button>' +
+                        '</div>';
+                    sub.textContent = data.name + ' (深度感知)';
+                    addStoryBlock('system', '深度感知 · ' + data.name + '：' + reply);
+                })
+                .catch(function(err) {
+                    detail.innerHTML = '<div style="color:#f87171;text-align:center;padding:20px;"><div style="font-size:24px;margin-bottom:8px;">⚠️</div><div>深度感知失败：' + err.message + '</div><button onclick="window.tscDeepSense(\'' + dataStr + '\')" style="margin-top:10px;background:transparent;border:1px solid #6a4aff;color:#b8b8e0;padding:4px 16px;border-radius:30px;cursor:pointer;">重试</button></div>';
+                    sub.textContent = data.name + ' (深度感知失败)';
+                    addStoryBlock('system', '⚠️ 深度感知 ' + data.name + ' 失败：' + err.message);
+                });
             };
 
             window.tscClearDetail = function() {
                 var detail = getEl('characterDetail');
                 var sub = getEl('detailSub');
-                if (detail) {
-                    detail.innerHTML =
-                        '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色或感知对象查看详情</div>';
-                }
+                if (detail) detail.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色或感知对象查看详情</div>';
                 if (sub) sub.textContent = '点击角色或感知对象查看';
                 var items = document.querySelectorAll('.character-item');
-                for (var i = 0; i < items.length; i++) { items[i].classList.remove('active'); }
+                for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
                 currentSelectedId = null;
             };
 
@@ -1220,10 +1034,8 @@
                         scanBtn.textContent = '⟳ 扫描';
                         scanBtn.disabled = false;
                         var r = 1.38 + Math.random() * 0.15;
-                        var topR = getEl('topR');
-                        if (topR) topR.textContent = r.toFixed(3);
-                        var rSmall = getEl('tsc-rValue-small');
-                        if (rSmall) rSmall.textContent = r.toFixed(3);
+                        var topR = getEl('topR'); if (topR) topR.textContent = r.toFixed(3);
+                        var rSmall = getEl('tsc-rValue-small'); if (rSmall) rSmall.textContent = r.toFixed(3);
                         addStoryBlock('system', '你释放了低语者的感知力，周围的心声涌入脑海。R值波动至 ' + r.toFixed(3) + '。');
                         addLog('R值波动: ' + r.toFixed(3));
                     }, 500);
@@ -1244,10 +1056,7 @@
             if (thinkBtn) {
                 thinkBtn.addEventListener('click', function() {
                     var thought = thoughts[Math.floor(Math.random() * thoughts.length)];
-                    showModal('💭 内心独白',
-                        '<div style="font-style:italic;font-size:14px;color:#d0d4e0;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;text-align:center;">' +
-                        thought + '</div>'
-                    );
+                    showModal('💭 内心独白', '<div style="font-style:italic;font-size:14px;color:#d0d4e0;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;text-align:center;">' + thought + '</div>');
                     addStoryBlock('inner', thought);
                     addLog('内心独白');
                 });
@@ -1258,47 +1067,22 @@
             if (resetBtn) {
                 resetBtn.addEventListener('click', function() {
                     if (!confirm('重置所有状态到初始值？')) return;
-                    currentHour = 6;
-                    currentMinute = 0;
-                    dayCount = 1;
-                    academyPermission = false;
-                    unlockedArchives = [];
+                    currentHour = 6; currentMinute = 0; dayCount = 1;
+                    academyPermission = false; unlockedArchives = [];
                     updateTimeDisplay();
-                    var permBadge = getEl('permBadge');
-                    if (permBadge) { permBadge.textContent = '未加入学园';
-                        permBadge.classList.remove('granted'); }
-                    ['terminalLockIcon', 'squadLockIcon', 'recordsLockIcon', 'missionLockIcon'].forEach(function(id) {
-                        var el = getEl(id);
-                        if (el) { el.textContent = '🔒';
-                            el.classList.remove('unlocked'); }
+                    var permBadge = getEl('permBadge'); if (permBadge) { permBadge.textContent = '未加入学园'; permBadge.classList.remove('granted'); }
+                    ['terminalLockIcon','squadLockIcon','recordsLockIcon','missionLockIcon'].forEach(function(id) {
+                        var el = getEl(id); if (el) { el.textContent = '🔒'; el.classList.remove('unlocked'); }
                     });
-                    var unlockCard = getEl('unlockCard');
-                    if (unlockCard) {
-                        unlockCard.style.borderColor = 'rgba(106,74,255,0.2)';
-                        unlockCard.style.background = 'rgba(106,74,255,0.06)';
-                    }
-                    var unlockIcon = getEl('unlockIcon');
-                    if (unlockIcon) unlockIcon.textContent = '🔒';
-                    var unlockTitle = getEl('unlockTitle');
-                    if (unlockTitle) unlockTitle.textContent = '档案权限已锁定';
-                    var unlockDesc = getEl('unlockDesc');
-                    if (unlockDesc) unlockDesc.textContent = '加入苍之学院后可获得档案访问权限';
-                    var unlockBtn = getEl('unlockBtn');
-                    if (unlockBtn) {
-                        unlockBtn.textContent = '未解锁';
-                        unlockBtn.disabled = true;
-                        unlockBtn.style.borderColor = '#4a3a6a';
-                        unlockBtn.style.color = '#b8b8e0';
-                    }
-                    var terminalSub = getEl('terminalSub');
-                    if (terminalSub) terminalSub.textContent = '🔒 需要苍之学院权限';
-                    var topR = getEl('topR');
-                    if (topR) topR.textContent = '1.450';
-                    var rSmall = getEl('tsc-rValue-small');
-                    if (rSmall) rSmall.textContent = '1.450';
-                    generateWhispers();
-                    renderTerminalList();
-                    window.tscClearDetail();
+                    var unlockCard = getEl('unlockCard'); if (unlockCard) { unlockCard.style.borderColor = 'rgba(106,74,255,0.2)'; unlockCard.style.background = 'rgba(106,74,255,0.06)'; }
+                    var unlockIcon = getEl('unlockIcon'); if (unlockIcon) unlockIcon.textContent = '🔒';
+                    var unlockTitle = getEl('unlockTitle'); if (unlockTitle) unlockTitle.textContent = '档案权限已锁定';
+                    var unlockDesc = getEl('unlockDesc'); if (unlockDesc) unlockDesc.textContent = '加入苍之学院后可获得档案访问权限';
+                    var unlockBtn = getEl('unlockBtn'); if (unlockBtn) { unlockBtn.textContent = '未解锁'; unlockBtn.disabled = true; unlockBtn.style.borderColor = '#4a3a6a'; unlockBtn.style.color = '#b8b8e0'; }
+                    var terminalSub = getEl('terminalSub'); if (terminalSub) terminalSub.textContent = '🔒 需要苍之学院权限';
+                    var topR = getEl('topR'); if (topR) topR.textContent = '1.450';
+                    var rSmall = getEl('tsc-rValue-small'); if (rSmall) rSmall.textContent = '1.450';
+                    generateWhispers(); renderTerminalList(); window.tscClearDetail();
                     if (storyOutput) storyOutput.innerHTML = '';
                     initStory();
                     addLog('已重置');
@@ -1318,23 +1102,19 @@
                     { type: 'dialogue', content: '“……拉法，你来了啊。”', speaker: '{{user}}' },
                     { type: 'narration', content: '拉斐尔·加西亚。尽管已经40多岁了，却依然是个肌肉发达的高大男人。他穿着一件黑色夹克，衣缝间隐约可见好几处刺青。他是老大的侄子，也是整个组织里唯一还拿他当人看的家伙。' },
                     { type: 'dialogue', content: '“小外甥来处理垃圾了。真是孝顺啊。”', speaker: '{{user}}' },
-                    { type: 'dialogue', content: '“抱歉，{{user}}。我本来想阻止叔叔的——如果我能说服他的话。但是，老大的命令是绝对的。”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“抱歉，{{user}}。我本来想阻止叔叔的——如果我能说服他的话。但是，老大的命令是绝对的。”', speaker: '拉法' },
                     { type: 'narration', content: '{{user}}没回答。他太了解拉法了。这个男人无论何时都心口如一，心里想什么，嘴上就说什么。在满是谎言的黑手党里，这种人才是异类。' },
-                    { type: 'dialogue', content: '“说到底，那些干部们——包括我叔叔在内——都开始害怕你了。{{user}}，这几年家族急速扩张，快得不正常。这里头有你一大半功劳……不，是功劳太大了。你揭穿了所有人的秘密——警察和政治家的丑陋勾当，敌对帮派的弱点……还有，家族拼命想要隐藏的无数秘密。”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“说到底，那些干部们——包括我叔叔在内——都开始害怕你了。{{user}}，这几年家族急速扩张，快得不正常。这里头有你一大半功劳……不，是功劳太大了。你揭穿了所有人的秘密——警察和政治家的丑陋勾当，敌对帮派的弱点……还有，家族拼命想要隐藏的无数秘密。”', speaker: '拉法' },
                     { type: 'narration', content: '也许这是理所当然的结果。他是一颗定时炸弹，是窥探内心向黑手党低语的恶魔。既是使内部崩溃的火种，又是一旦被敌对组织夺走就会带来毁灭的存在。' },
                     { type: 'dialogue', content: '“……{{user}}。你为什么不求饶呢？”', speaker: '拉法' },
                     { type: 'dialogue', content: '“诶？”', speaker: '{{user}}' },
-                    { type: 'dialogue', content: '“你一直都是这样。从来到我们这开始，你就总是垂着双阴郁的眼睛，几乎从不抱怨、不发牢骚，无论是命令还是拷问都默不作声地忍耐着。我一直把你当作朋友，可我从来没听你说过一句‘救救我’。”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“你一直都是这样。从来到我们这开始，你就总是垂着双阴郁的眼睛，几乎从不抱怨、不发牢骚，无论是命令还是拷问都默不作声地忍耐着。我一直把你当作朋友，可我从来没听你说过一句‘救救我’。”', speaker: '拉法' },
                     { type: 'narration', content: '那是。' },
                     { type: 'dialogue', content: '“为什么？”', speaker: '拉法' },
                     { type: 'inner', content: '为什么……？他刚试图思考，尖锐的疼痛就袭向大脑。' },
                     { type: 'dialogue', content: '“……因为希望这种东西，从来就没有拯救过我啊。”', speaker: '{{user}}' },
                     { type: 'narration', content: '拉法的眼神一瞬间像是要哭出来，然后立刻移开了视线。在他心湖的倒影里，浮现出一张小男孩的脸。他隐约想起，拉法曾经说过的他那10年前因心脏病去世的儿子，如果还活着的话，现在该和他同岁了吧。' },
-                    { type: 'dialogue', content: '“接下来会变得更热。把这个吃了吧。”拉法把一大颗糖扔进他嘴里，然后转身离去。那家伙明明长着一副坏人相，实际上干着十恶不赦的勾当，却是个让人哭笑不得的甜食党。',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“接下来会变得更热。把这个吃了吧。”拉法把一大颗糖扔进他嘴里，然后转身离去。那家伙明明长着一副坏人相，实际上干着十恶不赦的勾当，却是个让人哭笑不得的甜食党。', speaker: '拉法' },
                     { type: 'inner', content: '“……好甜。”' },
                     { type: 'narration', content: '在太平洋的广阔天空下，被如奴隶一般拴着的他，只能不断舔着那颗甜得发腻的糖。然后，他听到了一道声音。' },
                     { type: 'dialogue', content: '“——那个看起来很好吃呢。可以给我吗？”', speaker: '黑之魔王' },
@@ -1384,8 +1164,7 @@
                     { type: 'narration', content: '他以为自己会死。但他没有。他看见了拉法——在水面上挣扎，手拍打着海水，嘴里灌了一口又一口的咸水。拉法不擅长游泳，肌肉发达的身体反而成了负担。他看到{{user}}的时候，先是一愣，然后拼命地朝这边游。那块浮木撑不住两个人。{{user}}心里清楚。' },
                     { type: 'inner', content: '（啊。我，不是能做出这种事的人呢。）是吗。原来他是在这种绝境下，会优先选择去帮助其他人的家伙啊。抛弃熟人不管自己逃生——这种事光是想想就觉得恶心，从一开始就不算可选项。呵，真行啊，他。' },
                     { type: 'narration', content: '他游过去，把拉法推上浮木。' },
-                    { type: 'dialogue', content: '“等等！我……我抛弃了你啊！本来，该由我来拯救你的！只有我能救你！可我……我害怕，我拿不出勇气！我……我……哪有资格被你拯救啊！”',
-                        speaker: '拉法' },
+                    { type: 'dialogue', content: '“等等！我……我抛弃了你啊！本来，该由我来拯救你的！只有我能救你！可我……我害怕，我拿不出勇气！我……我……哪有资格被你拯救啊！”', speaker: '拉法' },
                     { type: 'dialogue', content: '“拉法。你以前经常给我的烤肉玉米饼，真的很好吃。总有一天，把食谱告诉我吧。”', speaker: '{{user}}' },
                     { type: 'narration', content: '然后他推着木板往前游。然后——力量耗尽了。他沉了下去。意识逐渐模糊——世界变成了深蓝色的、冰冷的虚无。' },
                     { type: 'narration', content: '然后——他醒了。最先感受到的是后背传来的石板触感。冷硬的，但不刺骨。空气中弥漫着一股奇异的香气，像是焚香和干枯花瓣混合的气味。他睁开眼，看到高高的穹顶，画着从未见过的宗教画，神祇、羽翼、层层叠叠的光晕，陌生而遥远，却带着不容置疑的威严。乳白色的石柱粗大得像能把整座天空都撑起来。' },
@@ -1400,8 +1179,7 @@
                     { type: 'narration', content: '然后，他听到了那道声音。“——看来你已经醒来了，人类啊。”那道声音从腹腔深处震颤而出，像歌剧歌手在穹顶下吟唱。他抬起头。神殿深处，一个翠绿色长发的女性站在那里，像光本身，又像是被光包裹着。她的压迫感让人本能地想要低头，喉咙发紧，像是连呼吸都被压住了。' },
                     { type: 'dialogue', content: '“抱歉吓到你了。我们一直在注视着你。船只沉没的事，真是遗憾。不过，你做了件好事呢。”', speaker: '女神·佩尔西奥涅' },
                     { type: 'inner', content: '——救了拉法的事。' },
-                    { type: 'dialogue', content: '“你确实已经死去了。这一次，我召唤了你的灵魂。拜托你了，能否用你那闪耀的勇气，为这个世界伸出援手，带来救赎呢？”',
-                        speaker: '女神·佩尔西奥涅' },
+                    { type: 'dialogue', content: '“你确实已经死去了。这一次，我召唤了你的灵魂。拜托你了，能否用你那闪耀的勇气，为这个世界伸出援手，带来救赎呢？”', speaker: '女神·佩尔西奥涅' },
                     { type: 'narration', content: '她挥了挥手，一块石板从天花板上降下。他盯着那个陌生的世界看了一会儿，又看了看身边那个正叼着烟、像是早就看过这一切的女仆。' },
                     { type: 'dialogue', content: '“……这真的是异世界转生吗？”', speaker: '{{user}}' },
                     { type: 'dialogue', content: '女神笑了，像母亲对着孩子那样温和。', speaker: '女神·佩尔西奥涅' },
@@ -1428,7 +1206,7 @@
                 }
             }
 
-            // ===== 聊天输入输出 =====
+            // ===== 聊天输入 =====
             var chatInput = getEl('chatInput');
             var chatSendBtn = getEl('chatSendBtn');
             var mockReplies = [
@@ -1444,10 +1222,8 @@
                 var text = chatInput.value.trim();
                 if (!text) return;
                 addStoryBlock('dialogue', text, '你');
-                chatInput.value = '';
-                chatInput.style.height = 'auto';
-                chatSendBtn.disabled = true;
-                chatSendBtn.textContent = '⏳';
+                chatInput.value = ''; chatInput.style.height = 'auto';
+                chatSendBtn.disabled = true; chatSendBtn.textContent = '⏳';
                 var thinkingBlock = document.createElement('div');
                 thinkingBlock.className = 'story-block system';
                 thinkingBlock.id = 'thinking-indicator';
@@ -1455,49 +1231,40 @@
                 storyOutput.appendChild(thinkingBlock);
                 storyOutput.scrollTop = storyOutput.scrollHeight;
                 fetch(TAVERN_API + '/api/chat/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ userInput: text })
-                    })
-                    .then(function(res) {
-                        if (!res.ok) throw new Error('HTTP ' + res.status);
-                        return res.json();
-                    })
-                    .then(function(data) {
-                        var indicator = document.getElementById('thinking-indicator');
-                        if (indicator) indicator.remove();
-                        var reply = data.reply || data.message || data.response || data.text || '（AI 未返回内容）';
-                        var speaker = '系统';
-                        var content = reply;
-                        var colonIndex = reply.search(/[：:]/);
-                        if (colonIndex > 0 && colonIndex < 15) {
-                            speaker = reply.substring(0, colonIndex).trim();
-                            content = reply.substring(colonIndex + 1).trim();
-                        }
-                        addStoryBlock('dialogue', content, speaker);
-                        storyOutput.scrollTop = storyOutput.scrollHeight;
-                    })
-                    .catch(function(err) {
-                        var indicator = document.getElementById('thinking-indicator');
-                        if (indicator) indicator.remove();
-                        addStoryBlock('system', '⚠️ 连接酒馆失败：' + err.message + '。使用离线模拟。');
-                        var fallback = mockReplies[Math.floor(Math.random() * mockReplies.length)];
-                        addStoryBlock('dialogue', fallback.content, fallback.speaker);
-                        storyOutput.scrollTop = storyOutput.scrollHeight;
-                    })
-                    .finally(function() {
-                        chatSendBtn.disabled = false;
-                        chatSendBtn.textContent = '发送';
-                    });
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userInput: text })
+                })
+                .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
+                .then(function(data) {
+                    var indicator = document.getElementById('thinking-indicator');
+                    if (indicator) indicator.remove();
+                    var reply = data.reply || data.message || data.response || data.text || '（AI 未返回内容）';
+                    var speaker = '系统';
+                    var content = reply;
+                    var colonIndex = reply.search(/[：:]/);
+                    if (colonIndex > 0 && colonIndex < 15) { speaker = reply.substring(0, colonIndex).trim(); content = reply.substring(colonIndex + 1).trim(); }
+                    addStoryBlock('dialogue', content, speaker);
+                    storyOutput.scrollTop = storyOutput.scrollHeight;
+                })
+                .catch(function(err) {
+                    var indicator = document.getElementById('thinking-indicator');
+                    if (indicator) indicator.remove();
+                    addStoryBlock('system', '⚠️ 连接酒馆失败：' + err.message + '。使用离线模拟。');
+                    var fallback = mockReplies[Math.floor(Math.random() * mockReplies.length)];
+                    addStoryBlock('dialogue', fallback.content, fallback.speaker);
+                    storyOutput.scrollTop = storyOutput.scrollHeight;
+                })
+                .finally(function() {
+                    chatSendBtn.disabled = false;
+                    chatSendBtn.textContent = '发送';
+                });
             }
 
             if (chatSendBtn) chatSendBtn.addEventListener('click', sendMessage);
             if (chatInput) {
                 chatInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendMessage();
-                    }
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
                     this.style.height = 'auto';
                     this.style.height = Math.min(this.scrollHeight, 80) + 'px';
                 });
@@ -1513,16 +1280,11 @@
                 if (!playerName || playerName === '玩家') {
                     var data = window.__TSC_CHARACTERS || {};
                     var ids = Object.keys(data);
-                    if (ids.length > 0 && data[ids[0]] && data[ids[0]].playerName) {
-                        playerName = data[ids[0]].playerName;
-                    }
+                    if (ids.length > 0 && data[ids[0]] && data[ids[0]].playerName) playerName = data[ids[0]].playerName;
                 }
-                var topUser = getEl('topUser');
-                if (topUser) topUser.textContent = playerName;
-                var playerNameDisplay = getEl('playerNameDisplay');
-                if (playerNameDisplay) playerNameDisplay.textContent = playerName;
-                var profileName = getEl('profileName');
-                if (profileName) profileName.textContent = playerName;
+                var topUser = getEl('topUser'); if (topUser) topUser.textContent = playerName;
+                var playerNameDisplay = getEl('playerNameDisplay'); if (playerNameDisplay) playerNameDisplay.textContent = playerName;
+                var profileName = getEl('profileName'); if (profileName) profileName.textContent = playerName;
                 addLog('玩家名字已更新为: ' + playerName);
             }
 
@@ -1530,11 +1292,8 @@
                 var frame = getEl('charAvatarFrame');
                 if (!frame) return;
                 var avatarUrl = window.__TSC_PLAYER_AVATAR || null;
-                if (avatarUrl) {
-                    frame.innerHTML = '<img src="' + avatarUrl + '" alt="玩家" />';
-                } else {
-                    frame.innerHTML = '<span class="placeholder-text">?</span>';
-                }
+                if (avatarUrl) frame.innerHTML = '<img src="' + avatarUrl + '" alt="玩家" />';
+                else frame.innerHTML = '<span class="placeholder-text">?</span>';
             }
 
             var charCard = getEl('charCard');
@@ -1560,12 +1319,8 @@
 
                 var ids = Object.keys(data);
                 if (ids.length === 0) {
-                    list.innerHTML =
-                        '<div style="color:#4a4a6a;text-align:center;padding:12px;font-size:12px;">暂无角色数据</div>';
-                    if (detail && !detail.innerHTML) {
-                        detail.innerHTML =
-                            '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色查看详情</div>';
-                    }
+                    list.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:12px;font-size:12px;">暂无角色数据</div>';
+                    if (detail && !detail.innerHTML) detail.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">选择左侧角色查看详情</div>';
                     return;
                 }
 
@@ -1573,28 +1328,14 @@
                     var c = data[id] || {};
                     var isActive = (id === currentSelectedId);
                     var avatarUrl = c.avatarUrl || c.avatar || null;
-                    var avatarHtml = '';
-                    if (avatarUrl) {
-                        avatarHtml = '<img src="' + avatarUrl + '" alt="' + id + '" />';
-                    } else {
-                        avatarHtml = '<span class="placeholder-text">?</span>';
-                    }
-                    return '<div class="character-item ' + (isActive ? 'active' : '') + '" data-id="' + id +
-                        '" onclick="window.selectCharacter(\'' + id + '\')">' +
+                    var avatarHtml = avatarUrl ? '<img src="' + avatarUrl + '" alt="' + id + '" />' : '<span class="placeholder-text">?</span>';
+                    return '<div class="character-item ' + (isActive ? 'active' : '') + '" data-id="' + id + '" onclick="window.selectCharacter(\'' + id + '\')">' +
                         '<div class="avatar">' + avatarHtml + '</div>' +
-                        '<div class="info"><div class="name">' + id.charAt(0).toUpperCase() + id.slice(1) +
-                        '</div><div class="role">' + (c.role || '未知') + '</div></div>' +
-                        '</div>';
+                        '<div class="info"><div class="name">' + id.charAt(0).toUpperCase() + id.slice(1) + '</div><div class="role">' + (c.role || '未知') + '</div></div></div>';
                 }).join('');
 
-                if (currentSelectedId && data[currentSelectedId]) {
-                    renderDetail(currentSelectedId);
-                } else if (ids.length > 0) {
-                    currentSelectedId = ids[0];
-                    renderDetail(ids[0]);
-                    var firstItem = list.querySelector('.character-item');
-                    if (firstItem) firstItem.classList.add('active');
-                }
+                if (currentSelectedId && data[currentSelectedId]) renderDetail(currentSelectedId);
+                else if (ids.length > 0) { currentSelectedId = ids[0]; renderDetail(ids[0]); var firstItem = list.querySelector('.character-item'); if (firstItem) firstItem.classList.add('active'); }
 
                 updatePlayerName();
                 updatePlayerAvatar();
@@ -1603,9 +1344,7 @@
             window.selectCharacter = function(id) {
                 currentSelectedId = id;
                 var items = document.querySelectorAll('.character-item');
-                for (var i = 0; i < items.length; i++) {
-                    items[i].classList.toggle('active', items[i].dataset.id === id);
-                }
+                for (var i = 0; i < items.length; i++) items[i].classList.toggle('active', items[i].dataset.id === id);
                 renderDetail(id);
             };
 
@@ -1615,54 +1354,33 @@
                 var excludeFields = ['emoji', 'distance', 'status', 'role', 'threat', 'avatar', 'avatarUrl'];
                 var detail = getEl('characterDetail');
                 var c = data[id];
-                if (!c) {
-                    detail.innerHTML =
-                        '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">角色数据不存在</div>';
-                    return;
-                }
+                if (!c) { detail.innerHTML = '<div style="color:#4a4a6a;text-align:center;padding:16px;font-size:12px;">角色数据不存在</div>'; return; }
 
                 var name = id.charAt(0).toUpperCase() + id.slice(1);
                 var avatarUrl = c.avatarUrl || c.avatar || null;
-                var portraitImg = '<div class="portrait-img"><span class="placeholder-text">?</span></div>';
-                if (avatarUrl) {
-                    portraitImg = '<div class="portrait-img"><img src="' + avatarUrl + '" alt="' + name + '" /></div>';
-                }
+                var portraitImg = avatarUrl ? '<div class="portrait-img"><img src="' + avatarUrl + '" alt="' + name + '" /></div>' : '<div class="portrait-img"><span class="placeholder-text">?</span></div>';
 
-                var html =
-                    '<div class="portrait-area" onclick="showPortraitModal(\'' + name + '\',\'' + (c.role || '未知') +
-                    '\',\'#6a4aff\',\'' + (avatarUrl || '') + '\')">' +
+                var html = '<div class="portrait-area" onclick="showPortraitModal(\'' + name + '\',\'' + (c.role || '未知') + '\',\'#6a4aff\',\'' + (avatarUrl || '') + '\')">' +
                     portraitImg +
                     '<div class="detail-name">' + name + '</div>' +
                     '<div class="detail-title">' + (c.role || '未知') + '</div>' +
-                    '<div class="detail-status"><span>● ' + (c.status || '') + '</span><span>📡 ' + (c.distance || '?') +
-                    '</span></div>' +
-                    '</div>';
+                    '<div class="detail-status"><span>● ' + (c.status || '') + '</span><span>📡 ' + (c.distance || '?') + '</span></div></div>';
 
-                var sectionMap = {
-                    thought: { icon: '💭', style: 'font-style:italic;' },
-                    description: { icon: '📖', style: '' }
-                };
-
+                var sectionMap = { thought: { icon: '💭', style: 'font-style:italic;' }, description: { icon: '📖', style: '' } };
                 for (var field in fieldMap) {
                     if (excludeFields.indexOf(field) !== -1) continue;
                     var label = fieldMap[field];
                     var value = c[field] || '未知';
                     var icon = sectionMap[field]?.icon || '📋';
                     var extraStyle = sectionMap[field]?.style || '';
-                    html +=
-                        '<div class="detail-section"><div class="section-label">' + icon + ' ' + label +
-                        '</div><div class="section-content" style="' + extraStyle + '">' + value + '</div></div>';
+                    html += '<div class="detail-section"><div class="section-label">' + icon + ' ' + label + '</div><div class="section-content" style="' + extraStyle + '">' + value + '</div></div>';
                 }
 
-                html +=
-                    '<div class="detail-actions">' +
-                    '<button class="primary" onclick="showModal(\'' + name + '\', \'🔮 深度感知：' + (c.thought ||
-                        '无心声') + '\', null)">🔮 深度感知</button>' +
-                    '<button onclick="window.tscClearDetail()">✕ 清除</button>' +
-                    '</div>';
+                html += '<div class="detail-actions">' +
+                    '<button class="primary" onclick="showModal(\'' + name + '\', \'🔮 深度感知：' + (c.thought || '无心声') + '\', null)">🔮 深度感知</button>' +
+                    '<button onclick="window.tscClearDetail()">✕ 清除</button></div>';
                 detail.innerHTML = html;
-                var sub = getEl('detailSub');
-                if (sub) sub.textContent = name;
+                var sub = getEl('detailSub'); if (sub) sub.textContent = name;
             }
 
             // ===== 轮询 =====
@@ -1690,15 +1408,12 @@
                 if (defaultChannel) {
                     channelItems.forEach(function(c) { c.classList.remove('active'); });
                     defaultChannel.classList.add('active');
-                    for (var key in pageMap) {
-                        var page = pageMap[key];
-                        if (page) page.classList.toggle('active', key === 'story');
-                    }
+                    for (var key in pageMap) { var page = pageMap[key]; if (page) page.classList.toggle('active', key === 'story'); }
                 }
                 addLog('终端就绪，酒馆 API 地址: ' + TAVERN_API);
             }, 300);
 
-            console.log('✅ 终末停滞委员会 · 低语者终端已启动（侧边栏完全修复）');
+            console.log('✅ 终末停滞委员会 · 低语者终端已启动（立绘增大 + 显示性质 + API修复）');
         })();
     </script>
 
